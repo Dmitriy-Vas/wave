@@ -5,6 +5,9 @@
 *.dylib
 *.test
 *.out
-*.ipr
 *.iml
+*.ipr
 *.iws
+.idea
+cmd
+!cmd/proxy/
