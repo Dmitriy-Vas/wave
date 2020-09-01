@@ -15,11 +15,6 @@ type PacketBuffer interface {
 	Bytes() []byte
 }
 
-type Vector2 struct {
-	X int32
-	Y int32
-}
-
 // Buffer capacity sets once and can't grow up
 // To exclude copying data on each buffer resizing
 type DefaultBuffer struct {

@@ -9,3 +9,5 @@
 *.ipr
 *.iws
 .idea
+/packets/ROTMGOutgoing/
+/ROTMGWrapper/

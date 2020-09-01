@@ -2,6 +2,7 @@ package buffer
 
 import (
 	"encoding/binary"
+	. "github.com/Dmitriy-Vas/wave/buffer/objects"
 	"math"
 )
 
