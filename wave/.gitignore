@@ -9,5 +9,3 @@
 *.ipr
 *.iws
 .idea
-cmd
-!cmd/proxy/

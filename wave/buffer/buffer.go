@@ -1,58 +1,49 @@
 package buffer
 
-import (
-	"sync/atomic"
-)
-
 type PacketBuffer interface {
 	PacketReader
 	PacketWriter
 	SetReader(reader PacketReader)
 	SetWriter(writer PacketWriter)
-	Init(args []interface{})
 
-	AppendIfNeeded(bytes uint32)
-	Resize(size uint32, index uint32)
-	Reindex()
-	Next(amount uint32) uint32
+	Resize(size uint64)
+	Next(amount uint64) uint64
+	Back(amount uint64) uint64
 	Reset()
-	Len() uint32
-	Index() uint32
+	Len() uint64
+	Index() uint64
 	Bytes() []byte
 }
 
 type Vector2 struct {
-	First  int32
-	Second int32
+	X int32
+	Y int32
 }
 
-// TODO rewrite to zero-copy buffer implementation
+// Buffer capacity sets once and can't grow up
+// To exclude copying data on each buffer resizing
 type DefaultBuffer struct {
 	PacketReader
 	PacketWriter
 
-	init_len uint32
+	init_len uint64
+	max_len  uint64
+	len      uint64
+	index    uint64
 	buf      []byte
-	index    *uint32
 }
 
-func (db *DefaultBuffer) AppendIfNeeded(bytes uint32) {
-	remaining := db.Len() - db.Index()
-	if remaining < bytes {
-		db.buf = append(db.buf, make([]byte, 0, bytes-remaining)...)
-	}
+func InitBuffer(bufferInterface PacketBuffer) {
+	buffer := bufferInterface.(*DefaultBuffer)
+	buffer.buf = make([]byte, buffer.max_len)
 }
 
-const (
-	DefaultLength = 8
-)
+func (db *DefaultBuffer) SetInitialLength(size uint64) {
+	db.init_len = size
+}
 
-// TODO add better solution to pass arguments
-func (db *DefaultBuffer) Init(args []interface{}) {
-	var init_len uint32 = DefaultLength
-	db.init_len = init_len
-	db.buf = make([]byte, init_len)
-	db.index = new(uint32)
+func (db *DefaultBuffer) SetMaxLength(size uint64) {
+	db.max_len = size
 }
 
 func (db *DefaultBuffer) SetReader(reader PacketReader) {
@@ -63,39 +54,39 @@ func (db *DefaultBuffer) SetWriter(writer PacketWriter) {
 	db.PacketWriter = writer
 }
 
-func (db *DefaultBuffer) Resize(size uint32, index uint32) {
-	if size > 0xfffff {
+func (db *DefaultBuffer) Resize(size uint64) {
+	if size > db.max_len {
 		panic("New buffer size is too large")
 	}
-	old := db.buf
-	buf := make([]byte, size)
-	for i, b := range old {
-		buf[int(index)+i] = b
+	db.len = size
+}
+
+func (db *DefaultBuffer) Next(amount uint64) uint64 {
+	if size := db.index + amount; db.len < size {
+		db.len = size
 	}
-	db.buf = buf
+	db.index += amount
+	return db.index
 }
 
-func (db *DefaultBuffer) Reindex() {
-	atomic.StoreUint32(db.index, 0)
-}
-
-func (db *DefaultBuffer) Next(amount uint32) uint32 {
-	return atomic.AddUint32(db.index, amount)
+func (db *DefaultBuffer) Back(amount uint64) uint64 {
+	db.index -= amount
+	return db.index
 }
 
 func (db *DefaultBuffer) Reset() {
-	db.buf = make([]byte, db.init_len)
-	atomic.StoreUint32(db.index, 0)
+	db.index = 0
+	db.len = db.init_len
 }
 
-func (db *DefaultBuffer) Len() uint32 {
-	return uint32(len(db.buf))
+func (db *DefaultBuffer) Len() uint64 {
+	return db.len
 }
 
-func (db *DefaultBuffer) Index() uint32 {
-	return atomic.LoadUint32(db.index)
+func (db *DefaultBuffer) Index() uint64 {
+	return db.index
 }
 
 func (db *DefaultBuffer) Bytes() []byte {
-	return db.buf
+	return db.buf[:db.len]
 }

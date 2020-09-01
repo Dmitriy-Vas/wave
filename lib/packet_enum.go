@@ -1,5 +1,5 @@
 //go:generate stringer -type=ServerPacket,ClientPacket -output=packet_enum_string.go
-package main
+package lib
 
 type IPacket interface {
 	Name() string

@@ -1,53 +1,44 @@
 package wave
 
 import (
-	. "github.com/Dmitriy-Vas/wave/buffer"
-	. "github.com/Dmitriy-Vas/wave/packets"
-	"log"
 	"net"
+	"reflect"
 	"sync"
 	"sync/atomic"
 )
 
 type Proxy struct {
-	RemoteAddr                           net.Addr
-	Listener                             *net.Listener
-	_buffer                              PacketBuffer
-	_reader                              PacketReader
-	_writer                              PacketWriter
-	_buffer_args                         []interface{}
-	Index                                *uint32   // Amount of served local connections
-	Connections                          *sync.Map // map[uint32]*Conn
-	ClientPacketHooks, ServerPacketHooks *sync.Map // MapHooks
-	ClientPacketMap, ServerPacketMap     *sync.Map // MapPackets
+	listener                             net.Listener // Local listener, listening on LocalAddress for new connection
+	index                                *uint32      // Amount of served local connections
+	Connections                          *sync.Map    // map[uint32]*Conn. Concurrency safe. Map with all current connections
+	ClientPacketHooks, ServerPacketHooks *sync.Map    // map[id][]PacketHook Concurrency safe. Map with all registered packet hooks
+	ClientPacketMap, ServerPacketMap     *sync.Map    // map[id]Packet. Concurrency safe. Map with all available packets
+	Config                               Config
 }
 
 type PacketHook func(conn *Conn, packet Packet)
-type MapHooks map[int64][]PacketHook
-type MapPackets map[int64]Packet
 
-// Note: blocking execution
-func (p *Proxy) Start(LocalAddr net.Addr) error {
-	listener, err := net.Listen("tcp", LocalAddr.String())
-	if err != nil {
+// Start listening on LocalAddress and accept new connections
+// Every connection have their unique ID, starting from 0
+// Connections are stored by unique ID inside Proxy.Connections
+// Note: blocks execution
+func (p *Proxy) Start() (err error) {
+	if p.listener, err = net.Listen("tcp", p.Config.LocalAddress.String()); err != nil {
 		return err
 	}
 
 	for {
-		local_conn, err := listener.Accept()
+		local_conn, err := p.listener.Accept()
 		if err != nil {
-			log.Println(err)
-			continue
+			return err
 		}
-		id := atomic.AddUint32(p.Index, 1)
+		id := atomic.AddUint32(p.index, 1)
 
 		conn := &Conn{
-			ID:          id,
-			LocalConn:   local_conn,
-			Done:        make(chan error),
-			_proxy:      p,
-			clientHooks: new(sync.Map),
-			serverHooks: new(sync.Map),
+			ID:        id,
+			LocalConn: local_conn,
+			Done:      make(chan error),
+			proxy:     p,
 		}
 		p.Connections.Store(id, conn)
 
@@ -55,6 +46,11 @@ func (p *Proxy) Start(LocalAddr net.Addr) error {
 	}
 }
 
+func (p *Proxy) Index() uint32 {
+	return atomic.LoadUint32(p.index)
+}
+
+// Closes every connection and stops the listener
 func (p *Proxy) Close() {
 	p.Connections.Range(func(key, value interface{}) bool {
 		if connection, ok := value.(*Conn); ok {
@@ -62,8 +58,12 @@ func (p *Proxy) Close() {
 		}
 		return true
 	})
+	p.listener.Close()
 }
 
+// Adds function, which will be fired on every packet with specified ID
+// Outgoing=true, if your packet is going from client to server
+// Outgoing=false, if your packet is going from server to client
 func (p *Proxy) HookPacket(ID int64, outgoing bool, hook PacketHook) {
 	var m *sync.Map
 	if outgoing {
@@ -80,39 +80,27 @@ func (p *Proxy) HookPacket(ID int64, outgoing bool, hook PacketHook) {
 	}
 }
 
+// Adds Packet to the list of available packets, 1 packet per 1 ID
+// Outgoing=true, if your packet is going from client to server
+// Outgoing=false, if your packet is going from server to client
 func (p *Proxy) AddPacket(ID int64, outgoing bool, packet Packet) {
+	packetType := reflect.TypeOf(packet)
 	if outgoing {
-		p.ClientPacketMap.Store(ID, packet)
+		p.ClientPacketMap.Store(ID, packetType)
 	} else {
-		p.ServerPacketMap.Store(ID, packet)
+		p.ServerPacketMap.Store(ID, packetType)
 	}
 }
 
-func (p *Proxy) SetBuffer(buffer PacketBuffer, args ...interface{}) {
-	p._buffer = buffer
-	p._buffer_args = args
-}
-
-func (p *Proxy) SetReader(reader PacketReader) {
-	p._reader = reader
-}
-
-func (p *Proxy) SetWriter(writer PacketWriter) {
-	p._writer = writer
-}
-
-func New(RemoteAddr net.Addr) *Proxy {
+// Creates new proxy instance with specified config
+func New(config Config) *Proxy {
 	return &Proxy{
-		RemoteAddr:        RemoteAddr,
-		_buffer:           (*DefaultBuffer)(nil),
-		_reader:           (*DefaultReader)(nil),
-		_writer:           (*DefaultWriter)(nil),
-		_buffer_args:      []interface{}{LengthSize},
-		Index:             new(uint32),
+		index:             new(uint32),
 		Connections:       new(sync.Map),
 		ClientPacketHooks: new(sync.Map),
 		ServerPacketHooks: new(sync.Map),
 		ClientPacketMap:   new(sync.Map),
 		ServerPacketMap:   new(sync.Map),
+		Config:            config,
 	}
 }

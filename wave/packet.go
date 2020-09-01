@@ -1,7 +1,8 @@
-package packets
+package wave
 
 import (
 	. "github.com/Dmitriy-Vas/wave/buffer"
+	"reflect"
 )
 
 type Packet interface {
@@ -16,6 +17,12 @@ type Packet interface {
 type DefaultPacket struct {
 	ID   int64
 	Send bool
+}
+
+func InitPacket(packet Packet) {
+	dp := &DefaultPacket{Send: true}
+	value := reflect.ValueOf(dp)
+	reflect.ValueOf(packet).Elem().FieldByName("DefaultPacket").Set(value)
 }
 
 func (d *DefaultPacket) GetID() int64 {
@@ -33,6 +40,3 @@ func (d *DefaultPacket) GetSend() bool {
 func (d *DefaultPacket) SetSend(value bool) {
 	d.Send = value
 }
-
-var ServerPackets = make([]Packet, 0)
-var ClientPackets = make([]Packet, 0)

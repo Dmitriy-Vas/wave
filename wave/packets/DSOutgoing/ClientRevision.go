@@ -1,12 +1,12 @@
 package DSOutgoing
 
 import (
+	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/packets"
 )
 
 type ClientRevisionPacket struct {
-	*packets.DefaultPacket
+	*wave.DefaultPacket
 	Unknown1 byte
 	IsSteam  bool
 }
