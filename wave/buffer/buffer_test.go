@@ -2,6 +2,7 @@ package buffer
 
 import (
 	"encoding/binary"
+	"github.com/Dmitriy-Vas/wave/buffer/objects"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
@@ -117,7 +118,7 @@ func TestDefaultReader_ReadString(t *testing.T) {
 
 func TestDefaultReader_ReadVector2(t *testing.T) {
 	buffer := newTestBuffer()
-	value1 := Vector2{
+	value1 := objects.Vector2{
 		X: 31,
 		Y: 41,
 	}
@@ -200,12 +201,12 @@ func TestDefaultWriter_WriteString(t *testing.T) {
 
 func TestDefaultWriter_WriteVector2(t *testing.T) {
 	buffer := newTestBuffer()
-	value1 := Vector2{
+	value1 := objects.Vector2{
 		X: 17,
 		Y: 32,
 	}
 	buffer.WriteVector2(buffer.buf, value1, buffer.index)
-	result1 := Vector2{
+	result1 := objects.Vector2{
 		X: int32(binary.LittleEndian.Uint32(buffer.buf[:4])),
 		Y: int32(binary.LittleEndian.Uint32(buffer.buf[4:8])),
 	}

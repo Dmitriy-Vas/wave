@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/Dmitriy-Vas/wave"
-	"github.com/Dmitriy-Vas/wave/DSWrapper"
-	"github.com/Dmitriy-Vas/wave/packets/DSOutgoing"
+	"github.com/Dmitriy-Vas/wave/packets/outgoing"
+	"github.com/Dmitriy-Vas/wave/wrapper"
 	"log"
 	"net"
 )
@@ -17,13 +17,13 @@ func main() {
 		RemoteAddress:      remoteAddr,
 		LocalAddress:       localAddr,
 		ConnectImmediately: true,
-		BufferType:         (*DSWrapper.Buffer)(nil),
-		ReaderType:         (*DSWrapper.Reader)(nil),
-		WriterType:         (*DSWrapper.Writer)(nil),
+		BufferType:         (*wrapper.Buffer)(nil),
+		ReaderType:         (*wrapper.Reader)(nil),
+		WriterType:         (*wrapper.Writer)(nil),
 		PacketInit:         wave.InitPacket,
-		BufferInit:         DSWrapper.InitBuffer,
-		ReaderInit:         DSWrapper.InitReader,
-		WriterInit:         DSWrapper.InitWriter,
+		BufferInit:         wrapper.InitBuffer,
+		ReaderInit:         wrapper.InitReader,
+		WriterInit:         wrapper.InitWriter,
 	}
 	proxy := wave.New(config)
 
@@ -37,13 +37,13 @@ func main() {
 }
 
 func RegisterPackets(proxy *wave.Proxy) {
-	proxy.AddPacket(20, true, new(DSOutgoing.ClientRevisionPacket))
-	proxy.AddPacket(2, true, new(DSOutgoing.LoginPacket))
+	proxy.AddPacket(20, true, new(outgoing.ClientRevisionPacket))
+	proxy.AddPacket(2, true, new(outgoing.LoginPacket))
 }
 
 func RegisterHooks(proxy *wave.Proxy) {
 	proxy.HookPacket(20, true, func(conn *wave.Conn, packet wave.Packet) {
-		p := packet.(*DSOutgoing.ClientRevisionPacket)
+		p := packet.(*outgoing.ClientRevisionPacket)
 		log.Printf("%+v", *p)
 	})
 }
