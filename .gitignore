@@ -1,4 +1,13 @@
-/.idea/.idea.wave.dir/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.iml
 *.ipr
 *.iws
-*.iml
+.idea
+/packets/ROTMGOutgoing/
+/ROTMGWrapper/

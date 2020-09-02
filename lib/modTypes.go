@@ -20,9 +20,9 @@ type MapListRec struct {
 
 type PlayerBuffsRec struct {
 	Type     byte
-	SpellNum int
-	Timer    int
-	Vital    int
+	SpellNum int32
+	Timer    int32
+	Vital    int32
 }
 
 type PlayerBuddiesRec struct {
@@ -100,8 +100,8 @@ type ServerModeRec struct {
 }
 
 type PlayerCardRec struct {
-	Level int
-	Exp   int
+	Level int32
+	Exp   int32
 }
 
 type AwardsRec struct {
@@ -142,8 +142,8 @@ type ProfessionUpgradeRec struct {
 }
 
 type PlayerAwardsRec struct {
-	Level   int
-	Count   int
+	Level   int32
+	Count   int32
 	GetDate string
 }
 
@@ -352,14 +352,14 @@ type newRECT struct {
 }
 
 type PartyRec struct {
-	Leader      int
+	Leader      int32
 	Member      []MemberPartyRec
 	MemberCount byte
 	Type        byte
-	Level       int
+	Level       int32
 	Experience  int64
 	PartyQuest  InPartyQuestRec
-	shareItems  bool
+	ShareItems  bool
 }
 
 type InPartyQuestRec struct {
@@ -367,18 +367,18 @@ type InPartyQuestRec struct {
 }
 
 type MemberPartyRec struct {
-	Index    int
-	Level    int
-	Hair     int
-	Sprite   int
-	Classes  int
-	Map      int
+	Index    int32
+	Level    int32
+	Hair     int32
+	Sprite   int32
+	Classes  int32
+	Map      int32
 	Name     string
 	HairTint string
 }
 
 type InvItemRec struct {
-	Num   int
+	Num   int32
 	Value int64
 	Slot  byte
 	Stat  []byte
@@ -645,6 +645,62 @@ type ItemRec struct {
 	Int           []int
 	Bool          []bool
 }
+type QuestRec struct {
+	Name                  string
+	ESName                string
+	Repeat                bool
+	RequiredCompleteQuest bool
+	Status                bool
+	QuestLog              string
+	Story                 []string
+	RequiredLevel         int
+	RequiredQuest         int
+	RequiredClass         []int
+	Item                  []QuestRewardItemRec
+	Task                  []TaskRec
+	QuestHelp             int
+	Owner                 int
+	Type                  int
+	Promotion             byte
+	QuestAtEnd            int
+	Bool                  []bool
+}
+type QuestRewardItemRec struct {
+	Item    int
+	Task    int
+	Type    int
+	Classes int
+	Value   int64
+}
+
+type TaskRec struct {
+	Order          int
+	NPC            int
+	PartyQuest     int
+	Item           int
+	Map            int
+	Resource       int
+	Recipe         int
+	SpellUse       int
+	Tutorial       int
+	Amount         int64
+	Speech         string
+	TaskLog        string
+	QuestEnd       bool
+	RewardEXP      int64
+	SpellReward    []int
+	ElementReward  int
+	RewardRecipe   int
+	RewardVariable int
+	RewardCalavera int64
+	Image          int
+	ImageVec       objects.Vector2
+	AutoComplete   bool
+	StartQuote     []string
+	EndQuote       []string
+	Sprite         []int
+	Int            []int
+}
 
 type MapItemRec struct {
 	Item   InvItemRec
@@ -813,13 +869,13 @@ type SpellRec struct {
 }
 
 type MapResourceRec struct {
-	X             int
-	Y             int
+	X             int32
+	Y             int32
 	ResourceState byte
 	Frame         byte
 	Shadow        byte
 	FallDir       byte
-	FallAngle     int
+	FallAngle     int32
 	HitWood       float32
 }
 
@@ -953,27 +1009,35 @@ type ChatBubbleRec struct {
 
 type CharDataRec struct {
 	Name      string
-	Level     int
-	Classes   int
-	Sprite    int
-	Hair      int
+	Level     int32
+	Classes   int32
+	Sprite    int32
+	Hair      int32
 	Sex       byte
-	HairTint  objects.Color
-	notHair   bool
-	Equip     []int
-	CashEquip []int
+	HairTint  string // TODO objects.Color
+	NotHair   bool
+	Equip     []int32
+	CashEquip []int32
 	Invisible []bool
 }
 
 type PlayerSpellRec struct {
-	Spell  int
-	Uses   int
+	Spell  int32
+	Uses   int32
 	Master bool
 }
 
+type PlayerQuestRec struct {
+	Status       byte
+	ActualTask   byte
+	TaskCount    byte
+	CurrentCount int64
+	QuestNum     int32
+}
+
 type HotbarRec struct {
-	Slot  int64
-	sType byte
+	Slot int64
+	Type byte
 }
 
 type MiniMapPlayerRec struct {
@@ -999,15 +1063,15 @@ type ProjectilRec struct {
 	Y          int64
 	StateX     int64
 	StateY     int64
-	Pic        int
+	Pic        int32
 	Range      int64
 	Damage     int64
-	speed      int64
-	timer      int64
-	combo      int64
+	Speed      int64
+	Timer      int64
+	Combo      int64
 	Animation  int64
 	Light      bool
-	Int        []int
+	Int        []int32
 }
 
 type MoralRec struct {
@@ -1060,10 +1124,10 @@ type CardsRec struct {
 type CraftingRec struct {
 	Name      string
 	Desc      string
-	ItemReq   []int
-	ItemVal   []int
-	Reward    int
-	RewardVal int
+	ItemReq   []int32
+	ItemVal   []int32
+	Reward    int32
+	RewardVal int32
 }
 
 type NumberRec struct {
@@ -1163,7 +1227,7 @@ type TaskMsgRec struct {
 }
 
 type NPCProjectilRec struct {
-	num        int64
+	Num        int64
 	TravelTime int64
 	timer      int64
 	Direction  int64
@@ -1263,4 +1327,9 @@ type MapEditorDataRec struct {
 	Data2 int
 	Data3 int
 	Data4 string
+}
+
+type ArrowRec struct {
+	Num   int32
+	Value int32
 }
