@@ -2,7 +2,6 @@ package buffer
 
 import (
 	"encoding/binary"
-	. "github.com/Dmitriy-Vas/wave/buffer/objects"
 	"math"
 )
 
@@ -17,7 +16,6 @@ type PacketReader interface {
 	ReadULong(data []byte, index uint64) uint64                 // 8 bytes
 	ReadShort(data []byte, index uint64) int16                  // 2 bytes
 	ReadUShort(data []byte, index uint64) uint16                // 2 bytes
-	ReadVector2(data []byte, index uint64) Vector2              // 8 bytes
 	ReadString(data []byte, index uint64, length uint64) string // specific length
 	ReadBytes(data []byte, index uint64, length uint64) []byte  // specific length
 }
@@ -69,13 +67,6 @@ func (dr *DefaultReader) ReadShort(data []byte, index uint64) int16 {
 
 func (dr *DefaultReader) ReadUShort(data []byte, index uint64) uint16 {
 	return dr.order.Uint16(data[index:])
-}
-
-func (dr *DefaultReader) ReadVector2(data []byte, index uint64) Vector2 {
-	return Vector2{
-		X: dr.ReadInt(data, index),
-		Y: dr.ReadInt(data, index+4),
-	}
 }
 
 func (dr *DefaultReader) ReadString(data []byte, index uint64, length uint64) string {

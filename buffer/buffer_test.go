@@ -2,7 +2,6 @@ package buffer
 
 import (
 	"encoding/binary"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
 	"github.com/stretchr/testify/assert"
 	"math"
 	"testing"
@@ -116,18 +115,6 @@ func TestDefaultReader_ReadString(t *testing.T) {
 	assert.Exactly(t, value1, result1)
 }
 
-func TestDefaultReader_ReadVector2(t *testing.T) {
-	buffer := newTestBuffer()
-	value1 := objects.Vector2{
-		X: 31,
-		Y: 41,
-	}
-	binary.LittleEndian.PutUint32(buffer.buf[:4], uint32(value1.X))
-	binary.LittleEndian.PutUint32(buffer.buf[4:8], uint32(value1.Y))
-	result1 := buffer.ReadVector2(buffer.Bytes(), 0)
-	assert.Exactly(t, value1, result1)
-}
-
 func TestDefaultWriter_WriteBool(t *testing.T) {
 	buffer := newTestBuffer()
 	value1 := true
@@ -196,19 +183,5 @@ func TestDefaultWriter_WriteString(t *testing.T) {
 	value1 := "Hello World"
 	buffer.WriteString(buffer.buf, value1, buffer.index)
 	result1 := string(buffer.buf[:len(value1)])
-	assert.Exactly(t, value1, result1)
-}
-
-func TestDefaultWriter_WriteVector2(t *testing.T) {
-	buffer := newTestBuffer()
-	value1 := objects.Vector2{
-		X: 17,
-		Y: 32,
-	}
-	buffer.WriteVector2(buffer.buf, value1, buffer.index)
-	result1 := objects.Vector2{
-		X: int32(binary.LittleEndian.Uint32(buffer.buf[:4])),
-		Y: int32(binary.LittleEndian.Uint32(buffer.buf[4:8])),
-	}
 	assert.Exactly(t, value1, result1)
 }
