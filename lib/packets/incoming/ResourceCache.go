@@ -15,7 +15,7 @@ type ResourceCachePacket struct {
 func (packet *ResourceCachePacket) Read(b buffer.PacketBuffer) {
 	if packet.ResourceIndex = b.ReadInt(b.Bytes(), b.Index()); packet.ResourceIndex > 0 {
 		packet.MapResources = make([]lib.MapResourceRec, packet.ResourceIndex)
-		for i, _ := range packet.MapResources {
+		for i := range packet.MapResources {
 			packet.MapResources[i] = lib.MapResourceRec{
 				ResourceState: b.ReadByte(b.Bytes(), b.Index()),
 				X:             b.ReadInt(b.Bytes(), b.Index()),

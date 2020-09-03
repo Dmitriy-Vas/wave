@@ -20,7 +20,7 @@ func (packet *UpdateCraftingPacket) Read(b buffer.PacketBuffer) {
 			ItemReq: make([]int32, 3),
 			ItemVal: make([]int32, 3),
 		}
-		for i, _ := range craft.ItemReq {
+		for i := range craft.ItemReq {
 			craft.ItemReq[i] = b.ReadInt(b.Bytes(), b.Index())
 			craft.ItemVal[i] = b.ReadInt(b.Bytes(), b.Index())
 		}
@@ -35,7 +35,7 @@ func (packet *UpdateCraftingPacket) Write(b buffer.PacketBuffer) {
 	if packet.Num >= 0 && packet.Num <= 255 {
 		b.WriteString(b.Bytes(), packet.Craft.Name, b.Index())
 		b.WriteString(b.Bytes(), packet.Craft.Desc, b.Index())
-		for i, _ := range packet.Craft.ItemReq {
+		for i := range packet.Craft.ItemReq {
 			b.WriteInt(b.Bytes(), packet.Craft.ItemReq[i], b.Index())
 			b.WriteInt(b.Bytes(), packet.Craft.ItemVal[i], b.Index())
 		}

@@ -7,19 +7,16 @@ import (
 
 type NpcBuffInfoPacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
-	Variable1 int32
-	Variable2 byte
+	Index int32
+	Slot  byte
 }
 
 func (packet *NpcBuffInfoPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadByte(b.Bytes(), b.Index())
+	packet.Index = b.ReadInt(b.Bytes(), b.Index())
+	packet.Slot = b.ReadByte(b.Bytes(), b.Index())
 }
 
 func (packet *NpcBuffInfoPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteByte(b.Bytes(), packet.Variable2, b.Index())
+	b.WriteInt(b.Bytes(), packet.Index, b.Index())
+	b.WriteByte(b.Bytes(), packet.Slot, b.Index())
 }

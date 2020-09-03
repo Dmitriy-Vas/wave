@@ -17,7 +17,7 @@ func (packet *SpellsPacket) Read(b buffer.PacketBuffer) {
 	packet.Variable1 = b.ReadBool(b.Bytes(), b.Index())
 	packet.SpellNum = b.ReadInt(b.Bytes(), b.Index())
 	packet.PlayerSpells = make([]lib.PlayerSpellRec, 42) // TODO move to constants
-	for i, _ := range packet.PlayerSpells {
+	for i := range packet.PlayerSpells {
 		packet.PlayerSpells[i] = lib.PlayerSpellRec{
 			Spell:  b.ReadInt(b.Bytes(), b.Index()),
 			Uses:   int32(b.ReadLong(b.Bytes(), b.Index())),

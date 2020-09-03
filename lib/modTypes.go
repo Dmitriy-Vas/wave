@@ -79,7 +79,7 @@ type PromotionRec struct {
 type PromotionGameCardRec struct {
 	Name  string
 	Price string
-	Bonus int
+	Bonus int32
 }
 
 type ServerModRec struct {
@@ -110,15 +110,15 @@ type AwardsRec struct {
 	Desc       string
 	Type       byte
 	Level      []AwardsLevelRec
-	LevelCount int
+	LevelCount int32
 	Blocked    bool
 }
 
 type AwardsLevelRec struct {
-	Required  int
-	Icon      int
-	AP        int
-	Calaveras int
+	Required  int32
+	Icon      int32
+	AP        int32
+	Calaveras int32
 }
 
 type PlayerProfessionRec struct {
@@ -179,8 +179,8 @@ type EventsRec struct {
 
 type EventsRankRec struct {
 	Name    string
-	Classes int
-	Score   int
+	Classes int32
+	Score   int64
 }
 
 type OptionsInterfaceRec struct {
@@ -197,12 +197,18 @@ type OptionsPlayerQuestLogRec struct {
 }
 
 type PlayerElementRec struct {
-	Num  int
-	Icon int
+	Num  int32
+	Icon int32
 }
 
 type PlayerComboRec struct {
-	Num int
+	Num int32
+}
+
+type ComboCacheDataRec struct {
+	Num     int32
+	Anim    int32
+	Require int32
 }
 
 type MyMusicRec struct {
@@ -276,14 +282,14 @@ type TextureBox struct {
 }
 
 type ChoiceRec struct {
-	myChoice      int
-	choiceText    int
-	choiceSelText int
-	genDialog     int
-	Sprite        int
-	DialogType    int
-	choiceDialog  string
-	Max           int
+	MyChoice      int32
+	ChoiceText    int32
+	ChoiceSelText int32
+	GenDialog     int32
+	Sprite        int32
+	DialogType    byte
+	ChoiceDialog  string
+	Max           int32
 	ChoiceArray   []string
 	Code          bool
 	isCondition   bool
@@ -291,12 +297,12 @@ type ChoiceRec struct {
 }
 
 type DrillModRec struct {
-	DrillDepth int
+	DrillDepth int32
 	Active     bool
 	Pause      bool
-	SoundIndex int
+	SoundIndex int32
 	Dir        byte
-	DirStar    int
+	DirStar    int32
 }
 
 type ConnectionRec struct {
@@ -707,7 +713,7 @@ type MapItemRec struct {
 	Slot   byte
 	Stat   []byte
 	Frame  byte
-	pos    objects.Vector2
+	Pos    objects.Vector2
 	X2     int64
 	Y2     int64
 	XTmr   int64
@@ -715,8 +721,8 @@ type MapItemRec struct {
 	Up     bool
 	YTmr   int64
 	Jump   byte
-	pIndex int
-	pTimer int64
+	PIndex int32
+	PTimer int64
 	Angle  int
 }
 

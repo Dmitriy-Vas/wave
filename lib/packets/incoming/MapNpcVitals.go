@@ -3,7 +3,7 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type MapNpcVitalsPacket struct {
@@ -26,7 +26,10 @@ func (packet *MapNpcVitalsPacket) Read(b buffer.PacketBuffer) {
 	packet.Variable3 = b.ReadInt(b.Bytes(), b.Index())
 	packet.Variable4 = b.ReadInt(b.Bytes(), b.Index())
 	packet.Variable5 = b.ReadByte(b.Bytes(), b.Index())
-	packet.Variable6 = b.ReadVector2(b.Bytes(), b.Index())
+	packet.Variable6 = objects.Vector2{
+		X: b.ReadInt(b.Bytes(), b.Index()),
+		Y: b.ReadInt(b.Bytes(), b.Index()),
+	}
 	packet.Variable7 = b.ReadInt(b.Bytes(), b.Index())
 	packet.Variable8 = b.ReadInt(b.Bytes(), b.Index())
 }
@@ -38,7 +41,8 @@ func (packet *MapNpcVitalsPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.Variable3, b.Index())
 	b.WriteInt(b.Bytes(), packet.Variable4, b.Index())
 	b.WriteByte(b.Bytes(), packet.Variable5, b.Index())
-	b.WriteVector2(b.Bytes(), packet.Variable6, b.Index())
+	b.WriteInt(b.Bytes(), packet.Variable6.X, b.Index())
+	b.WriteInt(b.Bytes(), packet.Variable6.Y, b.Index())
 	b.WriteInt(b.Bytes(), packet.Variable7, b.Index())
 	b.WriteInt(b.Bytes(), packet.Variable8, b.Index())
 }

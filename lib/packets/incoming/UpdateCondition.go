@@ -7,13 +7,19 @@ import (
 
 type UpdateConditionPacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
+	Variable0 int32
 }
 
 func (packet *UpdateConditionPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
+	packet.Variable0 = b.ReadInt(b.Bytes(), b.Index())
+	if v := packet.Variable0; v != 0 || v <= 400 {
+		// TODO condition data
+	}
 }
 
 func (packet *UpdateConditionPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
+	b.WriteInt(b.Bytes(), packet.Variable0, b.Index())
+	if v := packet.Variable0; v != 0 || v <= 400 {
+		// TODO condition data
+	}
 }

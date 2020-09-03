@@ -5,7 +5,7 @@ import (
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
-// Empty packet, only ID
+// Empty packet
 type AnnouncerPacket struct {
 	*wave.DefaultPacket
 }

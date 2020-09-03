@@ -26,7 +26,7 @@ func (packet *NPCProjectilPacket) Read(b buffer.PacketBuffer) {
 		packet.NPCProjectiles = make([]lib.NPCProjectilRec, 4)
 		packet.ProjectileNum = make([]int32, 4)
 	}
-	for i, _ := range packet.NPCProjectiles {
+	for i := range packet.NPCProjectiles {
 		packet.ProjectileNum[i] = b.ReadInt(b.Bytes(), b.Index())
 		packet.NPCProjectiles[i] = lib.NPCProjectilRec{
 			Num:       int64(b.ReadInt(b.Bytes(), b.Index())),
@@ -39,7 +39,7 @@ func (packet *NPCProjectilPacket) Read(b buffer.PacketBuffer) {
 func (packet *NPCProjectilPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.NpcNum, b.Index())
 	b.WriteByte(b.Bytes(), packet.Type, b.Index())
-	for i, _ := range packet.NPCProjectiles {
+	for i := range packet.NPCProjectiles {
 		b.WriteInt(b.Bytes(), packet.ProjectileNum[i], b.Index())
 		b.WriteInt(b.Bytes(), int32(packet.NPCProjectiles[i].Num), b.Index())
 		b.WriteByte(b.Bytes(), byte(packet.NPCProjectiles[i].Direction), b.Index())

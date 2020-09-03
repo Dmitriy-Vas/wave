@@ -3,7 +3,7 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type NpcDirPacket struct {
@@ -18,7 +18,10 @@ func (n *NpcDirPacket) Read(b buffer.PacketBuffer) {
 	n.NpcNum = b.ReadLong(b.Bytes(), b.Index())
 	n.Dir = b.ReadByte(b.Bytes(), b.Index())
 	if n.IsPosition = b.ReadBool(b.Bytes(), b.Index()); n.IsPosition {
-		n.Position = b.ReadVector2(b.Bytes(), b.Index())
+		n.Position = objects.Vector2{
+			X: b.ReadInt(b.Bytes(), b.Index()),
+			Y: b.ReadInt(b.Bytes(), b.Index()),
+		}
 	}
 }
 
@@ -27,6 +30,7 @@ func (n *NpcDirPacket) Write(b buffer.PacketBuffer) {
 	b.WriteByte(b.Bytes(), n.Dir, b.Index())
 	b.WriteBool(b.Bytes(), n.IsPosition, b.Index())
 	if n.IsPosition {
-		b.WriteVector2(b.Bytes(), n.Position, b.Index())
+		b.WriteInt(b.Bytes(), n.Position.X, b.Index())
+		b.WriteInt(b.Bytes(), n.Position.Y, b.Index())
 	}
 }

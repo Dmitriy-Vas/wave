@@ -15,7 +15,7 @@ type PlayerStatsPacket struct {
 func (packet *PlayerStatsPacket) Read(b buffer.PacketBuffer) {
 	packet.PlayerNum = b.ReadInt(b.Bytes(), b.Index())
 	packet.PlayerStats = make([]int64, 6) // TODO move to constants
-	for i, _ := range packet.PlayerStats {
+	for i := range packet.PlayerStats {
 		packet.PlayerStats[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
 	packet.Points = b.ReadInt(b.Bytes(), b.Index())

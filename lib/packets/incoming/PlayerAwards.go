@@ -7,31 +7,28 @@ import (
 
 type PlayerAwardsPacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
-	Variable1 int32
-	Variable2 int32
-	Variable3 int32
-	Variable4 int32
-	Variable5 string
-	Variable6 bool
+	AwardNum int32
+	AP       int32
+	Level    int32
+	Count    int32
+	GetDate  string
+	WithLog  bool
 }
 
 func (packet *PlayerAwardsPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable3 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable4 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable5 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable6 = b.ReadBool(b.Bytes(), b.Index())
+	packet.AwardNum = b.ReadInt(b.Bytes(), b.Index())
+	packet.AP = b.ReadInt(b.Bytes(), b.Index())
+	packet.Level = b.ReadInt(b.Bytes(), b.Index())
+	packet.Count = b.ReadInt(b.Bytes(), b.Index())
+	packet.GetDate = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.WithLog = b.ReadBool(b.Bytes(), b.Index())
 }
 
 func (packet *PlayerAwardsPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable2, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable3, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable4, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable5, b.Index())
-	b.WriteBool(b.Bytes(), packet.Variable6, b.Index())
+	b.WriteInt(b.Bytes(), packet.AwardNum, b.Index())
+	b.WriteInt(b.Bytes(), packet.AP, b.Index())
+	b.WriteInt(b.Bytes(), packet.Level, b.Index())
+	b.WriteInt(b.Bytes(), packet.Count, b.Index())
+	b.WriteString(b.Bytes(), packet.GetDate, b.Index())
+	b.WriteBool(b.Bytes(), packet.WithLog, b.Index())
 }

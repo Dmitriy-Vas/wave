@@ -2,7 +2,6 @@ package wrapper
 
 import (
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
 )
 
 type Buffer struct {
@@ -72,11 +71,6 @@ func (b *Buffer) WriteUShort(data []byte, value uint16, index uint64) {
 	b.PacketWriter.WriteUShort(data, value, index)
 }
 
-func (b *Buffer) WriteVector2(data []byte, value objects.Vector2, index uint64) {
-	b.Next(8)
-	b.PacketWriter.WriteVector2(data, value, index)
-}
-
 func (b *Buffer) WriteString(data []byte, value string, index uint64) {
 	bytes := 4 + uint64(len(value))
 	b.Next(bytes)
@@ -139,11 +133,6 @@ func (b *Buffer) ReadShort(data []byte, index uint64) int16 {
 func (b *Buffer) ReadUShort(data []byte, index uint64) uint16 {
 	b.Next(2)
 	return b.PacketReader.ReadUShort(data, index)
-}
-
-func (b *Buffer) ReadVector2(data []byte, index uint64) objects.Vector2 {
-	b.Next(8)
-	return b.PacketReader.ReadVector2(data, index)
 }
 
 func (b *Buffer) ReadString(data []byte, index uint64, length uint64) string {

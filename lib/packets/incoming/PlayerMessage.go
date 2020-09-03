@@ -21,7 +21,7 @@ func (packet *PlayerMessagePacket) Read(b buffer.PacketBuffer) {
 		packet.TextNum = b.ReadInt(b.Bytes(), b.Index())
 		if amount := b.ReadInt(b.Bytes(), b.Index()); amount > -1 {
 			packet.Messages = make([]string, amount)
-			for i, _ := range packet.Messages {
+			for i := range packet.Messages {
 				packet.Messages[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 			}
 		}

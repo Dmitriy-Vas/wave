@@ -3,7 +3,7 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type SpawnNPCPacket struct {
@@ -21,13 +21,16 @@ type SpawnNPCPacket struct {
 func (packet *SpawnNPCPacket) Read(b buffer.PacketBuffer) {
 	packet.MapNpcNum = b.ReadInt(b.Bytes(), b.Index())
 	packet.NpcNum = b.ReadInt(b.Bytes(), b.Index())
-	packet.Pos = b.ReadVector2(b.Bytes(), b.Index())
+	packet.Pos = objects.Vector2{
+		X: b.ReadInt(b.Bytes(), b.Index()),
+		Y: b.ReadInt(b.Bytes(), b.Index()),
+	}
 	packet.Dir = b.ReadByte(b.Bytes(), b.Index())
 	packet.HPSetTo = b.ReadLong(b.Bytes(), b.Index())
 	packet.HighIndex = b.ReadInt(b.Bytes(), b.Index())
 	packet.PlayAnimation = b.ReadBool(b.Bytes(), b.Index())
 	packet.Vital = make([]int32, 3) // TODO move to constants
-	for i, _ := range packet.Vital {
+	for i := range packet.Vital {
 		packet.Vital[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 }
@@ -35,7 +38,8 @@ func (packet *SpawnNPCPacket) Read(b buffer.PacketBuffer) {
 func (packet *SpawnNPCPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.MapNpcNum, b.Index())
 	b.WriteInt(b.Bytes(), packet.NpcNum, b.Index())
-	b.WriteVector2(b.Bytes(), packet.Pos, b.Index())
+	b.WriteInt(b.Bytes(), packet.Pos.X, b.Index())
+	b.WriteInt(b.Bytes(), packet.Pos.Y, b.Index())
 	b.WriteByte(b.Bytes(), packet.Dir, b.Index())
 	b.WriteLong(b.Bytes(), packet.HPSetTo, b.Index())
 	b.WriteInt(b.Bytes(), packet.HighIndex, b.Index())

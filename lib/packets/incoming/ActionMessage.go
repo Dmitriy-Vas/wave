@@ -3,7 +3,7 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type ActionMessagePacket struct {
@@ -26,7 +26,10 @@ func (packet *ActionMessagePacket) Read(b buffer.PacketBuffer) {
 	packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
 	packet.Variable2 = b.ReadInt(b.Bytes(), b.Index())
 	packet.Variable3 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable4 = b.ReadVector2(b.Bytes(), b.Index())
+	packet.Variable4 = objects.Vector2{
+		X: b.ReadInt(b.Bytes(), b.Index()),
+		Y: b.ReadInt(b.Bytes(), b.Index()),
+	}
 	packet.Variable5 = b.ReadString(b.Bytes(), b.Index(), 0)
 	packet.Variable6 = b.ReadByte(b.Bytes(), b.Index())
 	packet.Variable7 = b.ReadByte(b.Bytes(), b.Index())
@@ -40,7 +43,8 @@ func (packet *ActionMessagePacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.Variable1, b.Index())
 	b.WriteInt(b.Bytes(), packet.Variable2, b.Index())
 	b.WriteString(b.Bytes(), packet.Variable3, b.Index())
-	b.WriteVector2(b.Bytes(), packet.Variable4, b.Index())
+	b.WriteInt(b.Bytes(), packet.Variable4.X, b.Index())
+	b.WriteInt(b.Bytes(), packet.Variable4.Y, b.Index())
 	b.WriteString(b.Bytes(), packet.Variable5, b.Index())
 	b.WriteByte(b.Bytes(), packet.Variable6, b.Index())
 	b.WriteByte(b.Bytes(), packet.Variable7, b.Index())

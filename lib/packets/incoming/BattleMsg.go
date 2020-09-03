@@ -22,7 +22,7 @@ func (packet *BattleMsgPacket) Read(b buffer.PacketBuffer) {
 	if packet.Language != int32(lib.LangCustom) {
 		if messageAmounts := b.ReadInt(b.Bytes(), b.Index()); messageAmounts > -1 {
 			packet.Messages = make([]string, messageAmounts+1)
-			for i := 0; int32(i) <= messageAmounts; i++ {
+			for i, _ := range packet.Messages {
 				packet.Messages[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 			}
 		}

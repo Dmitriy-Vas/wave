@@ -24,7 +24,7 @@ func (packet *UpdateProjectilPacket) Read(b buffer.PacketBuffer) {
 			Light:     b.ReadBool(b.Bytes(), b.Index()),
 			Int:       make([]int32, 3), // TODO move to constants
 		}
-		for i, _ := range packet.Projectil.Int {
+		for i := range packet.Projectil.Int {
 			packet.Projectil.Int[i] = b.ReadInt(b.Bytes(), b.Index())
 		}
 	}

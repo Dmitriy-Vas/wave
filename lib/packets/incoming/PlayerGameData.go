@@ -4,6 +4,7 @@ import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type PlayerGameDataPacket struct {
@@ -12,32 +13,35 @@ type PlayerGameDataPacket struct {
 
 func (packet *PlayerGameDataPacket) Read(b buffer.PacketBuffer) {
 	lib.Global.PlayerCoins = b.ReadInt(b.Bytes(), b.Index())
-	for i, _ := range lib.Global.Hotkeys {
+	for i := range lib.Global.Hotkeys {
 		if num := b.ReadInt(b.Bytes(), b.Index()); num > 0 {
 			lib.Global.Hotkeys[i] = num
 		}
 	}
-	for i, _ := range lib.Global.Hotbar {
+	for i := range lib.Global.Hotbar {
 		lib.Global.Hotbar[i] = lib.HotbarRec{
 			Slot: int64(b.ReadInt(b.Bytes(), b.Index())),
 			Type: b.ReadByte(b.Bytes(), b.Index()),
 		}
 	}
-	for i, _ := range lib.Global.PlayerInventory {
+	for i := range lib.Global.PlayerInventory {
 		lib.PlayerInvData(b, i)
 	}
-	for i, _ := range lib.Global.PlayerCashInventory {
-		vector := b.ReadVector2(b.Bytes(), b.Index())
+	for i := range lib.Global.PlayerCashInventory {
+		vector := objects.Vector2{
+			X: b.ReadInt(b.Bytes(), b.Index()),
+			Y: b.ReadInt(b.Bytes(), b.Index()),
+		}
 		lib.SetPlayerCashInvItem(i, vector.X, vector.Y)
 	}
-	for i, _ := range lib.Global.PlayerSpells {
+	for i := range lib.Global.PlayerSpells {
 		lib.Global.PlayerSpells[i] = lib.PlayerSpellRec{
 			Spell:  b.ReadInt(b.Bytes(), b.Index()),
 			Uses:   b.ReadInt(b.Bytes(), b.Index()),
 			Master: b.ReadBool(b.Bytes(), b.Index()),
 		}
 	}
-	for i, _ := range lib.Global.PlayerVars {
+	for i := range lib.Global.PlayerVars {
 		lib.Global.PlayerVars[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
 	lib.Global.TNL = b.ReadLong(b.Bytes(), b.Index())
@@ -63,18 +67,18 @@ func (packet *PlayerGameDataPacket) Read(b buffer.PacketBuffer) {
 	b.ReadInt(b.Bytes(), b.Index())
 
 	if value := b.ReadInt(b.Bytes(), b.Index()); value > 0 {
-		for i, _ := range lib.Global.PlayerCraft {
+		for i := range lib.Global.PlayerCraft {
 			lib.Global.PlayerCraft[i] = b.ReadInt(b.Bytes(), b.Index())
 		}
 	}
-	for i, _ := range lib.Global.PlayerCards {
+	for i := range lib.Global.PlayerCards {
 		lib.Global.PlayerCards[i].Level = b.ReadInt(b.Bytes(), b.Index())
 		lib.Global.PlayerCards[i].Exp = b.ReadInt(b.Bytes(), b.Index())
 	}
 	for i := 0; i <= 50; i++ {
 		b.ReadInt(b.Bytes(), b.Index()) // TODO player emojis
 	}
-	for i, _ := range lib.Global.PlayerAwards {
+	for i := range lib.Global.PlayerAwards {
 		if lib.Global.PlayerAwards[i].Level == 0 {
 			lib.Global.PlayerAwards[i].Level++
 		}
@@ -87,13 +91,13 @@ func (packet *PlayerGameDataPacket) Read(b buffer.PacketBuffer) {
 			//b.ReadInt(b.Bytes(), b.Index())
 		}
 	}
-	for i, _ := range lib.Global.PlayerCalaveras {
+	for i := range lib.Global.PlayerCalaveras {
 		lib.Global.PlayerCalaveras[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range lib.Global.PlayerPin {
+	for i := range lib.Global.PlayerPin {
 		lib.Global.PlayerPin[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
-	for i, _ := range lib.Global.PlayerProfession {
+	for i := range lib.Global.PlayerProfession {
 		b.ReadByte(b.Bytes(), b.Index())
 		b.ReadInt(b.Bytes(), b.Index())
 		b.ReadByte(b.Bytes(), b.Index())

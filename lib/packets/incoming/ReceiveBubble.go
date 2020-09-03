@@ -3,39 +3,46 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type ReceiveBubblePacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
-	Variable1 int32
-	Variable2 int32
+	Target    int32
+	Type      int32
 	Variable3 bool
-	Variable4 string
-	Variable5 int32
-	Variable6 string
-	Variable7 objects.Vector2
+	Text      string
+	Language  int32
+	Color     string
+	Pos       objects.Vector2
 }
 
 func (packet *ReceiveBubblePacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable3 = b.ReadBool(b.Bytes(), b.Index())
-	packet.Variable4 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable5 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable6 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable7 = b.ReadVector2(b.Bytes(), b.Index())
+	packet.Target = b.ReadInt(b.Bytes(), b.Index())
+	packet.Type = b.ReadInt(b.Bytes(), b.Index())
+	if packet.Variable3 = b.ReadBool(b.Bytes(), b.Index()); packet.Variable3 {
+		packet.Language = b.ReadInt(b.Bytes(), b.Index())
+	} else {
+		packet.Text = b.ReadString(b.Bytes(), b.Index(), 0)
+
+	}
+	packet.Color = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.Pos = objects.Vector2{
+		X: b.ReadInt(b.Bytes(), b.Index()),
+		Y: b.ReadInt(b.Bytes(), b.Index()),
+	}
 }
 
 func (packet *ReceiveBubblePacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable2, b.Index())
+	b.WriteInt(b.Bytes(), packet.Target, b.Index())
+	b.WriteInt(b.Bytes(), packet.Type, b.Index())
 	b.WriteBool(b.Bytes(), packet.Variable3, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable4, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable5, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable6, b.Index())
-	b.WriteVector2(b.Bytes(), packet.Variable7, b.Index())
+	if packet.Variable3 {
+		b.WriteInt(b.Bytes(), packet.Language, b.Index())
+	} else {
+		b.WriteString(b.Bytes(), packet.Text, b.Index())
+	}
+	b.WriteString(b.Bytes(), packet.Color, b.Index())
+	b.WriteInt(b.Bytes(), packet.Pos.X, b.Index())
+	b.WriteInt(b.Bytes(), packet.Pos.Y, b.Index())
 }

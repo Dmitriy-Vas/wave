@@ -3,7 +3,7 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type SpawnItemPacket struct {
@@ -24,7 +24,10 @@ func (packet *SpawnItemPacket) Read(b buffer.PacketBuffer) {
 		if packet.ItemNum > 0 {
 			packet.Index = b.ReadInt(b.Bytes(), b.Index())
 			packet.Value = b.ReadInt(b.Bytes(), b.Index())
-			packet.Pos = b.ReadVector2(b.Bytes(), b.Index())
+			packet.Pos = objects.Vector2{
+				X: b.ReadInt(b.Bytes(), b.Index()),
+				Y: b.ReadInt(b.Bytes(), b.Index()),
+			}
 		}
 	}
 }
@@ -37,7 +40,8 @@ func (packet *SpawnItemPacket) Write(b buffer.PacketBuffer) {
 		if packet.ItemNum > 0 {
 			b.WriteInt(b.Bytes(), packet.Index, b.Index())
 			b.WriteInt(b.Bytes(), packet.Value, b.Index())
-			b.WriteVector2(b.Bytes(), packet.Pos, b.Index())
+			b.WriteInt(b.Bytes(), packet.Pos.X, b.Index())
+			b.WriteInt(b.Bytes(), packet.Pos.Y, b.Index())
 		}
 	}
 }

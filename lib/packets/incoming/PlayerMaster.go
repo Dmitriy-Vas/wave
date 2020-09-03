@@ -7,19 +7,21 @@ import (
 
 type PlayerMasterPacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
-	Variable1 int32
-	Variable2 int32
+	Item   int32
+	Master []int32
 }
 
 func (packet *PlayerMasterPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadInt(b.Bytes(), b.Index())
+	packet.Item = b.ReadInt(b.Bytes(), b.Index())
+	packet.Master = make([]int32, 25)
+	for i, _ := range packet.Master {
+		packet.Master[i] = b.ReadInt(b.Bytes(), b.Index())
+	}
 }
 
 func (packet *PlayerMasterPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable2, b.Index())
+	b.WriteInt(b.Bytes(), packet.Item, b.Index())
+	for _, m := range packet.Master {
+		b.WriteInt(b.Bytes(), m, b.Index())
+	}
 }

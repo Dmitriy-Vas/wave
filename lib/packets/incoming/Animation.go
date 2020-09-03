@@ -3,7 +3,7 @@ package incoming
 import (
 	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/buffer/objects"
+	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
 type AnimationPacket struct {
@@ -20,7 +20,10 @@ type AnimationPacket struct {
 func (packet *AnimationPacket) Read(b buffer.PacketBuffer) {
 	packet.Animation = b.ReadInt(b.Bytes(), b.Index())
 	packet.Duration = b.ReadInt(b.Bytes(), b.Index())
-	packet.Position = b.ReadVector2(b.Bytes(), b.Index())
+	packet.Position = objects.Vector2{
+		X: b.ReadInt(b.Bytes(), b.Index()),
+		Y: b.ReadInt(b.Bytes(), b.Index()),
+	}
 	packet.Prefix = b.ReadString(b.Bytes(), b.Index(), 0)
 	packet.Type = b.ReadByte(b.Bytes(), b.Index())
 	packet.Target = b.ReadInt(b.Bytes(), b.Index())
@@ -30,7 +33,8 @@ func (packet *AnimationPacket) Read(b buffer.PacketBuffer) {
 func (packet *AnimationPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), packet.Animation, b.Index())
 	b.WriteInt(b.Bytes(), packet.Duration, b.Index())
-	b.WriteVector2(b.Bytes(), packet.Position, b.Index())
+	b.WriteInt(b.Bytes(), packet.Position.X, b.Index())
+	b.WriteInt(b.Bytes(), packet.Position.Y, b.Index())
 	b.WriteString(b.Bytes(), packet.Prefix, b.Index())
 	b.WriteByte(b.Bytes(), packet.Type, b.Index())
 	b.WriteInt(b.Bytes(), packet.Target, b.Index())

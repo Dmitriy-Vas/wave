@@ -13,7 +13,7 @@ type ArrowPacket struct {
 
 func (packet *ArrowPacket) Read(b buffer.PacketBuffer) {
 	packet.Arrows = make([]lib.ArrowRec, 4)
-	for i, _ := range packet.Arrows {
+	for i := range packet.Arrows {
 		packet.Arrows[i] = lib.ArrowRec{
 			Num:   b.ReadInt(b.Bytes(), b.Index()),
 			Value: b.ReadInt(b.Bytes(), b.Index()),

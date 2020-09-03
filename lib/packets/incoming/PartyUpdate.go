@@ -20,7 +20,7 @@ func (packet *PartyUpdatePacket) Read(b buffer.PacketBuffer) {
 			MemberCount: b.ReadByte(b.Bytes(), b.Index()),
 		}
 		party.Member = make([]lib.MemberPartyRec, party.MemberCount)
-		for i, _ := range party.Member {
+		for i := range party.Member {
 			party.Member[i].Index = b.ReadInt(b.Bytes(), b.Index())
 			party.Member[i].Name = b.ReadString(b.Bytes(), b.Index(), 0)
 			party.Member[i].Map = b.ReadInt(b.Bytes(), b.Index())

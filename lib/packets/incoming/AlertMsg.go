@@ -21,7 +21,7 @@ func (packet *AlertMsgPacket) Read(b buffer.PacketBuffer) {
 	packet.Fatal = b.ReadBool(b.Bytes(), b.Index())
 	if messagesAmount := b.ReadInt(b.Bytes(), b.Index()); messagesAmount > -1 {
 		packet.Messages = make([]string, messagesAmount)
-		for i, _ := range packet.Messages {
+		for i := range packet.Messages {
 			packet.Messages[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 		}
 	}

@@ -7,22 +7,19 @@ import (
 
 type QuestMsgPacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
-	Variable1 string
-	Variable2 string
-	Variable3 int32
+	Text     string
+	Color    string
+	Language int32
 }
 
 func (packet *QuestMsgPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable2 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable3 = b.ReadInt(b.Bytes(), b.Index())
+	packet.Text = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.Color = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.Language = b.ReadInt(b.Bytes(), b.Index())
 }
 
 func (packet *QuestMsgPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable2, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable3, b.Index())
+	b.WriteString(b.Bytes(), packet.Text, b.Index())
+	b.WriteString(b.Bytes(), packet.Color, b.Index())
+	b.WriteInt(b.Bytes(), packet.Language, b.Index())
 }

@@ -15,7 +15,7 @@ type CharDataPacket struct {
 func (packet *CharDataPacket) Read(b buffer.PacketBuffer) {
 	packet.Chars = make([]lib.CharDataRec, 3) // TODO move to constants
 	packet.Type = make([]int32, 3)
-	for i, _ := range packet.Chars {
+	for i := range packet.Chars {
 		if packet.Type[i] = b.ReadInt(b.Bytes(), b.Index()); packet.Type[i] > 0 {
 			char := lib.CharDataRec{
 				Name:      b.ReadString(b.Bytes(), b.Index(), 0),
@@ -29,10 +29,10 @@ func (packet *CharDataPacket) Read(b buffer.PacketBuffer) {
 				CashEquip: make([]int32, 12), // TODO move to constants
 				Invisible: make([]bool, 12),  // TODO move to constants
 			}
-			for x, _ := range char.Equip {
+			for x := range char.Equip {
 				char.Equip[x] = b.ReadInt(b.Bytes(), b.Index())
 			}
-			for x, _ := range char.CashEquip {
+			for x := range char.CashEquip {
 				char.CashEquip[x] = b.ReadInt(b.Bytes(), b.Index())
 				char.Invisible[x] = b.ReadBool(b.Bytes(), b.Index())
 			}
@@ -56,7 +56,7 @@ func (packet *CharDataPacket) Write(b buffer.PacketBuffer) {
 			for _, e := range char.Equip {
 				b.WriteInt(b.Bytes(), e, b.Index())
 			}
-			for x, _ := range char.CashEquip {
+			for x := range char.CashEquip {
 				b.WriteInt(b.Bytes(), char.CashEquip[x], b.Index())
 				b.WriteBool(b.Bytes(), char.Invisible[x], b.Index())
 			}

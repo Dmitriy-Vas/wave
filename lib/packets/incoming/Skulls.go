@@ -14,7 +14,7 @@ type SkullsPacket struct {
 
 func (packet *SkullsPacket) Read(b buffer.PacketBuffer) {
 	packet.PlayerCalaveras = make([]int64, 2)
-	for i, _ := range packet.PlayerCalaveras {
+	for i := range packet.PlayerCalaveras {
 		packet.PlayerCalaveras[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
 	packet.PickUp = b.ReadBool(b.Bytes(), b.Index())

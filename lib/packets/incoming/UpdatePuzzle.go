@@ -7,13 +7,15 @@ import (
 
 type UpdatePuzzlePacket struct {
 	*wave.DefaultPacket
-	Variable0 int64
+	Variable0 int32
 }
 
 func (packet *UpdatePuzzlePacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
+	packet.Variable0 = b.ReadInt(b.Bytes(), b.Index())
+	// TODO puzzle data
 }
 
 func (packet *UpdatePuzzlePacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
+	b.WriteInt(b.Bytes(), packet.Variable0, b.Index())
+	// TODO puzzle data
 }

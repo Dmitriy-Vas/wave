@@ -18,7 +18,7 @@ func (packet *PlayerCardsPacket) Read(b buffer.PacketBuffer) {
 	packet.PlayerNum = b.ReadInt(b.Bytes(), b.Index())
 	packet.CardNum = b.ReadInt(b.Bytes(), b.Index())
 	packet.PlayerCards = make([]lib.PlayerCardRec, 255) // TODO move to constants
-	for i, _ := range packet.PlayerCards {
+	for i := range packet.PlayerCards {
 		packet.PlayerCards[i] = lib.PlayerCardRec{
 			Level: b.ReadInt(b.Bytes(), b.Index()),
 			Exp:   b.ReadInt(b.Bytes(), b.Index()),
