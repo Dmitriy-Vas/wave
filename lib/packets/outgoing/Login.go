@@ -24,7 +24,6 @@ func (l LoginPacket) Read(b buffer.PacketBuffer) {
 	l.ProductVersion = b.ReadString(b.Bytes(), b.Index(), 0)
 	l.GameVersion = b.ReadInt(b.Bytes(), b.Index())
 	l.Variable0 = b.ReadByte(b.Bytes(), b.Index())
-
 	l.Name = b.ReadString(b.Bytes(), b.Index(), 0)
 	l.Password = b.ReadString(b.Bytes(), b.Index(), 0)
 	l.IsDiscord = b.ReadBool(b.Bytes(), b.Index())
@@ -37,7 +36,6 @@ func (l LoginPacket) Write(b buffer.PacketBuffer) {
 	b.WriteString(b.Bytes(), l.ProductVersion, b.Index())
 	b.WriteInt(b.Bytes(), l.GameVersion, b.Index())
 	b.WriteByte(b.Bytes(), l.Variable0, b.Index())
-
 	b.WriteString(b.Bytes(), l.Name, b.Index())
 	b.WriteString(b.Bytes(), l.Password, b.Index())
 	b.WriteBool(b.Bytes(), l.IsDiscord, b.Index())

@@ -1020,7 +1020,7 @@ type CharDataRec struct {
 	Sprite    int32
 	Hair      int32
 	Sex       byte
-	HairTint  string // TODO objects.Color
+	HairTint  string
 	NotHair   bool
 	Equip     []int32
 	CashEquip []int32

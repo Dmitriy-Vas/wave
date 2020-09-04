@@ -15,7 +15,6 @@ func InitReader(readerInterface buffer.PacketReader) {
 	buffer.InitReader(reader.DefaultReader)
 }
 
-// TODO maybe handle error
 func ReadDate(buffer buffer.PacketBuffer) time.Time {
 	str := buffer.ReadString(buffer.Bytes(), buffer.Index(), 0)
 	if str == "" {
