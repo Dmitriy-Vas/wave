@@ -4,7 +4,7 @@ Wave provides configurable MITM proxy to read and edit TCP packets
 
 ## Table of Content
 + [Features](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#features)
-+ [Getting Started](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#getting)
++ [Getting Started](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#getting-started)
 + [Contributing](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#contributing)
 
 ## Features
