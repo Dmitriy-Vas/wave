@@ -8,16 +8,17 @@ import (
 	"sync"
 )
 
+// Conn represents current connection.
 type Conn struct {
-	ID                    uint32
-	LocalConn, RemoteConn net.Conn
+	ID                    uint32   // Connection's unique ID
+	LocalConn, RemoteConn net.Conn // Bidirectional streams (client <-> proxy <-> server)
 	Done                  chan error
 
 	proxy  *Proxy
 	buffer PacketBuffer
 }
 
-// Start starts local listener and dials to the remote host
+// Start starts serving local connection.
 func (c *Conn) start() {
 	defer func() {
 		c.LocalConn.Close()
@@ -48,7 +49,7 @@ func (c *Conn) start() {
 	}
 }
 
-// Connecting to the remote address, closes (if exists) current connection
+// Reconnect connects to the remote address, closes (if exists) current connection.
 func (c *Conn) Reconnect(RemoteAddress net.Addr) {
 	remote_conn, err := net.Dial("tcp", RemoteAddress.String())
 	if err != nil {
@@ -61,15 +62,15 @@ func (c *Conn) Reconnect(RemoteAddress net.Addr) {
 	c.RemoteConn = remote_conn
 }
 
-// Close closes connection, error is optionally
+// Close closes the connection, error is optionally.
 func (c *Conn) Close(err error) {
 	c.Done <- err
 }
 
-// Writes buffer data to the stream
-// Executes specified Process on buffer bytes
-// Outgoing=true, if you want to write to the server
-// Outgoing=false, if you want to write to the client
+// Writes buffer data to the stream.
+// Executes specified Process on buffer bytes.
+// Outgoing=true, if you want to write to the server.
+// Outgoing=false, if you want to write to the client.
 func (c *Conn) writeData(buffer PacketBuffer, outgoing bool) error {
 	var conn net.Conn
 	var process Process
@@ -87,10 +88,10 @@ func (c *Conn) writeData(buffer PacketBuffer, outgoing bool) error {
 	return err
 }
 
-// Writes packet data to the buffer and sends to the destination
-// Useful for manually sending packets
-// Outgoing=true, if you want to write to the server
-// Outgoing=false, if you want to write to the client
+// Writes packet data to the buffer and sends to the destination.
+// Useful for manually sending packets.
+// Outgoing=true, if you want to write to the server.
+// Outgoing=false, if you want to write to the client.
 // Concurrency UNSAFE. TODO implement concurrency safe sending packet
 func (c *Conn) SendPacket(packet Packet, outgoing bool) error {
 	c.buffer.Reset()
@@ -188,9 +189,8 @@ func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
 		return nil
 	}
 	packet := InitializeStruct(packetType).(Packet)
-	if init := c.proxy.Config.PacketInit; init != nil {
-		init(packet)
-	}
+	// TODO find better solution to initialize packet
+	InitPacket(packet)
 	packet.SetID(ID)
 	packet.Read(buffer)
 	return packet

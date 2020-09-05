@@ -31,7 +31,6 @@ func main() {
 		LocalAddress:       localAddr,
 		ConnectImmediately: true,
 		Buffer:             &wrapper.Buffer{DefaultBuffer: buf},
-		PacketInit:         wave.InitPacket,
 		//OutgoingProcess:    OutgoingProcess,
 		//IncomingProcess:    IncomingProcess,
 	}
