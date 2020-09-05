@@ -505,7 +505,7 @@ type PlayerSpellBufferRec struct {
 
 type ReflectionRec struct {
 	pos objects.Vector2
-	//rec  Rectangle
+	// rec  Rectangle
 	Img  int
 	Type int
 }

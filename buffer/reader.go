@@ -21,12 +21,12 @@ type PacketReader interface {
 }
 
 type DefaultReader struct {
-	order binary.ByteOrder
+	Order binary.ByteOrder
 }
 
 func InitReader(readerInterface PacketReader) {
 	reader := readerInterface.(*DefaultReader)
-	reader.order = binary.LittleEndian
+	reader.Order = binary.LittleEndian
 }
 
 func (dr *DefaultReader) ReadBool(data []byte, index uint64) bool {
@@ -50,7 +50,7 @@ func (dr *DefaultReader) ReadInt(data []byte, index uint64) int32 {
 }
 
 func (dr *DefaultReader) ReadUint(data []byte, index uint64) uint32 {
-	return dr.order.Uint32(data[index:])
+	return dr.Order.Uint32(data[index:])
 }
 
 func (dr *DefaultReader) ReadLong(data []byte, index uint64) int64 {
@@ -58,7 +58,7 @@ func (dr *DefaultReader) ReadLong(data []byte, index uint64) int64 {
 }
 
 func (dr *DefaultReader) ReadULong(data []byte, index uint64) uint64 {
-	return dr.order.Uint64(data[index:])
+	return dr.Order.Uint64(data[index:])
 }
 
 func (dr *DefaultReader) ReadShort(data []byte, index uint64) int16 {
@@ -66,7 +66,7 @@ func (dr *DefaultReader) ReadShort(data []byte, index uint64) int16 {
 }
 
 func (dr *DefaultReader) ReadUShort(data []byte, index uint64) uint16 {
-	return dr.order.Uint16(data[index:])
+	return dr.Order.Uint16(data[index:])
 }
 
 func (dr *DefaultReader) ReadString(data []byte, index uint64, length uint64) string {

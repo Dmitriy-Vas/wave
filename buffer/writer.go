@@ -21,12 +21,12 @@ type PacketWriter interface {
 }
 
 type DefaultWriter struct {
-	order binary.ByteOrder
+	Order binary.ByteOrder
 }
 
 func InitWriter(writerInterface PacketWriter) {
 	writer := writerInterface.(*DefaultWriter)
-	writer.order = binary.LittleEndian
+	writer.Order = binary.LittleEndian
 }
 
 func (dw *DefaultWriter) WriteBool(data []byte, value bool, index uint64) {
@@ -54,7 +54,7 @@ func (dw *DefaultWriter) WriteInt(data []byte, value int32, index uint64) {
 }
 
 func (dw *DefaultWriter) WriteUint(data []byte, value uint32, index uint64) {
-	dw.order.PutUint32(data[index:], value)
+	dw.Order.PutUint32(data[index:], value)
 }
 
 func (dw *DefaultWriter) WriteLong(data []byte, value int64, index uint64) {
@@ -62,7 +62,7 @@ func (dw *DefaultWriter) WriteLong(data []byte, value int64, index uint64) {
 }
 
 func (dw *DefaultWriter) WriteULong(data []byte, value uint64, index uint64) {
-	dw.order.PutUint64(data[index:], value)
+	dw.Order.PutUint64(data[index:], value)
 }
 
 func (dw *DefaultWriter) WriteShort(data []byte, value int16, index uint64) {
@@ -70,7 +70,7 @@ func (dw *DefaultWriter) WriteShort(data []byte, value int16, index uint64) {
 }
 
 func (dw *DefaultWriter) WriteUShort(data []byte, value uint16, index uint64) {
-	dw.order.PutUint16(data[index:], value)
+	dw.Order.PutUint16(data[index:], value)
 }
 
 func (dw *DefaultWriter) WriteString(data []byte, value string, index uint64) {

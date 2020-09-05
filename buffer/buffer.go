@@ -13,10 +13,11 @@ type PacketBuffer interface {
 	Len() uint64
 	Index() uint64
 	Bytes() []byte
+	Clone() PacketBuffer
 }
 
 // Buffer capacity sets once and can't grow up
-// To exclude copying data on each buffer resizing
+// To prevent copying data on each buffer resizing
 type DefaultBuffer struct {
 	PacketReader
 	PacketWriter
@@ -28,17 +29,23 @@ type DefaultBuffer struct {
 	buf      []byte
 }
 
-func InitBuffer(bufferInterface PacketBuffer) {
-	buffer := bufferInterface.(*DefaultBuffer)
-	buffer.buf = make([]byte, buffer.max_len)
+func (db *DefaultBuffer) Clone() PacketBuffer {
+	return &DefaultBuffer{
+		PacketReader: db.PacketReader,
+		PacketWriter: db.PacketWriter,
+		init_len:     db.init_len,
+		max_len:      db.max_len,
+		buf:          make([]byte, db.max_len),
+	}
 }
 
-func (db *DefaultBuffer) SetInitialLength(size uint64) {
-	db.init_len = size
+func (db *DefaultBuffer) SetInitLength(length uint64) {
+	db.init_len = length
 }
 
 func (db *DefaultBuffer) SetMaxLength(size uint64) {
 	db.max_len = size
+	db.buf = make([]byte, size)
 }
 
 func (db *DefaultBuffer) SetReader(reader PacketReader) {
@@ -57,8 +64,8 @@ func (db *DefaultBuffer) Resize(size uint64) {
 }
 
 func (db *DefaultBuffer) Next(amount uint64) uint64 {
-	if size := db.index + amount; db.len < size {
-		db.len = size
+	if size := db.index + amount; db.len <= size {
+		db.Resize(size)
 	}
 	db.index += amount
 	return db.index
@@ -83,5 +90,5 @@ func (db *DefaultBuffer) Index() uint64 {
 }
 
 func (db *DefaultBuffer) Bytes() []byte {
-	return db.buf[:db.len]
+	return db.buf
 }

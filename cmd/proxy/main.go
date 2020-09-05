@@ -1,7 +1,12 @@
 package main
 
 import (
+	"crypto/rc4"
+	"encoding/binary"
+	"encoding/hex"
 	"github.com/Dmitriy-Vas/wave"
+	"github.com/Dmitriy-Vas/wave/buffer"
+	"github.com/Dmitriy-Vas/wave/lib"
 	"github.com/Dmitriy-Vas/wave/lib/packets/incoming"
 	"github.com/Dmitriy-Vas/wave/lib/packets/outgoing"
 	"github.com/Dmitriy-Vas/wave/lib/wrapper"
@@ -12,19 +17,23 @@ import (
 func main() {
 	localAddr, _ := net.ResolveTCPAddr("tcp", ":7999")
 	remoteAddr, _ := net.ResolveTCPAddr("tcp", "74.91.123.86:7000")
+	buf := &buffer.DefaultBuffer{
+		PacketReader: &buffer.DefaultReader{Order: binary.LittleEndian},
+		PacketWriter: &buffer.DefaultWriter{Order: binary.LittleEndian},
+	}
+	buf.SetInitLength(wave.Size64Bits)
+	buf.SetMaxLength(0xfffff)
+
 	config := wave.Config{
-		PacketLengthSize:   8,
-		PacketTypeSize:     8,
+		PacketLengthSize:   wave.Size64Bits,
+		PacketTypeSize:     wave.Size64Bits,
 		RemoteAddress:      remoteAddr,
 		LocalAddress:       localAddr,
 		ConnectImmediately: true,
-		BufferType:         (*wrapper.Buffer)(nil),
-		ReaderType:         (*wrapper.Reader)(nil),
-		WriterType:         (*wrapper.Writer)(nil),
+		Buffer:             &wrapper.Buffer{DefaultBuffer: buf},
 		PacketInit:         wave.InitPacket,
-		BufferInit:         wrapper.InitBuffer,
-		ReaderInit:         wrapper.InitReader,
-		WriterInit:         wrapper.InitWriter,
+		//OutgoingProcess:    OutgoingProcess,
+		//IncomingProcess:    IncomingProcess,
 	}
 	proxy := wave.New(config)
 
@@ -35,6 +44,55 @@ func main() {
 		panic(err)
 	}
 	proxy.Close()
+}
+
+func RegisterHooks(proxy *wave.Proxy) {
+	// Notifying when new ping request sent
+	proxy.HookPacket(int64(lib.OutGetPing), true, func(conn *wave.Conn, packet wave.Packet) {
+		log.Printf("Requesting ping from the server")
+	})
+	// Notifying when ping response received
+	proxy.HookPacket(int64(lib.IncPing), true, func(conn *wave.Conn, packet wave.Packet) {
+		log.Printf("Ping received")
+	})
+	// Edit packet value on-fly
+	proxy.HookPacket(int64(lib.IncReceiveHour), false, func(conn *wave.Conn, packet wave.Packet) {
+		receiveHourPacket := packet.(*incoming.ReceiveHourPacket)
+		log.Printf("Changing hour from %d to 12", receiveHourPacket.Hour)
+		receiveHourPacket.Hour = 12
+	})
+	// Manually create and send packet when player died
+	proxy.HookPacket(int64(lib.IncPlayerDeath), false, func(conn *wave.Conn, packet wave.Packet) {
+		p := &incoming.MapSoundPacket{
+			DefaultPacket: &wave.DefaultPacket{
+				ID:   int64(lib.IncMapSound),
+				Send: true,
+			},
+			Num:   0,
+			Sound: "buba_death.wav",
+		}
+		if err := conn.SendPacket(p, false); err != nil {
+			log.Printf("Error sending packet: %v", err)
+		}
+	})
+	// Ignore packet
+	proxy.HookPacket(int64(lib.OutLogOut), true, func(conn *wave.Conn, packet wave.Packet) {
+		packet.SetSend(false)
+	})
+}
+
+// Example of using Incoming process
+func IncomingProcess(buffer buffer.PacketBuffer, start bool) {
+	raw, _ := hex.DecodeString("6a39570cc9de4ec71d64821894")
+	cipher, _ := rc4.NewCipher(raw)
+	cipher.XORKeyStream(buffer.Bytes()[5:], buffer.Bytes()[5:])
+}
+
+// Example of using Outgoing process
+func OutgoingProcess(buffer buffer.PacketBuffer, start bool) {
+	raw, _ := hex.DecodeString("c79332b197f92ba85ed281a023")
+	cipher, _ := rc4.NewCipher(raw)
+	cipher.XORKeyStream(buffer.Bytes()[5:], buffer.Bytes()[5:])
 }
 
 func RegisterPackets(proxy *wave.Proxy) {
@@ -230,21 +288,4 @@ func RegisterPackets(proxy *wave.Proxy) {
 	proxy.AddPacket(152, false, new(incoming.ServerVarsPacket))
 	proxy.AddPacket(154, false, new(incoming.BlockListPacket))
 	proxy.AddPacket(155, false, new(incoming.ConstantDataPacket))
-}
-
-func RegisterHooks(proxy *wave.Proxy) {
-	proxy.HookPacket(20, true, func(conn *wave.Conn, packet wave.Packet) {
-		p := packet.(*outgoing.ClientRevisionPacket)
-		log.Printf("%+v", *p)
-	})
-	proxy.HookPacket(38, false, PingHook)
-	proxy.HookPacket(46, true, PongHook)
-}
-
-func PingHook(conn *wave.Conn, packet wave.Packet) {
-	// TODO send pong to the server
-}
-
-func PongHook(conn *wave.Conn, packet wave.Packet) {
-	// TODO ignore pong from client
 }

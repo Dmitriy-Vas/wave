@@ -13,19 +13,20 @@ type Conn struct {
 	LocalConn, RemoteConn net.Conn
 	Done                  chan error
 
-	proxy                      *Proxy
-	clientBuffer, serverBuffer PacketBuffer
+	proxy  *Proxy
+	buffer PacketBuffer
 }
 
-//Start starts local listener and dials to the remote host
-func (c *Conn) Start() {
+// Start starts local listener and dials to the remote host
+func (c *Conn) start() {
 	defer func() {
 		c.LocalConn.Close()
 		c.proxy.Connections.Delete(c.ID)
 	}()
-	c.init()
+	c.buffer = c.proxy.Config.Buffer.Clone()
 
-	// Some servers requires sending login packet in ~2 seconds after connection
+	// Some servers requires login packet in ~2 seconds after connection
+	// You can disable immediate connection, hook the login packet and afterward establish connection
 	if c.proxy.Config.ConnectImmediately {
 		remote_conn, err := net.Dial("tcp", c.proxy.Config.RemoteAddress.String())
 		if err != nil {
@@ -33,92 +34,109 @@ func (c *Conn) Start() {
 			return
 		}
 		c.RemoteConn = remote_conn
-		defer c.RemoteConn.Close()
+		defer func() {
+			if c.RemoteConn != nil {
+				c.RemoteConn.Close()
+			}
+		}()
 	}
-	go c.Pipe(true)
-	go c.Pipe(false)
+	go c.pipe(true)
+	go c.pipe(false)
 
 	if err := <-c.Done; err != nil {
 		log.Printf("Error occurred: %v", err)
 	}
 }
 
+// Connecting to the remote address, closes (if exists) current connection
 func (c *Conn) Reconnect(RemoteAddress net.Addr) {
 	remote_conn, err := net.Dial("tcp", RemoteAddress.String())
 	if err != nil {
 		c.Close(err)
 		return
 	}
-	c.RemoteConn.Close()
+	if c.RemoteConn != nil {
+		c.RemoteConn.Close()
+	}
 	c.RemoteConn = remote_conn
 }
 
-// Creates new instance of specified type
-func initializeStruct(t reflect.Type) interface{} {
-	switch t.Kind() {
-	case reflect.Ptr:
-		return reflect.New(t.Elem()).Interface()
-	case reflect.Struct:
-		return reflect.New(t).Interface()
-	}
-	return nil
-}
-
-//Close closes connection, error is optionally
+// Close closes connection, error is optionally
 func (c *Conn) Close(err error) {
 	c.Done <- err
 }
 
-// TODO create better way to pass packets manually
-func (c *Conn) Send(buffer PacketBuffer, client bool, process Process) error {
+// Writes buffer data to the stream
+// Executes specified Process on buffer bytes
+// Outgoing=true, if you want to write to the server
+// Outgoing=false, if you want to write to the client
+func (c *Conn) writeData(buffer PacketBuffer, outgoing bool) error {
 	var conn net.Conn
-	if client {
-		conn = c.LocalConn
-	} else {
+	var process Process
+	if outgoing {
 		conn = c.RemoteConn
+		process = c.proxy.Config.OutgoingProcess
+	} else {
+		conn = c.LocalConn
+		process = c.proxy.Config.IncomingProcess
 	}
 	if process != nil {
 		process(buffer, false)
 	}
-	_, err := conn.Write(buffer.Bytes())
+	_, err := conn.Write(buffer.Bytes()[:buffer.Len()])
 	return err
 }
 
-func (c *Conn) Pipe(client bool) {
-	var buffer PacketBuffer
-	var hooks *sync.Map
+// Writes packet data to the buffer and sends to the destination
+// Useful for manually sending packets
+// Outgoing=true, if you want to write to the server
+// Outgoing=false, if you want to write to the client
+// Concurrency UNSAFE. TODO implement concurrency safe sending packet
+func (c *Conn) SendPacket(packet Packet, outgoing bool) error {
+	c.buffer.Reset()
+	c.writePacket(c.buffer, packet)
+	return c.writeData(c.buffer, outgoing)
+}
+
+// Outgoing=true, if you want to read from client
+// Outgoing=false, if you want to read from server
+func (c *Conn) pipe(outgoing bool) {
+	buffer := c.buffer.Clone()
 	var src net.Conn
-	var process Process
-	if client {
-		src = c.LocalConn
-		buffer = c.clientBuffer
-		hooks = c.proxy.ClientPacketHooks
-		process = c.proxy.Config.OutgoingProcess
+	var hooks *sync.Map
+	if outgoing {
+		hooks = c.proxy.OutgoingPacketHooks
 	} else {
-		src = c.RemoteConn
-		buffer = c.serverBuffer
-		hooks = c.proxy.ServerPacketHooks
-		process = c.proxy.Config.IncomingProcess
+		hooks = c.proxy.IncomingPacketHooks
 	}
 
 	for {
-		// Reads bytes from the connection and saves them to the buffer
+		if outgoing {
+			src = c.LocalConn
+		} else {
+			src = c.RemoteConn
+		}
+		if src == nil {
+			continue
+		}
+		// Read bytes from the connection and saves them to the buffer
 		buf_index := buffer.Index()
-		n, err := src.Read(buffer.Bytes()[buf_index:])
+		buf_len := buffer.Len()
+		n, err := src.Read(buffer.Bytes()[buf_index:buf_len])
 		if err != nil {
 			c.Close(err)
 			return
 		}
-		buf_len := buffer.Len()
 		if buf_index == 0 {
 			// Payload size
-			length := c.ReadNumber(buffer, c.proxy.Config.PacketLengthSize)
+			length := ReadNumber(buffer, c.proxy.Config.PacketLengthSize)
 			if !c.proxy.Config.LengthIncludesSelf {
 				length += int64(c.proxy.Config.PacketLengthSize)
 			}
 			// Returns back in index
 			buffer.Back(c.proxy.Config.PacketLengthSize)
 			buf_len = uint64(length)
+			// Grow up buffer to fit full packet
 			buffer.Resize(buf_len)
 		}
 		buf_index = buffer.Next(uint64(n))
@@ -128,7 +146,7 @@ func (c *Conn) Pipe(client bool) {
 		}
 		// Full packet received
 		buffer.Back(buf_index - c.proxy.Config.PacketLengthSize)
-		packet := c.ReadPacket(buffer, client, process)
+		packet := c.readPacket(buffer, outgoing)
 		if packet != nil {
 			hooks, ok := hooks.Load(packet.GetID())
 			if !ok {
@@ -143,10 +161,10 @@ func (c *Conn) Pipe(client bool) {
 			}
 
 			buffer.Back(buffer.Index())
-			c.WritePacket(buffer, packet)
+			c.writePacket(buffer, packet)
 		}
 	write:
-		if err := c.Send(buffer, !client, process); err != nil {
+		if err := c.writeData(buffer, outgoing); err != nil {
 			c.Close(err)
 			return
 		}
@@ -154,26 +172,22 @@ func (c *Conn) Pipe(client bool) {
 	}
 }
 
-func (c *Conn) ReadPacket(buffer PacketBuffer, client bool, process Process) Packet {
-	if process != nil {
-		process(buffer, true)
-	}
-	ID := c.ReadNumber(buffer, c.proxy.Config.PacketTypeSize)
-
+func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
+	ID := ReadNumber(buffer, c.proxy.Config.PacketTypeSize)
 	var packetType reflect.Type = nil
-	if client {
-		if p, ok := c.proxy.ClientPacketMap.Load(ID); ok {
+	if outgoing {
+		if p, ok := c.proxy.OutgoingPacketMap.Load(ID); ok {
 			packetType = p.(reflect.Type)
 		}
 	} else {
-		if p, ok := c.proxy.ServerPacketMap.Load(ID); ok {
+		if p, ok := c.proxy.IncomingPacketMap.Load(ID); ok {
 			packetType = p.(reflect.Type)
 		}
 	}
 	if packetType == nil {
 		return nil
 	}
-	packet := initializeStruct(packetType).(Packet)
+	packet := InitializeStruct(packetType).(Packet)
 	if init := c.proxy.Config.PacketInit; init != nil {
 		init(packet)
 	}
@@ -182,81 +196,20 @@ func (c *Conn) ReadPacket(buffer PacketBuffer, client bool, process Process) Pac
 	return packet
 }
 
-func (c *Conn) WritePacket(buffer PacketBuffer, packet Packet) {
+func (c *Conn) writePacket(buffer PacketBuffer, packet Packet) {
 	// Reserve space for packet length
-	c.WriteNumber(buffer, c.proxy.Config.PacketLengthSize, 0)
+	WriteNumber(buffer, c.proxy.Config.PacketLengthSize, 0)
 	// Write packet ID
-	c.WriteNumber(buffer, c.proxy.Config.PacketTypeSize, packet.GetID())
+	WriteNumber(buffer, c.proxy.Config.PacketTypeSize, packet.GetID())
 	// Write whole packet data (payload)
 	packet.Write(buffer)
-	// Write actual packet size
+
+	// Returns index to the beginning
 	buffer.Back(buffer.Index())
 	size := buffer.Len()
 	if !c.proxy.Config.LengthIncludesSelf {
 		size -= c.proxy.Config.PacketLengthSize
 	}
-	c.WriteNumber(buffer, c.proxy.Config.PacketLengthSize, int64(size))
-}
-
-const (
-	Size64Bits = 8
-	Size32Bits = 4
-	Size16Bits = 2
-	Size8Bits  = 1
-)
-
-func (c *Conn) ReadNumber(buffer PacketBuffer, size uint64) (result int64) {
-	switch size {
-	case Size64Bits:
-		result = buffer.ReadLong(buffer.Bytes(), buffer.Index())
-	case Size32Bits:
-		result = int64(buffer.ReadInt(buffer.Bytes(), buffer.Index()))
-	case Size16Bits:
-		result = int64(buffer.ReadShort(buffer.Bytes(), buffer.Index()))
-	case Size8Bits:
-		result = int64(buffer.ReadByte(buffer.Bytes(), buffer.Index()))
-	}
-	return result
-}
-
-func (c *Conn) WriteNumber(buffer PacketBuffer, size uint64, value int64) {
-	switch size {
-	case Size64Bits:
-		buffer.WriteLong(buffer.Bytes(), value, buffer.Index())
-	case Size32Bits:
-		buffer.WriteInt(buffer.Bytes(), int32(value), buffer.Index())
-	case Size16Bits:
-		buffer.WriteShort(buffer.Bytes(), int16(value), buffer.Index())
-	case Size8Bits:
-		buffer.WriteByte(buffer.Bytes(), byte(value), buffer.Index())
-	}
-}
-
-func (c *Conn) init() {
-	bufferType := reflect.TypeOf(c.proxy.Config.BufferType)
-	readerType := reflect.TypeOf(c.proxy.Config.ReaderType)
-	writerType := reflect.TypeOf(c.proxy.Config.WriterType)
-
-	clientBuffer := initializeStruct(bufferType).(PacketBuffer)
-	serverBuffer := initializeStruct(bufferType).(PacketBuffer)
-	reader := initializeStruct(readerType).(PacketReader)
-	writer := initializeStruct(writerType).(PacketWriter)
-
-	if init := c.proxy.Config.BufferInit; init != nil {
-		init(clientBuffer)
-		init(serverBuffer)
-	}
-	if init := c.proxy.Config.ReaderInit; init != nil {
-		init(reader)
-	}
-	if init := c.proxy.Config.WriterInit; init != nil {
-		init(writer)
-	}
-	clientBuffer.SetReader(reader)
-	clientBuffer.SetWriter(writer)
-	serverBuffer.SetReader(reader)
-	serverBuffer.SetWriter(writer)
-
-	c.clientBuffer = clientBuffer
-	c.serverBuffer = serverBuffer
+	// Write actual packet size
+	WriteNumber(buffer, c.proxy.Config.PacketLengthSize, int64(size))
 }

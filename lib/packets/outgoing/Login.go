@@ -19,7 +19,7 @@ type LoginPacket struct {
 	ClientRegion string
 }
 
-func (l LoginPacket) Read(b buffer.PacketBuffer) {
+func (l *LoginPacket) Read(b buffer.PacketBuffer) {
 	l.Language = b.ReadByte(b.Bytes(), b.Index())
 	l.ProductVersion = b.ReadString(b.Bytes(), b.Index(), 0)
 	l.GameVersion = b.ReadInt(b.Bytes(), b.Index())
@@ -31,7 +31,7 @@ func (l LoginPacket) Read(b buffer.PacketBuffer) {
 	l.ClientRegion = b.ReadString(b.Bytes(), b.Index(), 0)
 }
 
-func (l LoginPacket) Write(b buffer.PacketBuffer) {
+func (l *LoginPacket) Write(b buffer.PacketBuffer) {
 	b.WriteByte(b.Bytes(), l.Language, b.Index())
 	b.WriteString(b.Bytes(), l.ProductVersion, b.Index())
 	b.WriteInt(b.Bytes(), l.GameVersion, b.Index())

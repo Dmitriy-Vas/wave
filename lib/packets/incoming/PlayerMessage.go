@@ -32,7 +32,7 @@ func (packet *PlayerMessagePacket) Read(b buffer.PacketBuffer) {
 	if packet.Variable1 = b.ReadBool(b.Bytes(), b.Index()); packet.Variable1 {
 		packet.ItemNum = b.ReadInt(b.Bytes(), b.Index())
 		// TODO
-		//if (modGameEditors.GetItemInt(invItemRec.Num, modEnumerations.MyItemInt.Enhancement) > 0)
+		// if (modGameEditors.GetItemInt(invItemRec.Num, modEnumerations.MyItemInt.Enhancement) > 0)
 		//{
 		//	invItemRec.Slot = byteBuffer.ReadByte(true);
 		//	invItemRec.Stat = new byte[6];

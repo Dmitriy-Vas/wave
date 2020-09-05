@@ -8,12 +8,12 @@ import (
 )
 
 type Proxy struct {
-	listener                             net.Listener // Local listener, listening on LocalAddress for new connection
-	index                                *uint32      // Amount of served local connections
-	Connections                          *sync.Map    // map[uint32]*Conn. Concurrency safe. Map with all current connections
-	ClientPacketHooks, ServerPacketHooks *sync.Map    // map[id][]PacketHook Concurrency safe. Map with all registered packet hooks
-	ClientPacketMap, ServerPacketMap     *sync.Map    // map[id]Packet. Concurrency safe. Map with all available packets
-	Config                               Config
+	listener                                 net.Listener // Local listener, listening on LocalAddress for new connection
+	index                                    *uint32      // Amount of served local connections
+	Connections                              *sync.Map    // map[uint32]*Conn. Concurrency safe. Map with all current connections
+	OutgoingPacketHooks, IncomingPacketHooks *sync.Map    // map[id][]PacketHook Concurrency safe. Map with all registered packet hooks
+	OutgoingPacketMap, IncomingPacketMap     *sync.Map    // map[id]Packet. Concurrency safe. Map with all available packets
+	Config                                   Config
 }
 
 type PacketHook func(conn *Conn, packet Packet)
@@ -42,7 +42,7 @@ func (p *Proxy) Start() (err error) {
 		}
 		p.Connections.Store(id, conn)
 
-		go conn.Start()
+		go conn.start()
 	}
 }
 
@@ -67,9 +67,9 @@ func (p *Proxy) Close() {
 func (p *Proxy) HookPacket(ID int64, outgoing bool, hook PacketHook) {
 	var m *sync.Map
 	if outgoing {
-		m = p.ClientPacketHooks
+		m = p.OutgoingPacketHooks
 	} else {
-		m = p.ServerPacketHooks
+		m = p.IncomingPacketHooks
 	}
 	hooks := make([]PacketHook, 0)
 	hooks = append(hooks, hook)
@@ -86,21 +86,21 @@ func (p *Proxy) HookPacket(ID int64, outgoing bool, hook PacketHook) {
 func (p *Proxy) AddPacket(ID int64, outgoing bool, packet Packet) {
 	packetType := reflect.TypeOf(packet)
 	if outgoing {
-		p.ClientPacketMap.Store(ID, packetType)
+		p.OutgoingPacketMap.Store(ID, packetType)
 	} else {
-		p.ServerPacketMap.Store(ID, packetType)
+		p.IncomingPacketMap.Store(ID, packetType)
 	}
 }
 
 // Creates new proxy instance with specified config
 func New(config Config) *Proxy {
 	return &Proxy{
-		index:             new(uint32),
-		Connections:       new(sync.Map),
-		ClientPacketHooks: new(sync.Map),
-		ServerPacketHooks: new(sync.Map),
-		ClientPacketMap:   new(sync.Map),
-		ServerPacketMap:   new(sync.Map),
-		Config:            config,
+		index:               new(uint32),
+		Connections:         new(sync.Map),
+		OutgoingPacketHooks: new(sync.Map),
+		IncomingPacketHooks: new(sync.Map),
+		OutgoingPacketMap:   new(sync.Map),
+		IncomingPacketMap:   new(sync.Map),
+		Config:              config,
 	}
 }

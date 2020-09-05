@@ -88,7 +88,7 @@ func (packet *PlayerGameDataPacket) Read(b buffer.PacketBuffer) {
 			lib.Global.PlayerAwards[value].GetDate = b.ReadString(b.Bytes(), b.Index(), 0)
 		} else {
 			// Garbage
-			//b.ReadInt(b.Bytes(), b.Index())
+			// b.ReadInt(b.Bytes(), b.Index())
 		}
 	}
 	for i := range lib.Global.PlayerCalaveras {

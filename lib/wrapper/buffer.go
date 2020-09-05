@@ -2,19 +2,17 @@ package wrapper
 
 import (
 	"github.com/Dmitriy-Vas/wave/buffer"
+	"time"
 )
 
 type Buffer struct {
 	*buffer.DefaultBuffer
 }
 
-func InitBuffer(bufferInterface buffer.PacketBuffer) {
-	buf := bufferInterface.(*Buffer)
-	buf.DefaultBuffer = new(buffer.DefaultBuffer)
-	buf.SetMaxLength(0xfffff)
-	buf.SetInitialLength(8)
-	buf.DefaultBuffer.Resize(8)
-	buffer.InitBuffer(buf.DefaultBuffer)
+func (b *Buffer) Clone() buffer.PacketBuffer {
+	buf := &Buffer{DefaultBuffer: b.DefaultBuffer.Clone().(*buffer.DefaultBuffer)}
+	buf.Reset()
+	return buf
 }
 
 func (b *Buffer) WriteBool(data []byte, value bool, index uint64) {
@@ -85,6 +83,11 @@ func (b *Buffer) WriteBytes(data []byte, value []byte, index uint64) {
 	b.PacketWriter.WriteBytes(data, value, index+4)
 }
 
+func WriteDate(buffer buffer.PacketBuffer, t time.Time) {
+	str := t.Format("02/01/2006")
+	buffer.WriteString(buffer.Bytes(), str, buffer.Index())
+}
+
 func (b *Buffer) ReadBool(data []byte, index uint64) bool {
 	b.Next(4)
 	return b.PacketReader.ReadInt(data, index) != 0
@@ -147,10 +150,11 @@ func (b *Buffer) ReadBytes(data []byte, index uint64, length uint64) []byte {
 	return b.PacketReader.ReadBytes(data, index+4, length)
 }
 
-func (b *Buffer) SetReader(reader buffer.PacketReader) {
-	b.PacketReader = reader
-}
-
-func (b *Buffer) SetWriter(writer buffer.PacketWriter) {
-	b.PacketWriter = writer
+func ReadDate(buffer buffer.PacketBuffer) time.Time {
+	str := buffer.ReadString(buffer.Bytes(), buffer.Index(), 0)
+	if str == "" {
+		return time.Time{}
+	}
+	t, _ := time.Parse("02/01/2006", str)
+	return t
 }
