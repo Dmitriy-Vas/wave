@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 )
 
+// GetID returns packet ID.
+func (d *ResourceCachePacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *ResourceCachePacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *ResourceCachePacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *ResourceCachePacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type ResourceCachePacket struct {
-	*wave.DefaultPacket
+	ID            int64
+	Send          bool
 	ResourceIndex int32
 	MapResources  []lib.MapResourceRec
 }

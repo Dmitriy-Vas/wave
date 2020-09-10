@@ -1,14 +1,34 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
+// GetID returns packet ID.
+func (d *PlayerGameDataPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *PlayerGameDataPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *PlayerGameDataPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *PlayerGameDataPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type PlayerGameDataPacket struct {
-	*wave.DefaultPacket
+	ID   int64
+	Send bool
 }
 
 func (packet *PlayerGameDataPacket) Read(b buffer.PacketBuffer) {

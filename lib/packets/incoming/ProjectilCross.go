@@ -1,12 +1,32 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *ProjectilCrossPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *ProjectilCrossPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *ProjectilCrossPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *ProjectilCrossPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type ProjectilCrossPacket struct {
-	*wave.DefaultPacket
+	ID             int64
+	Send           bool
 	PlayerNum      int64
 	ProjectilNum   int64
 	ProjectilIndex int64

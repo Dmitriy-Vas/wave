@@ -523,38 +523,38 @@ type TileRec struct {
 }
 
 type MapRec struct {
-	ID              int
+	ID              int32
 	Name            string
 	ESName          string
-	Region          int
-	Image           int
-	Revision        int
-	Moral           int
-	Up              int
-	Down            int
-	Left            int
-	Right           int
-	BootMap         int
-	BootX           int
-	BootY           int
+	Region          int32
+	Image           int32
+	Revision        int32
+	Moral           int32
+	Up              int32
+	Down            int32
+	Left            int32
+	Right           int32
+	BootMap         int32
+	BootX           int32
+	BootY           int32
 	MaxX            byte
 	MaxY            byte
 	Tile            []TileRec
 	tileOffset      objects.Vector2
-	Npc             []int
+	Npc             []int32
 	FogOpacity      byte
-	Fog             int
-	FogSpeed        int
-	tileA           int
-	tileB           int
-	DayNight        int
-	Parallax        int
+	Fog             int32
+	FogSpeed        int32
+	tileA           int32
+	tileB           int32
+	DayNight        int32
+	Parallax        int32
 	ParallaxType    byte
 	Ambience        string
 	Lighting        bool
-	NightAlpha      int
-	InstanceMax     int
-	MapCondition    int
+	NightAlpha      int32
+	InstanceMax     int32
+	MapCondition    int32
 	Puzzle          objects.Vector4
 	Drill           objects.Vector4
 	Temp            MapTempRec
@@ -1338,4 +1338,17 @@ type MapEditorDataRec struct {
 type ArrowRec struct {
 	Num   int32
 	Value int32
+}
+
+type CashShopRec struct {
+	Name string
+	Slot []TradeCashItemRec
+	Icon int32
+}
+
+type TradeCashItemRec struct {
+	Item  int32
+	Value int64
+	Price int64
+	Hot   bool
 }

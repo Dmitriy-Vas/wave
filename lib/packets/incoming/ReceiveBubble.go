@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
+// GetID returns packet ID.
+func (d *ReceiveBubblePacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *ReceiveBubblePacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *ReceiveBubblePacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *ReceiveBubblePacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type ReceiveBubblePacket struct {
-	*wave.DefaultPacket
+	ID        int64
+	Send      bool
 	Target    int32
 	Type      int32
 	Variable3 bool

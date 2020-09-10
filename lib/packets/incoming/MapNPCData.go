@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
+// GetID returns packet ID.
+func (d *MapNPCDataPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *MapNPCDataPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *MapNPCDataPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *MapNPCDataPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type MapNPCDataPacket struct {
-	*wave.DefaultPacket
+	ID      int64
+	Send    bool
 	Num     int32
 	Pos     objects.Vector2
 	Dir     byte

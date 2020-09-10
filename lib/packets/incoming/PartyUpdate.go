@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 )
 
+// GetID returns packet ID.
+func (d *PartyUpdatePacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *PartyUpdatePacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *PartyUpdatePacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *PartyUpdatePacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type PartyUpdatePacket struct {
-	*wave.DefaultPacket
+	ID    int64
+	Send  bool
 	Num   int32
 	Party lib.PartyRec
 }

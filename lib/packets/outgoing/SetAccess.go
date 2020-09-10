@@ -1,12 +1,32 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *SetAccessPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *SetAccessPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *SetAccessPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *SetAccessPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type SetAccessPacket struct {
-	*wave.DefaultPacket
+	ID     int64
+	Send   bool
 	Name   string
 	Access int64
 }

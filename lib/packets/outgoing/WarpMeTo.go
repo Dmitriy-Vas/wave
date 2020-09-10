@@ -1,12 +1,32 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *WarpMeToPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *WarpMeToPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *WarpMeToPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *WarpMeToPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type WarpMeToPacket struct {
-	*wave.DefaultPacket
+	ID   int64
+	Send bool
 	Name string
 }
 

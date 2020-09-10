@@ -2,6 +2,7 @@ package wave
 
 import (
 	. "github.com/Dmitriy-Vas/wave/buffer"
+	"github.com/Dmitriy-Vas/wave/lib"
 	"log"
 	"net"
 	"reflect"
@@ -51,11 +52,7 @@ func (c *Conn) start() {
 
 // Reconnect connects to the remote address, closes (if exists) current connection.
 func (c *Conn) Reconnect(RemoteAddress net.Addr) {
-	remote_conn, err := net.Dial("tcp", RemoteAddress.String())
-	if err != nil {
-		c.Close(err)
-		return
-	}
+	remote_conn, _ := net.Dial("tcp", RemoteAddress.String())
 	if c.RemoteConn != nil {
 		c.RemoteConn.Close()
 	}
@@ -149,6 +146,11 @@ func (c *Conn) pipe(outgoing bool) {
 		buffer.Back(buf_index - c.proxy.Config.PacketLengthSize)
 		packet := c.readPacket(buffer, outgoing)
 		if packet != nil {
+			if outgoing {
+				log.Printf("[%s]: %+v", lib.ClientPacket(packet.GetID()).String(), packet)
+			} else {
+				log.Printf("[%s]: %+v", lib.ServerPacket(packet.GetID()).String(), packet)
+			}
 			hooks, ok := hooks.Load(packet.GetID())
 			if !ok {
 				goto write
@@ -189,8 +191,6 @@ func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
 		return nil
 	}
 	packet := InitializeStruct(packetType).(Packet)
-	// TODO find better solution to initialize packet
-	InitPacket(packet)
 	packet.SetID(ID)
 	packet.Read(buffer)
 	return packet

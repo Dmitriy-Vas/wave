@@ -1,13 +1,33 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
+// GetID returns packet ID.
+func (d *PlayerSearchPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *PlayerSearchPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *PlayerSearchPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *PlayerSearchPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type PlayerSearchPacket struct {
-	*wave.DefaultPacket
+	ID        int64
+	Send      bool
 	TargetPos objects.Vector2
 	Target    int32
 	Type      byte

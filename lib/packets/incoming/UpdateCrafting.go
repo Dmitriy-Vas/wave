@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 )
 
+// GetID returns packet ID.
+func (d *UpdateCraftingPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *UpdateCraftingPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *UpdateCraftingPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *UpdateCraftingPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type UpdateCraftingPacket struct {
-	*wave.DefaultPacket
+	ID    int64
+	Send  bool
 	Num   int64
 	Craft lib.CraftingRec
 }

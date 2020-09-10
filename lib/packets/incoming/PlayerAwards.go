@@ -1,12 +1,32 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *PlayerAwardsPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *PlayerAwardsPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *PlayerAwardsPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *PlayerAwardsPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type PlayerAwardsPacket struct {
-	*wave.DefaultPacket
+	ID       int64
+	Send     bool
 	AwardNum int32
 	AP       int32
 	Level    int32

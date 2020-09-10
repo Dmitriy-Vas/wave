@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 )
 
+// GetID returns packet ID.
+func (d *UpdateProjectilPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *UpdateProjectilPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *UpdateProjectilPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *UpdateProjectilPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type UpdateProjectilPacket struct {
-	*wave.DefaultPacket
+	ID           int64
+	Send         bool
 	ProjectilNum int32
 	Projectil    lib.ProjectilRec
 }

@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 )
 
+// GetID returns packet ID.
+func (d *SpellsPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *SpellsPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *SpellsPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *SpellsPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type SpellsPacket struct {
-	*wave.DefaultPacket
+	ID           int64
+	Send         bool
 	Variable1    bool
 	SpellNum     int32
 	PlayerSpells []lib.PlayerSpellRec

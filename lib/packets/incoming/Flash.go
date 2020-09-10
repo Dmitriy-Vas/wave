@@ -1,12 +1,32 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *FlashPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *FlashPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *FlashPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *FlashPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type FlashPacket struct {
-	*wave.DefaultPacket
+	ID         int64
+	Send       bool
 	Variable1  byte
 	Variable2  int32
 	Variable3  byte

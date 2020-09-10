@@ -1,12 +1,32 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *UIBuddiesPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *UIBuddiesPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *UIBuddiesPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *UIBuddiesPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type UIBuddiesPacket struct {
-	*wave.DefaultPacket
+	ID        int64
+	Send      bool
 	Action    byte
 	ValueStr  string
 	ValueByte byte

@@ -51,7 +51,7 @@ func RegisterHooks(proxy *wave.Proxy) {
 		log.Printf("Requesting ping from the server")
 	})
 	// Notifying when ping response received
-	proxy.HookPacket(int64(lib.IncPing), true, func(conn *wave.Conn, packet wave.Packet) {
+	proxy.HookPacket(int64(lib.IncPing), false, func(conn *wave.Conn, packet wave.Packet) {
 		log.Printf("Ping received")
 	})
 	// Edit packet value on-fly
@@ -63,10 +63,8 @@ func RegisterHooks(proxy *wave.Proxy) {
 	// Manually create and send packet when player died
 	proxy.HookPacket(int64(lib.IncPlayerDeath), false, func(conn *wave.Conn, packet wave.Packet) {
 		p := &incoming.MapSoundPacket{
-			DefaultPacket: &wave.DefaultPacket{
-				ID:   int64(lib.IncMapSound),
-				Send: true,
-			},
+			ID:    int64(lib.IncMapSound),
+			Send:  true,
 			Num:   0,
 			Sound: "buba_death.wav",
 		}
@@ -285,6 +283,7 @@ func RegisterPackets(proxy *wave.Proxy) {
 	proxy.AddPacket(147, false, new(incoming.ServerStatsPacket))
 	proxy.AddPacket(150, false, new(incoming.ShowEmoticonPacket))
 	proxy.AddPacket(152, false, new(incoming.ServerVarsPacket))
+	proxy.AddPacket(153, false, new(incoming.CashShopDataPacket))
 	proxy.AddPacket(154, false, new(incoming.BlockListPacket))
 	proxy.AddPacket(155, false, new(incoming.ConstantDataPacket))
 }

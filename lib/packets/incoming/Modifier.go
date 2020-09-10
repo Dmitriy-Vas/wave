@@ -1,12 +1,32 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *ModifierPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *ModifierPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *ModifierPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *ModifierPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type ModifierPacket struct {
-	*wave.DefaultPacket
+	ID         int64
+	Send       bool
 	Variable0  int64
 	Variable1  float64
 	Variable2  int32

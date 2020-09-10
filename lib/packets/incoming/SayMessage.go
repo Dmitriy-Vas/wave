@@ -1,12 +1,32 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *SayMessagePacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *SayMessagePacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *SayMessagePacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *SayMessagePacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type SayMessagePacket struct {
-	*wave.DefaultPacket
+	ID           int64
+	Send         bool
 	BubbleTarget int32
 	Text         string
 	Text2        string

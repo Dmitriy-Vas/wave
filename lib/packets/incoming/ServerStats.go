@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib"
 )
 
+// GetID returns packet ID.
+func (d *ServerStatsPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *ServerStatsPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *ServerStatsPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *ServerStatsPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type ServerStatsPacket struct {
-	*wave.DefaultPacket
+	ID      int64
+	Send    bool
 	CardNum byte
 	Cards   []lib.PromotionGameCardRec
 }

@@ -1,12 +1,32 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *PlayerMsgPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *PlayerMsgPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *PlayerMsgPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *PlayerMsgPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type PlayerMsgPacket struct {
-	*wave.DefaultPacket
+	ID       int64
+	Send     bool
 	Text     string
 	ToAll    int64
 	MoveChat byte

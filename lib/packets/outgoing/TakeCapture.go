@@ -1,13 +1,33 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
+// GetID returns packet ID.
+func (d *TakeCapturePacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *TakeCapturePacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *TakeCapturePacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *TakeCapturePacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type TakeCapturePacket struct {
-	*wave.DefaultPacket
+	ID                   int64
+	Send                 bool
 	Pos                  objects.Vector2
 	NpcNum               int32
 	InvestigationInvSlot byte

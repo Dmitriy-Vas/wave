@@ -1,13 +1,33 @@
 package incoming
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 	"github.com/Dmitriy-Vas/wave/lib/objects"
 )
 
+// GetID returns packet ID.
+func (d *NpcMovePacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *NpcMovePacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *NpcMovePacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *NpcMovePacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type NpcMovePacket struct {
-	*wave.DefaultPacket
+	ID        int64
+	Send      bool
 	Variable0 int64
 	Variable1 int32
 	Variable2 int32

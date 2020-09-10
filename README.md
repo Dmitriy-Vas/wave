@@ -1,10 +1,11 @@
 # Wave
-Wave provides configurable MITM proxy to read and edit TCP packets
+Wave provides configurable MITM proxy to read and edit TCP packets from games.
 ![](wave_gopher.png)
 
 ## Table of Content
 + [Features](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#features)
 + [Getting Started](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#getting-started)
++ [Game list](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#game-list)
 + [Contributing](https://github.com/Dmitriy-Vas/wave/blob/master/README.md#contributing)
 
 ## Features
@@ -94,7 +95,16 @@ proxy.HookPacket(int64(lib.IncReceiveHour), false, func(conn *wave.Conn, packet 
 })
 ```
 
-### Contributing
+### Game list
++ [DarkStory Online](https://github.com/Dmitriy-Vas/wave/tree/master/lib)
+    + Traffic is not encrypted.
+    + Boolean takes 3 extra bytes (4 in total) and uses int32.
+    + Byte takes 1 extra byte (2 in total) and uses int16.
+    + Length goes in first 8 bytes and uses int64.
+    + After length goes packet ID and uses int64.
+    + Most part of packets were added and ready for use.
 
+### Contributing
+!!!Need help with typos!!!<br>
 If you want to contribute, fork this project, commit changes and create pull request.
 Please describe your changes and what they are doing in pull request.

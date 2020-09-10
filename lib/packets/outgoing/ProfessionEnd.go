@@ -1,12 +1,32 @@
 package outgoing
 
 import (
-	"github.com/Dmitriy-Vas/wave"
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
+// GetID returns packet ID.
+func (d *ProfessionEndPacket) GetID() int64 {
+	return d.ID
+}
+
+// SetID sets ID to the packet.
+func (d *ProfessionEndPacket) SetID(id int64) {
+	d.ID = id
+}
+
+// GetSend returns whether to send this packet.
+func (d *ProfessionEndPacket) GetSend() bool {
+	return d.Send
+}
+
+// SetSend sets whether to send this packet.
+func (d *ProfessionEndPacket) SetSend(value bool) {
+	d.Send = value
+}
+
 type ProfessionEndPacket struct {
-	*wave.DefaultPacket
+	ID           int64
+	Send         bool
 	FishingCount int32
 	FishingPos   int32
 	FishingFail  byte
