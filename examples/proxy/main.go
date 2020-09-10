@@ -179,6 +179,7 @@ func RegisterPackets(proxy *wave.Proxy) {
 
 	proxy.AddPacket(1, false, new(incoming.AlertMsgPacket))
 	proxy.AddPacket(2, false, new(incoming.LoginOkPacket))
+	proxy.AddPacket(3, false, new(incoming.ClassesDataPacket))
 	proxy.AddPacket(4, false, new(incoming.InGamePacket))
 	proxy.AddPacket(8, false, new(incoming.CoinsPacket))
 	proxy.AddPacket(9, false, new(incoming.SkullsPacket))

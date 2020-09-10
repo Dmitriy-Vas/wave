@@ -595,16 +595,16 @@ type ClassRec struct {
 
 type ClassHairTintRec struct {
 	Name    string
-	Color   objects.Color
+	Color   string // objects.Color
 	Premium bool
 }
 
 type ClassSpriteRec struct {
 	Name    string
-	Male    int
-	Female  int
-	MFace   int
-	FFace   int
+	Male    int32
+	Female  int32
+	MFace   int32
+	FFace   int32
 	Premium bool
 }
 

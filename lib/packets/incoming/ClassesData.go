@@ -1,7 +1,11 @@
 package incoming
 
 import (
+	"fmt"
 	"github.com/Dmitriy-Vas/wave/buffer"
+	"github.com/Dmitriy-Vas/wave/lib"
+	"strconv"
+	"strings"
 )
 
 // GetID returns packet ID.
@@ -27,73 +31,102 @@ func (d *ClassesDataPacket) SetSend(value bool) {
 type ClassesDataPacket struct {
 	ID         int64
 	Send       bool
-	Variable0  int64
-	Variable1  byte
-	Variable2  string
-	Variable3  string
-	Variable4  string
-	Variable5  int64
-	Variable6  int32
-	Variable7  string
-	Variable8  string
-	Variable9  bool
-	Variable10 int32
-	Variable11 string
-	Variable12 bool
-	Variable13 int32
-	Variable14 int32
-	Variable15 int32
-	Variable16 string
-	Variable17 bool
-	Variable18 int32
-	Variable19 int32
-	Variable20 int32
+	MaxClasses byte
+	Classes    []lib.ClassRec
 }
 
 func (packet *ClassesDataPacket) Read(b buffer.PacketBuffer) {
-	packet.Variable0 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable1 = b.ReadByte(b.Bytes(), b.Index())
-	packet.Variable2 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable3 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable4 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable5 = b.ReadLong(b.Bytes(), b.Index())
-	packet.Variable6 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable7 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable8 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable9 = b.ReadBool(b.Bytes(), b.Index())
-	packet.Variable10 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable11 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable12 = b.ReadBool(b.Bytes(), b.Index())
-	packet.Variable13 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable14 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable15 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable16 = b.ReadString(b.Bytes(), b.Index(), 0)
-	packet.Variable17 = b.ReadBool(b.Bytes(), b.Index())
-	packet.Variable18 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable19 = b.ReadInt(b.Bytes(), b.Index())
-	packet.Variable20 = b.ReadInt(b.Bytes(), b.Index())
+	packet.MaxClasses = b.ReadByte(b.Bytes(), b.Index())
+	packet.Classes = make([]lib.ClassRec, packet.MaxClasses)
+	for i, _ := range packet.Classes {
+		packet.Classes[i].Stat = make([]byte, 6)   // TODO int to const
+		packet.Classes[i].Vital = make([]int64, 3) // TODO int to const
+		packet.Classes[i].Name = b.ReadString(b.Bytes(), b.Index(), 0)
+		MFace := strings.Split(b.ReadString(b.Bytes(), b.Index(), 0), ",")
+		FFace := strings.Split(b.ReadString(b.Bytes(), b.Index(), 0), ",")
+		for x, _ := range packet.Classes[i].Vital {
+			packet.Classes[i].Vital[x] = b.ReadLong(b.Bytes(), b.Index())
+		}
+		hairTintAmount := b.ReadInt(b.Bytes(), b.Index())
+		packet.Classes[i].HairTint = make([]lib.ClassHairTintRec, hairTintAmount)
+		for x, _ := range packet.Classes[i].HairTint {
+			packet.Classes[i].HairTint[x].Name = b.ReadString(b.Bytes(), b.Index(), 0)
+			packet.Classes[i].HairTint[x].Color = b.ReadString(b.Bytes(), b.Index(), 0)
+			packet.Classes[i].HairTint[x].Premium = b.ReadBool(b.Bytes(), b.Index())
+		}
+		classSpriteAmount := b.ReadInt(b.Bytes(), b.Index())
+		packet.Classes[i].Sprite = make([]lib.ClassSpriteRec, classSpriteAmount)
+		for x, _ := range packet.Classes[i].Sprite {
+			packet.Classes[i].Sprite[x].Name = b.ReadString(b.Bytes(), b.Index(), 0)
+			packet.Classes[i].Sprite[x].Premium = b.ReadBool(b.Bytes(), b.Index())
+			packet.Classes[i].Sprite[x].Male = b.ReadInt(b.Bytes(), b.Index())
+			packet.Classes[i].Sprite[x].Female = b.ReadInt(b.Bytes(), b.Index())
+			if x < len(MFace) {
+				if value, err := strconv.ParseInt(MFace[x], 10, 64); err == nil {
+					packet.Classes[i].Sprite[x].MFace = int32(value)
+				}
+			}
+			if x < len(FFace) {
+				if value, err := strconv.ParseInt(FFace[x], 10, 64); err == nil {
+					packet.Classes[i].Sprite[x].FFace = int32(value)
+				}
+			}
+		}
+		classHairAmount := b.ReadInt(b.Bytes(), b.Index())
+		packet.Classes[i].Hair = make([]lib.ClassSpriteRec, classHairAmount)
+		for x, _ := range packet.Classes[i].Hair {
+			packet.Classes[i].Hair[x].Name = b.ReadString(b.Bytes(), b.Index(), 0)
+			packet.Classes[i].Hair[x].Premium = b.ReadBool(b.Bytes(), b.Index())
+			packet.Classes[i].Hair[x].Male = b.ReadInt(b.Bytes(), b.Index())
+			packet.Classes[i].Hair[x].Female = b.ReadInt(b.Bytes(), b.Index())
+		}
+		for x, _ := range packet.Classes[i].Stat {
+			packet.Classes[i].Stat[x] = byte(b.ReadInt(b.Bytes(), b.Index()))
+		}
+	}
 }
 
 func (packet *ClassesDataPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), packet.Variable0, b.Index())
-	b.WriteByte(b.Bytes(), packet.Variable1, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable2, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable3, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable4, b.Index())
-	b.WriteLong(b.Bytes(), packet.Variable5, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable6, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable7, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable8, b.Index())
-	b.WriteBool(b.Bytes(), packet.Variable9, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable10, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable11, b.Index())
-	b.WriteBool(b.Bytes(), packet.Variable12, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable13, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable14, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable15, b.Index())
-	b.WriteString(b.Bytes(), packet.Variable16, b.Index())
-	b.WriteBool(b.Bytes(), packet.Variable17, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable18, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable19, b.Index())
-	b.WriteInt(b.Bytes(), packet.Variable20, b.Index())
+	b.WriteByte(b.Bytes(), packet.MaxClasses, b.Index())
+	for _, class := range packet.Classes {
+		b.WriteString(b.Bytes(), class.Name, b.Index())
+		MFace := make([]string, 0)
+		FFace := make([]string, 0)
+		for _, sprite := range class.Sprite {
+			if sprite.MFace != 0 {
+				MFace = append(MFace, fmt.Sprint(sprite.MFace))
+			}
+			if sprite.FFace != 0 {
+				FFace = append(FFace, fmt.Sprint(sprite.FFace))
+			}
+		}
+		b.WriteString(b.Bytes(), strings.Join(MFace, ","), b.Index())
+		b.WriteString(b.Bytes(), strings.Join(FFace, ","), b.Index())
+		for _, vital := range class.Vital {
+			b.WriteLong(b.Bytes(), vital, b.Index())
+		}
+		b.WriteInt(b.Bytes(), int32(len(class.HairTint)), b.Index())
+		for _, tint := range class.HairTint {
+			b.WriteString(b.Bytes(), tint.Name, b.Index())
+			b.WriteString(b.Bytes(), tint.Color, b.Index())
+			b.WriteBool(b.Bytes(), tint.Premium, b.Index())
+		}
+		b.WriteInt(b.Bytes(), int32(len(class.Sprite)), b.Index())
+		for _, sprite := range class.Sprite {
+			b.WriteString(b.Bytes(), sprite.Name, b.Index())
+			b.WriteBool(b.Bytes(), sprite.Premium, b.Index())
+			b.WriteInt(b.Bytes(), sprite.Male, b.Index())
+			b.WriteInt(b.Bytes(), sprite.Female, b.Index())
+		}
+		b.WriteInt(b.Bytes(), int32(len(class.Hair)), b.Index())
+		for _, hair := range class.Hair {
+			b.WriteString(b.Bytes(), hair.Name, b.Index())
+			b.WriteBool(b.Bytes(), hair.Premium, b.Index())
+			b.WriteInt(b.Bytes(), hair.Male, b.Index())
+			b.WriteInt(b.Bytes(), hair.Female, b.Index())
+		}
+		for _, stat := range class.Stat {
+			b.WriteInt(b.Bytes(), int32(stat), b.Index())
+		}
+	}
 }
