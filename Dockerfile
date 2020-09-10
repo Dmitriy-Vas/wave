@@ -3,7 +3,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-WORKDIR /app/cmd/proxy
+WORKDIR /app/examples/proxy
 RUN go build -o main .
 EXPOSE 7999
-ENTRYPOINT ["/app/cmd/proxy/main"]
+ENTRYPOINT ["/app/examples/proxy/main"]

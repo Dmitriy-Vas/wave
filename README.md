@@ -18,7 +18,7 @@ Wave provides configurable MITM proxy to read and edit TCP packets from games.
 + Manually create and send custom packet
 
 ## Getting started
-You can find full example on [cmd/proxy](https://github.com/Dmitriy-Vas/wave/blob/master/cmd/proxy/main.go)
+You can find full example on [examples/proxy](https://github.com/Dmitriy-Vas/wave/blob/master/examples/proxy/main.go)
 
 Import the `wave` package from GitHub in your code:
 ```go

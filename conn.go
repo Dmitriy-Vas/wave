@@ -2,7 +2,6 @@ package wave
 
 import (
 	. "github.com/Dmitriy-Vas/wave/buffer"
-	"github.com/Dmitriy-Vas/wave/lib"
 	"log"
 	"net"
 	"reflect"
@@ -30,12 +29,7 @@ func (c *Conn) start() {
 	// Some servers requires login packet in ~2 seconds after connection
 	// You can disable immediate connection, hook the login packet and afterward establish connection
 	if c.proxy.Config.ConnectImmediately {
-		remote_conn, err := net.Dial("tcp", c.proxy.Config.RemoteAddress.String())
-		if err != nil {
-			log.Printf("Error connecting: %v", err)
-			return
-		}
-		c.RemoteConn = remote_conn
+		c.RemoteConn, _ = net.Dial("tcp", c.proxy.Config.RemoteAddress.String())
 		defer func() {
 			if c.RemoteConn != nil {
 				c.RemoteConn.Close()
@@ -146,11 +140,6 @@ func (c *Conn) pipe(outgoing bool) {
 		buffer.Back(buf_index - c.proxy.Config.PacketLengthSize)
 		packet := c.readPacket(buffer, outgoing)
 		if packet != nil {
-			if outgoing {
-				log.Printf("[%s]: %+v", lib.ClientPacket(packet.GetID()).String(), packet)
-			} else {
-				log.Printf("[%s]: %+v", lib.ServerPacket(packet.GetID()).String(), packet)
-			}
 			hooks, ok := hooks.Load(packet.GetID())
 			if !ok {
 				goto write
@@ -178,17 +167,23 @@ func (c *Conn) pipe(outgoing bool) {
 func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
 	ID := ReadNumber(buffer, c.proxy.Config.PacketTypeSize)
 	var packetType reflect.Type = nil
+	var process Process = nil
 	if outgoing {
 		if p, ok := c.proxy.OutgoingPacketMap.Load(ID); ok {
 			packetType = p.(reflect.Type)
 		}
+		process = c.proxy.Config.OutgoingProcess
 	} else {
 		if p, ok := c.proxy.IncomingPacketMap.Load(ID); ok {
 			packetType = p.(reflect.Type)
 		}
+		process = c.proxy.Config.IncomingProcess
 	}
 	if packetType == nil {
 		return nil
+	}
+	if process != nil {
+		process(buffer, true)
 	}
 	packet := InitializeStruct(packetType).(Packet)
 	packet.SetID(ID)

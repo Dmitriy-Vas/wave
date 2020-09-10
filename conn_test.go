@@ -168,16 +168,12 @@ func (t *TestPacket) GetSend() bool {
 
 func (t *TestPacket) Read(b buffer.PacketBuffer) {
 	t.DataLength = b.ReadInt(b.Bytes(), b.Index())
-	b.Next(4)
 	t.Data = b.ReadBytes(b.Bytes(), b.Index(), uint64(t.DataLength))
-	b.Next(uint64(t.DataLength))
 }
 
 func (t *TestPacket) Write(b buffer.PacketBuffer) {
 	b.WriteInt(b.Bytes(), int32(len(t.Data)), b.Index())
-	b.Next(4)
 	b.WriteBytes(b.Bytes(), t.Data, b.Index())
-	b.Next(uint64(len(t.Data)))
 }
 
 func TestConn_SendPacket(t *testing.T) {
@@ -188,31 +184,236 @@ func TestConn_SendPacket(t *testing.T) {
 		proxy:  proxy,
 		buffer: buf.Clone(),
 	}
-	go func(c *Conn) {
-		conn, err := listenConnection(":9124")
-		assert.NoError(t, err)
+
+	serveConn := func(conn net.Conn, c *Conn) {
 		defer conn.Close()
 		buf2 := c.buffer.Clone()
 		buf2.Reset()
-		_, err = conn.Read(buf2.Bytes()[0:16])
+		_, err := conn.Read(buf2.Bytes()[:8])
 		assert.NoError(t, err)
-		Length := binary.LittleEndian.Uint64(buf2.Bytes()[0:8])
-		assert.NotEqualValues(t, 0, Length)
-		ID := binary.LittleEndian.Uint64(buf2.Bytes()[8:16])
-		assert.EqualValues(t, 15, ID)
-		c.Close(nil)
-	}(connection)
-	conn, err := connectTo(":9124")
-	assert.NoError(t, err)
-	defer conn.Close()
-	connection.LocalConn = conn
+		length := buf2.ReadLong(buf2.Bytes(), buf2.Index())
+		buf2.Resize(uint64(length - 8))
 
-	err = connection.SendPacket(&TestPacket{
+		_, err = conn.Read(buf2.Bytes()[buf2.Index():buf2.Len()])
+		assert.NoError(t, err)
+		id := buf2.ReadLong(buf2.Bytes(), buf2.Index())
+		assert.EqualValues(t, 15, id)
+		c.Close(nil)
+	}
+
+	go func(c *Conn) {
+		conn, err := listenConnection(":9124")
+		assert.NoError(t, err)
+		serveConn(conn, c)
+	}(connection)
+
+	go func(c *Conn) {
+		conn, err := listenConnection(":9125")
+		assert.NoError(t, err)
+		serveConn(conn, c)
+	}(connection)
+	locConn, err := connectTo(":9124")
+	assert.NoError(t, err)
+	defer locConn.Close()
+	connection.LocalConn = locConn
+
+	remConn, err := connectTo(":9125")
+	assert.NoError(t, err)
+	defer remConn.Close()
+	connection.RemoteConn = remConn
+
+	testPacket := &TestPacket{
 		ID:         15,
 		Send:       true,
 		DataLength: int32(len("Hello World")),
 		Data:       []byte("Hello World"),
-	}, false)
+	}
+	err = connection.SendPacket(testPacket, false)
 	assert.NoError(t, err)
+
+	err = connection.SendPacket(testPacket, true)
 	<-connection.Done
+}
+
+func TestConn_start(t *testing.T) {
+	wg := new(sync.WaitGroup)
+	wg.Add(2)
+	go func(wg *sync.WaitGroup) {
+		_, err := listenConnection(":9123")
+		assert.NoError(t, err)
+		wg.Done()
+	}(wg)
+	go func(wg *sync.WaitGroup) {
+		conn, err := listenConnection(":9124")
+		assert.NoError(t, err)
+		wg.Done()
+		_, err = conn.Read(make([]byte, 32))
+		assert.EqualError(t, err, io.EOF.Error())
+		wg.Done()
+	}(wg)
+	proxy.Config.RemoteAddress, _ = net.ResolveTCPAddr("tcp", ":9123")
+	proxy.Config.LocalAddress, _ = net.ResolveTCPAddr("tcp", ":9124")
+	conn := &Conn{
+		ID:    0,
+		Done:  make(chan error),
+		proxy: proxy,
+	}
+	localConn, err := connectTo(":9124")
+	assert.NoError(t, err)
+	conn.LocalConn = localConn
+	go conn.start()
+	wg.Wait()
+
+	wg.Add(1)
+	conn.Close(io.EOF)
+	wg.Wait()
+}
+
+func TestConn_readAndWritePacket(t *testing.T) {
+	buf := buf.Clone().(*buffer.DefaultBuffer)
+	buf.SetInitLength(8)
+	buf.SetMaxLength(256)
+	buf.Reset()
+	conn := &Conn{
+		ID:    0,
+		proxy: proxy,
+	}
+	conn.proxy.AddPacket(1, true, new(TestPacket))
+	conn.proxy.AddPacket(2, false, new(TestPacket))
+
+	testPacket := &TestPacket{
+		ID:         1,
+		Send:       true,
+		DataLength: int32(len("Hello Packet")),
+		Data:       []byte("Hello Packet"),
+	}
+	conn.writePacket(buf, testPacket)
+	packet := conn.readPacket(buf, true)
+	assert.EqualValues(t, packet.(*TestPacket), testPacket)
+	buf.Reset()
+
+	testPacket = &TestPacket{
+		ID:         2,
+		Send:       true,
+		DataLength: int32(len("Hello World")),
+		Data:       []byte("Hello World"),
+	}
+	conn.writePacket(buf, testPacket)
+	packet = conn.readPacket(buf, false)
+	assert.EqualValues(t, packet.(*TestPacket), testPacket)
+	buf.Reset()
+
+	conn.writePacket(buf, &TestPacket{
+		ID:         3,
+		Send:       true,
+		DataLength: 0,
+		Data:       nil,
+	})
+	packet = conn.readPacket(buf, true)
+	assert.Nil(t, packet)
+}
+
+func TestConn_writeDataWithProcess(t *testing.T) {
+	buf.SetMaxLength(1024)
+	buf.SetInitLength(8)
+	connection := &Conn{
+		Done:   make(chan error),
+		proxy:  proxy,
+		buffer: buf.Clone(),
+	}
+	connection.proxy.Config.OutgoingProcess = func(buffer buffer.PacketBuffer, start bool) {
+		if start {
+			return
+		}
+		buffer.WriteLong(buffer.Bytes(), 941, buffer.Index())
+	}
+
+	wg := new(sync.WaitGroup)
+	wg.Add(1)
+	go func(wg *sync.WaitGroup) {
+		conn, err := listenConnection(":9123")
+		assert.NoError(t, err)
+		b := make([]byte, 8)
+		_, err = conn.Read(b)
+		assert.NoError(t, err)
+		result := binary.LittleEndian.Uint64(b)
+		assert.EqualValues(t, 941, result)
+		wg.Done()
+	}(wg)
+	connection.RemoteConn, _ = connectTo(":9123")
+	err := connection.writeData(connection.buffer, true)
+	assert.NoError(t, err)
+	wg.Wait()
+}
+
+func TestConn_pipe(t *testing.T) {
+	wg := new(sync.WaitGroup)
+	wg.Add(2)
+
+	buf := buf.Clone().(*buffer.DefaultBuffer)
+	buf.SetInitLength(8)
+	buf.SetMaxLength(256)
+	buf.Reset()
+	c := &Conn{
+		ID:     0,
+		Done:   make(chan error),
+		proxy:  proxy,
+		buffer: buf,
+	}
+
+	serve := func(conn net.Conn, wg *sync.WaitGroup) {
+		packet := &TestPacket{
+			ID:         1,
+			Send:       true,
+			DataLength: int32(len("Hello World")),
+			Data:       []byte("Hello World"),
+		}
+		buf := c.buffer.Clone()
+		c.writePacket(buf, packet)
+		for i := 0; i <= 10; i++ {
+			conn.Write(buf.Bytes()[:buf.Len()])
+		}
+		buf.Reset()
+		packet = &TestPacket{
+			ID:         2,
+			Send:       true,
+			DataLength: int32(len("Bye World")),
+			Data:       []byte("Bye World"),
+		}
+		c.writePacket(buf, packet)
+		for i := 0; i <= 10; i++ {
+			conn.Write(buf.Bytes()[:buf.Len()])
+		}
+		wg.Done()
+	}
+
+	go func(wg *sync.WaitGroup) {
+		conn, err := listenConnection(":9123")
+		assert.NoError(t, err)
+		serve(conn, wg)
+	}(wg)
+	go func(wg *sync.WaitGroup) {
+		conn, err := listenConnection(":9124")
+		assert.NoError(t, err)
+		serve(conn, wg)
+	}(wg)
+
+	c.LocalConn, _ = connectTo(":9123")
+	c.RemoteConn, _ = connectTo(":9124")
+
+	counter := 0
+	servePacket := func(conn *Conn, packet Packet) {
+		if counter == 0 {
+			packet.SetSend(false)
+		}
+		counter++
+	}
+
+	c.proxy.HookPacket(2, true, servePacket)
+	c.proxy.HookPacket(2, false, servePacket)
+
+	go c.pipe(true)
+	go c.pipe(false)
+
+	wg.Wait()
 }
