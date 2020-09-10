@@ -192,6 +192,7 @@ func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
 	}
 	packet := InitializeStruct(packetType).(Packet)
 	packet.SetID(ID)
+	packet.SetSend(true)
 	packet.Read(buffer)
 	return packet
 }

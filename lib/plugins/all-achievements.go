@@ -20,13 +20,14 @@ func AllAchievements(proxy *wave.Proxy) {
 		defer close(done)
 		go func(done chan error, conn *wave.Conn) {
 			for {
-				err, closed := <-done
-				if closed {
+				err, ok := <-done
+				if ok {
+					if err != nil {
+						conn.Close(err)
+						break
+					}
+				} else {
 					log.Printf("All achievements claimed")
-					break
-				}
-				if err != nil {
-					conn.Close(err)
 					break
 				}
 			}
@@ -55,6 +56,7 @@ func AllAchievements(proxy *wave.Proxy) {
 		}
 
 		p.Achievement = lib.ACHIEVEMENT_AW_PLAYERKILLER
+		p.AchievementStat = ""
 		done <- conn.SendPacket(p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_LICHCAPE
