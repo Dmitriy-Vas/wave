@@ -4,7 +4,6 @@ import (
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
-// Empty packet
 // GetID returns packet ID.
 func (d *GetPingPacket) GetID() int64 {
 	return d.ID
@@ -25,6 +24,7 @@ func (d *GetPingPacket) SetSend(value bool) {
 	d.Send = value
 }
 
+// Empty packet
 type GetPingPacket struct {
 	ID   int64
 	Send bool

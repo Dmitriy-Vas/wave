@@ -4,7 +4,6 @@ import (
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
-// Empty packet
 // GetID returns packet ID.
 func (d *DeclineTradePacket) GetID() int64 {
 	return d.ID
@@ -25,6 +24,7 @@ func (d *DeclineTradePacket) SetSend(value bool) {
 	d.Send = value
 }
 
+// Empty packet
 type DeclineTradePacket struct {
 	ID   int64
 	Send bool

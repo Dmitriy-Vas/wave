@@ -4,7 +4,6 @@ import (
 	"github.com/Dmitriy-Vas/wave/buffer"
 )
 
-// Empty packet
 // GetID returns packet ID.
 func (d *CloseBankPacket) GetID() int64 {
 	return d.ID
@@ -25,6 +24,7 @@ func (d *CloseBankPacket) SetSend(value bool) {
 	d.Send = value
 }
 
+// Empty packet
 type CloseBankPacket struct {
 	ID   int64
 	Send bool
