@@ -24,11 +24,6 @@ type DefaultReader struct {
 	Order binary.ByteOrder
 }
 
-func InitReader(readerInterface PacketReader) {
-	reader := readerInterface.(*DefaultReader)
-	reader.Order = binary.LittleEndian
-}
-
 func (dr *DefaultReader) ReadBool(data []byte, index uint64) bool {
 	return dr.ReadByte(data, index) != 0
 }

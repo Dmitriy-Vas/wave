@@ -17,6 +17,7 @@ func newTestBuffer() *DefaultBuffer {
 		PacketWriter: testWriter,
 		max_len:      255,
 		len:          255,
+		init_len:     8,
 		buf:          make([]byte, 255),
 	}
 }
@@ -35,6 +36,7 @@ func TestDefaultReader_ReadByte(t *testing.T) {
 	buffer := newTestBuffer()
 	buffer.buf[0] = byte(255)
 	result1 := buffer.ReadByte(buffer.Bytes(), buffer.Index())
+	buffer.Back(1)
 	assert.Exactly(t, byte(255), result1)
 	buffer.buf[0] = byte(150)
 	result2 := buffer.ReadByte(buffer.Bytes(), buffer.Index())
@@ -170,4 +172,100 @@ func TestDefaultWriter_WriteString(t *testing.T) {
 	buffer.WriteString(buffer.buf, value1, buffer.index)
 	result1 := string(buffer.buf[:len(value1)])
 	assert.Exactly(t, value1, result1)
+}
+
+func TestDefaultBuffer_Back(t *testing.T) {
+	buffer := newTestBuffer()
+	buffer.index = 100
+	buffer.Back(50)
+	assert.EqualValues(t, 50, buffer.Index())
+	buffer.Back(100)
+	assert.EqualValues(t, 0, buffer.Index())
+}
+
+func TestDefaultBuffer_Next(t *testing.T) {
+	buffer := newTestBuffer()
+	buffer.Next(100)
+	assert.EqualValues(t, 100, buffer.Index())
+	buffer.len = 100
+	buffer.Next(50)
+	assert.EqualValues(t, 150, buffer.Len())
+	assert.EqualValues(t, 150, buffer.Index())
+}
+
+func TestDefaultBuffer_Bytes(t *testing.T) {
+	buffer := newTestBuffer()
+	bytes := buffer.Bytes()
+	assert.Exactly(t, make([]byte, 255), bytes)
+	assert.Len(t, bytes, 255)
+}
+
+func TestDefaultBuffer_Clone(t *testing.T) {
+	buffer1 := newTestBuffer()
+	buffer2 := buffer1.Clone()
+	buffer2.WriteInt(buffer2.Bytes(), 400, buffer2.Index())
+	result1 := buffer1.ReadInt(buffer1.Bytes(), buffer1.Index())
+	assert.NotEqual(t, 400, result1)
+	buffer1.WriteLong(buffer1.Bytes(), 999, buffer1.Index())
+	result2 := buffer2.ReadLong(buffer2.Bytes(), buffer2.Index())
+	assert.NotEqual(t, 999, result2)
+	assert.Len(t, buffer1.Bytes(), len(buffer2.Bytes()))
+	assert.Len(t, buffer2.Bytes(), len(buffer1.Bytes()))
+}
+
+func TestDefaultBuffer_Index(t *testing.T) {
+	buffer := newTestBuffer()
+	assert.Equal(t, buffer.index, buffer.Index())
+	buffer.Next(100)
+	assert.Equal(t, buffer.index, buffer.Index())
+	buffer.Back(900)
+	assert.Equal(t, buffer.index, buffer.Index())
+}
+
+func TestDefaultBuffer_Resize(t *testing.T) {
+	buffer := newTestBuffer()
+	assert.Panics(t, func() { buffer.Resize(1000) })
+	buffer.Resize(100)
+	assert.EqualValues(t, 100, buffer.Len())
+}
+
+func TestDefaultBuffer_Len(t *testing.T) {
+	buffer := newTestBuffer()
+	assert.EqualValues(t, 255, buffer.Len())
+}
+
+func TestDefaultBuffer_Reset(t *testing.T) {
+	buffer := newTestBuffer()
+	buffer.Reset()
+	assert.EqualValues(t, buffer.init_len, buffer.Len())
+	assert.EqualValues(t, 0, buffer.Index())
+}
+
+func TestDefaultBuffer_SetInitLength(t *testing.T) {
+	buffer := newTestBuffer()
+	buffer.SetInitLength(100)
+	assert.EqualValues(t, 100, buffer.init_len)
+}
+
+func TestDefaultBuffer_SetMaxLength(t *testing.T) {
+	buffer := newTestBuffer()
+	buffer.SetMaxLength(150)
+	assert.Len(t, buffer.Bytes(), 150)
+	assert.EqualValues(t, buffer.max_len, 150)
+}
+
+func TestDefaultBuffer_SetReader(t *testing.T) {
+	buffer := newTestBuffer()
+	assert.NotPanics(t, func() {
+		buffer.SetReader(&DefaultReader{Order: binary.BigEndian})
+	})
+	assert.IsType(t, (*DefaultReader)(nil), buffer.PacketReader)
+}
+
+func TestDefaultBuffer_SetWriter(t *testing.T) {
+	buffer := newTestBuffer()
+	assert.NotPanics(t, func() {
+		buffer.SetWriter(&DefaultWriter{Order: binary.BigEndian})
+	})
+	assert.IsType(t, (*DefaultWriter)(nil), buffer.PacketWriter)
 }

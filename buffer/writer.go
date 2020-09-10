@@ -24,11 +24,6 @@ type DefaultWriter struct {
 	Order binary.ByteOrder
 }
 
-func InitWriter(writerInterface PacketWriter) {
-	writer := writerInterface.(*DefaultWriter)
-	writer.Order = binary.LittleEndian
-}
-
 func (dw *DefaultWriter) WriteBool(data []byte, value bool, index uint64) {
 	var _value byte = 0
 	if value {
