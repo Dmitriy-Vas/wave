@@ -1,5 +1,8 @@
 # Wave
 Wave provides configurable MITM proxy to read and edit TCP packets from games.
+
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Dmitriy-Vas/wave)](https://pkg.go.dev/github.com/Dmitriy-Vas/wave)
+
 ![](wave_gopher.png)
 
 ## Table of Content
