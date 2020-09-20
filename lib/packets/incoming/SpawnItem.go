@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SpawnItemPacket) GetID() int64 {
-	return d.ID
+func (packet *SpawnItemPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SpawnItemPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SpawnItemPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SpawnItemPacket) GetSend() bool {
-	return d.Send
+func (packet *SpawnItemPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SpawnItemPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SpawnItemPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SpawnItemPacket struct {

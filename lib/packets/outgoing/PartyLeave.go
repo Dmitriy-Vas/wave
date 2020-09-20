@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *PartyLeavePacket) GetID() int64 {
-	return d.ID
+func (packet *PartyLeavePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *PartyLeavePacket) SetID(id int64) {
-	d.ID = id
+func (packet *PartyLeavePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *PartyLeavePacket) GetSend() bool {
-	return d.Send
+func (packet *PartyLeavePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *PartyLeavePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *PartyLeavePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type PartyLeavePacket struct {
 	Send bool
 }
 
-func (packet *PartyLeavePacket) Read(b buffer.PacketBuffer) {
+func (packet *PartyLeavePacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *PartyLeavePacket) Write(b buffer.PacketBuffer) {
+func (packet *PartyLeavePacket) Write(_ buffer.PacketBuffer) {
 }

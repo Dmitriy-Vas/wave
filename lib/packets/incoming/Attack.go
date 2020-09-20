@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *AttackPacket) GetID() int64 {
-	return d.ID
+func (packet *AttackPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *AttackPacket) SetID(id int64) {
-	d.ID = id
+func (packet *AttackPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *AttackPacket) GetSend() bool {
-	return d.Send
+func (packet *AttackPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *AttackPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *AttackPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type AttackPacket struct {
@@ -32,14 +32,14 @@ type AttackPacket struct {
 	FileID    byte
 }
 
-func (a *AttackPacket) Read(b buffer.PacketBuffer) {
-	a.Player = b.ReadInt(b.Bytes(), b.Index())
-	a.Attacking = b.ReadByte(b.Bytes(), b.Index())
-	a.FileID = b.ReadByte(b.Bytes(), b.Index())
+func (packet *AttackPacket) Read(b buffer.PacketBuffer) {
+	packet.Player = b.ReadInt(b.Bytes(), b.Index())
+	packet.Attacking = b.ReadByte(b.Bytes(), b.Index())
+	packet.FileID = b.ReadByte(b.Bytes(), b.Index())
 }
 
-func (a *AttackPacket) Write(b buffer.PacketBuffer) {
-	b.WriteInt(b.Bytes(), a.Player, b.Index())
-	b.WriteByte(b.Bytes(), a.Attacking, b.Index())
-	b.WriteByte(b.Bytes(), a.FileID, b.Index())
+func (packet *AttackPacket) Write(b buffer.PacketBuffer) {
+	b.WriteInt(b.Bytes(), packet.Player, b.Index())
+	b.WriteByte(b.Bytes(), packet.Attacking, b.Index())
+	b.WriteByte(b.Bytes(), packet.FileID, b.Index())
 }

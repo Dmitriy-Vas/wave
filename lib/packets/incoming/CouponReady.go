@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *CouponReadyPacket) GetID() int64 {
-	return d.ID
+func (packet *CouponReadyPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *CouponReadyPacket) SetID(id int64) {
-	d.ID = id
+func (packet *CouponReadyPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *CouponReadyPacket) GetSend() bool {
-	return d.Send
+func (packet *CouponReadyPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *CouponReadyPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *CouponReadyPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type CouponReadyPacket struct {

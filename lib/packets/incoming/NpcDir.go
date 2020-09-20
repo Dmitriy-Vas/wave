@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *NpcDirPacket) GetID() int64 {
-	return d.ID
+func (packet *NpcDirPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *NpcDirPacket) SetID(id int64) {
-	d.ID = id
+func (packet *NpcDirPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *NpcDirPacket) GetSend() bool {
-	return d.Send
+func (packet *NpcDirPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *NpcDirPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *NpcDirPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type NpcDirPacket struct {
@@ -34,23 +34,23 @@ type NpcDirPacket struct {
 	Position   objects.Vector2
 }
 
-func (n *NpcDirPacket) Read(b buffer.PacketBuffer) {
-	n.NpcNum = b.ReadLong(b.Bytes(), b.Index())
-	n.Dir = b.ReadByte(b.Bytes(), b.Index())
-	if n.IsPosition = b.ReadBool(b.Bytes(), b.Index()); n.IsPosition {
-		n.Position = objects.Vector2{
+func (packet *NpcDirPacket) Read(b buffer.PacketBuffer) {
+	packet.NpcNum = b.ReadLong(b.Bytes(), b.Index())
+	packet.Dir = b.ReadByte(b.Bytes(), b.Index())
+	if packet.IsPosition = b.ReadBool(b.Bytes(), b.Index()); packet.IsPosition {
+		packet.Position = objects.Vector2{
 			X: b.ReadInt(b.Bytes(), b.Index()),
 			Y: b.ReadInt(b.Bytes(), b.Index()),
 		}
 	}
 }
 
-func (n *NpcDirPacket) Write(b buffer.PacketBuffer) {
-	b.WriteLong(b.Bytes(), n.NpcNum, b.Index())
-	b.WriteByte(b.Bytes(), n.Dir, b.Index())
-	b.WriteBool(b.Bytes(), n.IsPosition, b.Index())
-	if n.IsPosition {
-		b.WriteInt(b.Bytes(), n.Position.X, b.Index())
-		b.WriteInt(b.Bytes(), n.Position.Y, b.Index())
+func (packet *NpcDirPacket) Write(b buffer.PacketBuffer) {
+	b.WriteLong(b.Bytes(), packet.NpcNum, b.Index())
+	b.WriteByte(b.Bytes(), packet.Dir, b.Index())
+	b.WriteBool(b.Bytes(), packet.IsPosition, b.Index())
+	if packet.IsPosition {
+		b.WriteInt(b.Bytes(), packet.Position.X, b.Index())
+		b.WriteInt(b.Bytes(), packet.Position.Y, b.Index())
 	}
 }

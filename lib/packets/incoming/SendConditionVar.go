@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SendConditionVarPacket) GetID() int64 {
-	return d.ID
+func (packet *SendConditionVarPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SendConditionVarPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SendConditionVarPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SendConditionVarPacket) GetSend() bool {
-	return d.Send
+func (packet *SendConditionVarPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SendConditionVarPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SendConditionVarPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SendConditionVarPacket struct {
@@ -32,7 +32,7 @@ type SendConditionVarPacket struct {
 
 func (packet *SendConditionVarPacket) Read(b buffer.PacketBuffer) {
 	packet.ConditionVars = make([]string, 100)
-	for i, _ := range packet.ConditionVars {
+	for i := range packet.ConditionVars {
 		packet.ConditionVars[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 	}
 }

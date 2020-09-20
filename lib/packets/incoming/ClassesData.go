@@ -9,23 +9,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ClassesDataPacket) GetID() int64 {
-	return d.ID
+func (packet *ClassesDataPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ClassesDataPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ClassesDataPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ClassesDataPacket) GetSend() bool {
-	return d.Send
+func (packet *ClassesDataPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ClassesDataPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ClassesDataPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ClassesDataPacket struct {
@@ -38,25 +38,25 @@ type ClassesDataPacket struct {
 func (packet *ClassesDataPacket) Read(b buffer.PacketBuffer) {
 	packet.MaxClasses = b.ReadByte(b.Bytes(), b.Index())
 	packet.Classes = make([]lib.ClassRec, packet.MaxClasses)
-	for i, _ := range packet.Classes {
+	for i := range packet.Classes {
 		packet.Classes[i].Stat = make([]byte, 6)   // TODO int to const
 		packet.Classes[i].Vital = make([]int64, 3) // TODO int to const
 		packet.Classes[i].Name = b.ReadString(b.Bytes(), b.Index(), 0)
 		MFace := strings.Split(b.ReadString(b.Bytes(), b.Index(), 0), ",")
 		FFace := strings.Split(b.ReadString(b.Bytes(), b.Index(), 0), ",")
-		for x, _ := range packet.Classes[i].Vital {
+		for x := range packet.Classes[i].Vital {
 			packet.Classes[i].Vital[x] = b.ReadLong(b.Bytes(), b.Index())
 		}
 		hairTintAmount := b.ReadInt(b.Bytes(), b.Index())
 		packet.Classes[i].HairTint = make([]lib.ClassHairTintRec, hairTintAmount)
-		for x, _ := range packet.Classes[i].HairTint {
+		for x := range packet.Classes[i].HairTint {
 			packet.Classes[i].HairTint[x].Name = b.ReadString(b.Bytes(), b.Index(), 0)
 			packet.Classes[i].HairTint[x].Color = b.ReadString(b.Bytes(), b.Index(), 0)
 			packet.Classes[i].HairTint[x].Premium = b.ReadBool(b.Bytes(), b.Index())
 		}
 		classSpriteAmount := b.ReadInt(b.Bytes(), b.Index())
 		packet.Classes[i].Sprite = make([]lib.ClassSpriteRec, classSpriteAmount)
-		for x, _ := range packet.Classes[i].Sprite {
+		for x := range packet.Classes[i].Sprite {
 			packet.Classes[i].Sprite[x].Name = b.ReadString(b.Bytes(), b.Index(), 0)
 			packet.Classes[i].Sprite[x].Premium = b.ReadBool(b.Bytes(), b.Index())
 			packet.Classes[i].Sprite[x].Male = b.ReadInt(b.Bytes(), b.Index())
@@ -74,13 +74,13 @@ func (packet *ClassesDataPacket) Read(b buffer.PacketBuffer) {
 		}
 		classHairAmount := b.ReadInt(b.Bytes(), b.Index())
 		packet.Classes[i].Hair = make([]lib.ClassSpriteRec, classHairAmount)
-		for x, _ := range packet.Classes[i].Hair {
+		for x := range packet.Classes[i].Hair {
 			packet.Classes[i].Hair[x].Name = b.ReadString(b.Bytes(), b.Index(), 0)
 			packet.Classes[i].Hair[x].Premium = b.ReadBool(b.Bytes(), b.Index())
 			packet.Classes[i].Hair[x].Male = b.ReadInt(b.Bytes(), b.Index())
 			packet.Classes[i].Hair[x].Female = b.ReadInt(b.Bytes(), b.Index())
 		}
-		for x, _ := range packet.Classes[i].Stat {
+		for x := range packet.Classes[i].Stat {
 			packet.Classes[i].Stat[x] = byte(b.ReadInt(b.Bytes(), b.Index()))
 		}
 	}

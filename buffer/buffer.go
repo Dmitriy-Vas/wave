@@ -22,11 +22,11 @@ type DefaultBuffer struct {
 	PacketReader
 	PacketWriter
 
-	init_len uint64
-	max_len  uint64
-	len      uint64
-	index    uint64
-	buf      []byte
+	initLen uint64
+	maxLen  uint64
+	len     uint64
+	index   uint64
+	buf     []byte
 }
 
 func (db *DefaultBuffer) WriteBool(data []byte, value bool, index uint64) {
@@ -153,18 +153,18 @@ func (db *DefaultBuffer) Clone() PacketBuffer {
 	return &DefaultBuffer{
 		PacketReader: db.PacketReader,
 		PacketWriter: db.PacketWriter,
-		init_len:     db.init_len,
-		max_len:      db.max_len,
-		buf:          make([]byte, db.max_len),
+		initLen:      db.initLen,
+		maxLen:       db.maxLen,
+		buf:          make([]byte, db.maxLen),
 	}
 }
 
 func (db *DefaultBuffer) SetInitLength(length uint64) {
-	db.init_len = length
+	db.initLen = length
 }
 
 func (db *DefaultBuffer) SetMaxLength(size uint64) {
-	db.max_len = size
+	db.maxLen = size
 	db.buf = make([]byte, size)
 }
 
@@ -177,7 +177,7 @@ func (db *DefaultBuffer) SetWriter(writer PacketWriter) {
 }
 
 func (db *DefaultBuffer) Resize(size uint64) {
-	if size > db.max_len {
+	if size > db.maxLen {
 		panic("New buffer size is too large")
 	}
 	db.len = size
@@ -202,7 +202,7 @@ func (db *DefaultBuffer) Back(amount uint64) uint64 {
 
 func (db *DefaultBuffer) Reset() {
 	db.index = 0
-	db.len = db.init_len
+	db.len = db.initLen
 }
 
 func (db *DefaultBuffer) Len() uint64 {

@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *UpdateResourcePacket) GetID() int64 {
-	return d.ID
+func (packet *UpdateResourcePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *UpdateResourcePacket) SetID(id int64) {
-	d.ID = id
+func (packet *UpdateResourcePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *UpdateResourcePacket) GetSend() bool {
-	return d.Send
+func (packet *UpdateResourcePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *UpdateResourcePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *UpdateResourcePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type UpdateResourcePacket struct {

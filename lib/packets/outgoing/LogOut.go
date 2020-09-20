@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *LogOutPacket) GetID() int64 {
-	return d.ID
+func (packet *LogOutPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *LogOutPacket) SetID(id int64) {
-	d.ID = id
+func (packet *LogOutPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *LogOutPacket) GetSend() bool {
-	return d.Send
+func (packet *LogOutPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *LogOutPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *LogOutPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type LogOutPacket struct {
 	Send bool
 }
 
-func (packet *LogOutPacket) Read(b buffer.PacketBuffer) {
+func (packet *LogOutPacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *LogOutPacket) Write(b buffer.PacketBuffer) {
+func (packet *LogOutPacket) Write(_ buffer.PacketBuffer) {
 }

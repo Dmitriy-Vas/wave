@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SaveComboPacket) GetID() int64 {
-	return d.ID
+func (packet *SaveComboPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SaveComboPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SaveComboPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SaveComboPacket) GetSend() bool {
-	return d.Send
+func (packet *SaveComboPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SaveComboPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SaveComboPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SaveComboPacket struct {
@@ -34,7 +34,7 @@ type SaveComboPacket struct {
 
 func (packet *SaveComboPacket) Read(b buffer.PacketBuffer) {
 	packet.ComboCache = make([]lib.ComboCacheDataRec, 3) // TODO int to const
-	for i, _ := range packet.ComboCache {
+	for i := range packet.ComboCache {
 		packet.ComboCache[i] = lib.ComboCacheDataRec{
 			Num: b.ReadInt(b.Bytes(), b.Index()),
 		}

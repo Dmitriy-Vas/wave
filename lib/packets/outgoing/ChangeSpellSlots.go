@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ChangeSpellSlotsPacket) GetID() int64 {
-	return d.ID
+func (packet *ChangeSpellSlotsPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ChangeSpellSlotsPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ChangeSpellSlotsPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ChangeSpellSlotsPacket) GetSend() bool {
-	return d.Send
+func (packet *ChangeSpellSlotsPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ChangeSpellSlotsPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ChangeSpellSlotsPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ChangeSpellSlotsPacket struct {

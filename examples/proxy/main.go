@@ -63,16 +63,16 @@ func RegisterHooks(proxy *wave.Proxy) {
 	})
 	// Manually create and send packet when player died
 	var once = sync.Once{}
-	var buffer buffer.PacketBuffer = nil
+	var buf buffer.PacketBuffer = nil
 	proxy.HookPacket(int64(lib.IncPlayerDeath), false, func(conn *wave.Conn, packet wave.Packet) {
-		once.Do(func() { buffer = conn.Buffer().Clone() })
+		once.Do(func() { buf = conn.Buffer().Clone() })
 		p := &incoming.MapSoundPacket{
 			ID:    int64(lib.IncMapSound),
 			Send:  true,
 			Num:   0,
 			Sound: "buba_death.wav",
 		}
-		if err := conn.SendPacket(buffer, p, false); err != nil {
+		if err := conn.SendPacket(buf, p, false); err != nil {
 			log.Printf("Error sending packet: %v", err)
 		}
 	})
@@ -83,14 +83,14 @@ func RegisterHooks(proxy *wave.Proxy) {
 }
 
 // Example of using Incoming process
-func IncomingProcess(buffer buffer.PacketBuffer, start bool) {
+func IncomingProcess(buffer buffer.PacketBuffer, _ bool) {
 	raw, _ := hex.DecodeString("6a39570cc9de4ec71d64821894")
 	cipher, _ := rc4.NewCipher(raw)
 	cipher.XORKeyStream(buffer.Bytes()[5:], buffer.Bytes()[5:])
 }
 
 // Example of using Outgoing process
-func OutgoingProcess(buffer buffer.PacketBuffer, start bool) {
+func OutgoingProcess(buffer buffer.PacketBuffer, _ bool) {
 	raw, _ := hex.DecodeString("c79332b197f92ba85ed281a023")
 	cipher, _ := rc4.NewCipher(raw)
 	cipher.XORKeyStream(buffer.Bytes()[5:], buffer.Bytes()[5:])

@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *OpenShopPacket) GetID() int64 {
-	return d.ID
+func (packet *OpenShopPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *OpenShopPacket) SetID(id int64) {
-	d.ID = id
+func (packet *OpenShopPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *OpenShopPacket) GetSend() bool {
-	return d.Send
+func (packet *OpenShopPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *OpenShopPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *OpenShopPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type OpenShopPacket struct {

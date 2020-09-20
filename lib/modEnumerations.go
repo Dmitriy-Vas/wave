@@ -2,6 +2,7 @@ package lib
 
 type NPCType uint
 
+//noinspection ALL
 const (
 	NPCTypePhysical NPCType = iota
 	NPCTypeMagical
@@ -10,6 +11,7 @@ const (
 
 type ItemPropertyType uint
 
+//noinspection ALL
 const (
 	ItemLight ItemPropertyType = iota
 	ItemSpeed
@@ -36,6 +38,7 @@ const (
 
 type ItemMaterialType uint
 
+//noinspection ALL
 const (
 	MaterialOre ItemMaterialType = iota + 1
 	MaterialFish
@@ -45,6 +48,7 @@ const (
 
 type ProfessionType uint
 
+//noinspection ALL
 const (
 	ProfessionDigging ProfessionType = iota
 	ProfessionMining
@@ -54,6 +58,7 @@ const (
 
 type StatsType uint
 
+//noinspection ALL
 const (
 	StatsStrength StatsType = iota + 1
 	StatsEndurance
@@ -65,6 +70,7 @@ const (
 
 type VitalType uint
 
+//noinspection ALL
 const (
 	HP VitalType = iota + 1
 	MP
@@ -73,6 +79,7 @@ const (
 
 type EquipmentType uint
 
+//noinspection ALL
 const (
 	EquipmentMask EquipmentType = iota + 1
 	EquipmentCape
@@ -94,6 +101,7 @@ const (
 
 type CashEquipment uint
 
+//noinspection ALL
 const (
 	Cape CashEquipment = iota + 1
 	Hat
@@ -111,6 +119,7 @@ const (
 
 type DefenseType uint
 
+//noinspection ALL
 const (
 	DefensePhisic DefenseType = iota + 1
 	DefenseMagic
@@ -119,6 +128,7 @@ const (
 
 type PlayerClassType uint
 
+//noinspection ALL
 const (
 	PlayerClassKnight PlayerClassType = iota + 1
 	PlayerClassStalker
@@ -130,6 +140,7 @@ const (
 
 type SpellType uint
 
+//noinspection ALL
 const (
 	SpellTypeDamageHP SpellType = iota
 	SpellTypeDamageMP
@@ -157,6 +168,7 @@ const (
 
 type ChatMod uint
 
+//noinspection ALL
 const (
 	ChatMap ChatMod = iota
 	ChatGame
@@ -167,6 +179,7 @@ const (
 
 type QuestType uint
 
+//noinspection ALL
 const (
 	QuestNormal QuestType = iota
 	QuestStory
@@ -175,6 +188,7 @@ const (
 
 type SkullType uint
 
+//noinspection ALL
 const (
 	SkullNormal SkullType = iota
 	SkullBronze
@@ -182,6 +196,7 @@ const (
 
 type PlayerRace uint
 
+//noinspection ALL
 const (
 	RaceHuman PlayerRace = iota + 1
 	RaceWolf
@@ -190,6 +205,7 @@ const (
 
 type ToolType uint
 
+//noinspection ALL
 const (
 	ToolNone ToolType = iota
 	ToolSword
@@ -204,6 +220,7 @@ const (
 
 type TargetType uint
 
+//noinspection ALL
 const (
 	TargetNone TargetType = iota
 	TargetPlayer
@@ -214,6 +231,7 @@ const (
 
 type CurrenyOperation uint
 
+//noinspection ALL
 const (
 	CurrencyNone CurrenyOperation = iota
 	CurrencyDrop
@@ -229,6 +247,7 @@ const (
 
 type ItemRarityType uint
 
+//noinspection ALL
 const (
 	RarityNormal ItemRarityType = iota
 	RaritySpecial
@@ -242,6 +261,7 @@ const (
 
 type ServerMod uint
 
+//noinspection ALL
 const (
 	ServerModExperience ServerMod = iota
 	ServerModDrop
@@ -258,6 +278,7 @@ const (
 
 type Lang int32
 
+//noinspection ALL
 const (
 	LangCustom Lang = iota - 1
 	LangSEquipItem

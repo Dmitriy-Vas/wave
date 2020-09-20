@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *FavAwardsPacket) GetID() int64 {
-	return d.ID
+func (packet *FavAwardsPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *FavAwardsPacket) SetID(id int64) {
-	d.ID = id
+func (packet *FavAwardsPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *FavAwardsPacket) GetSend() bool {
-	return d.Send
+func (packet *FavAwardsPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *FavAwardsPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *FavAwardsPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type FavAwardsPacket struct {

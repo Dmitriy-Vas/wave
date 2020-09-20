@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *AdminTaskPacket) GetID() int64 {
-	return d.ID
+func (packet *AdminTaskPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *AdminTaskPacket) SetID(id int64) {
-	d.ID = id
+func (packet *AdminTaskPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *AdminTaskPacket) GetSend() bool {
-	return d.Send
+func (packet *AdminTaskPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *AdminTaskPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *AdminTaskPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type AdminTaskPacket struct {

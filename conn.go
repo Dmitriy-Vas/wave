@@ -48,11 +48,11 @@ func (c *Conn) start() {
 
 // Reconnect connects to the remote address, closes (if exists) current connection.
 func (c *Conn) Reconnect(RemoteAddress net.Addr) {
-	remote_conn, _ := net.Dial("tcp", RemoteAddress.String())
+	remoteConn, _ := net.Dial("tcp", RemoteAddress.String())
 	if c.RemoteConn != nil {
 		c.RemoteConn.Close()
 	}
-	c.RemoteConn = remote_conn
+	c.RemoteConn = remoteConn
 }
 
 // Close closes the connection, error is optionally.
@@ -126,14 +126,14 @@ func (c *Conn) pipe(outgoing bool) {
 			continue
 		}
 		// Read bytes from the connection and saves them to the buffer
-		buf_index := buffer.Index()
-		buf_len := buffer.Len()
-		n, err := src.Read(buffer.Bytes()[buf_index:buf_len])
+		bufIndex := buffer.Index()
+		bufLen := buffer.Len()
+		n, err := src.Read(buffer.Bytes()[bufIndex:bufLen])
 		if err != nil {
 			c.Close(err)
 			return
 		}
-		if buf_index == 0 {
+		if bufIndex == 0 {
 			// Payload size
 			length := ReadNumber(buffer, c.proxy.Config.PacketLengthSize)
 			if !c.proxy.Config.LengthIncludesSelf {
@@ -141,17 +141,17 @@ func (c *Conn) pipe(outgoing bool) {
 			}
 			// Returns back in index
 			buffer.Back(c.proxy.Config.PacketLengthSize)
-			buf_len = uint64(length)
+			bufLen = uint64(length)
 			// Grow up buffer to fit full packet
-			buffer.Resize(buf_len)
+			buffer.Resize(bufLen)
 		}
-		buf_index = buffer.Next(uint64(n))
+		bufIndex = buffer.Next(uint64(n))
 		// Wait until full packet
-		if buf_index < buf_len {
+		if bufIndex < bufLen {
 			continue
 		}
 		// Full packet received
-		buffer.Back(buf_index - c.proxy.Config.PacketLengthSize)
+		buffer.Back(bufIndex - c.proxy.Config.PacketLengthSize)
 		packet := c.readPacket(buffer, outgoing)
 		if packet != nil {
 			hooks, ok := hooks.Load(packet.GetID())

@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *EarthquakePacket) GetID() int64 {
-	return d.ID
+func (packet *EarthquakePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *EarthquakePacket) SetID(id int64) {
-	d.ID = id
+func (packet *EarthquakePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *EarthquakePacket) GetSend() bool {
-	return d.Send
+func (packet *EarthquakePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *EarthquakePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *EarthquakePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type EarthquakePacket struct {

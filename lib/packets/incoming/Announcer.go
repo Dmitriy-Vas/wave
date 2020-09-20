@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *AnnouncerPacket) GetID() int64 {
-	return d.ID
+func (packet *AnnouncerPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *AnnouncerPacket) SetID(id int64) {
-	d.ID = id
+func (packet *AnnouncerPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *AnnouncerPacket) GetSend() bool {
-	return d.Send
+func (packet *AnnouncerPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *AnnouncerPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *AnnouncerPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,10 +30,10 @@ type AnnouncerPacket struct {
 	Send bool
 }
 
-func (packet *AnnouncerPacket) Read(b buffer.PacketBuffer) {
+func (packet *AnnouncerPacket) Read(_ buffer.PacketBuffer) {
 
 }
 
-func (packet *AnnouncerPacket) Write(b buffer.PacketBuffer) {
+func (packet *AnnouncerPacket) Write(_ buffer.PacketBuffer) {
 
 }

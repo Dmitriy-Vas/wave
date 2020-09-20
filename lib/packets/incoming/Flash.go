@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *FlashPacket) GetID() int64 {
-	return d.ID
+func (packet *FlashPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *FlashPacket) SetID(id int64) {
-	d.ID = id
+func (packet *FlashPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *FlashPacket) GetSend() bool {
-	return d.Send
+func (packet *FlashPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *FlashPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *FlashPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type FlashPacket struct {

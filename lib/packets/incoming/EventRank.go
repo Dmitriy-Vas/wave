@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *EventRankPacket) GetID() int64 {
-	return d.ID
+func (packet *EventRankPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *EventRankPacket) SetID(id int64) {
-	d.ID = id
+func (packet *EventRankPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *EventRankPacket) GetSend() bool {
-	return d.Send
+func (packet *EventRankPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *EventRankPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *EventRankPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type EventRankPacket struct {
@@ -34,11 +34,11 @@ type EventRankPacket struct {
 
 func (packet *EventRankPacket) Read(b buffer.PacketBuffer) {
 	packet.Events = make([]string, 3) // TODO int to const
-	for i, _ := range packet.Events {
+	for i := range packet.Events {
 		packet.Events[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 	}
 	packet.Ranks = make([]lib.EventsRankRec, 10) // TODO int to const
-	for i, _ := range packet.Ranks {
+	for i := range packet.Ranks {
 		packet.Ranks[i] = lib.EventsRankRec{
 			Name:    b.ReadString(b.Bytes(), b.Index(), 0),
 			Classes: b.ReadInt(b.Bytes(), b.Index()),

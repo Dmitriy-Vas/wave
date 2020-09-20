@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *WhisperPacket) GetID() int64 {
-	return d.ID
+func (packet *WhisperPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *WhisperPacket) SetID(id int64) {
-	d.ID = id
+func (packet *WhisperPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *WhisperPacket) GetSend() bool {
-	return d.Send
+func (packet *WhisperPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *WhisperPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *WhisperPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type WhisperPacket struct {

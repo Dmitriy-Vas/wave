@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *WhosOnlinePacket) GetID() int64 {
-	return d.ID
+func (packet *WhosOnlinePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *WhosOnlinePacket) SetID(id int64) {
-	d.ID = id
+func (packet *WhosOnlinePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *WhosOnlinePacket) GetSend() bool {
-	return d.Send
+func (packet *WhosOnlinePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *WhosOnlinePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *WhosOnlinePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type WhosOnlinePacket struct {
 	Send bool
 }
 
-func (packet *WhosOnlinePacket) Read(b buffer.PacketBuffer) {
+func (packet *WhosOnlinePacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *WhosOnlinePacket) Write(b buffer.PacketBuffer) {
+func (packet *WhosOnlinePacket) Write(_ buffer.PacketBuffer) {
 }

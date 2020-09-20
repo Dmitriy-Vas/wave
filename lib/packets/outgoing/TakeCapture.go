@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *TakeCapturePacket) GetID() int64 {
-	return d.ID
+func (packet *TakeCapturePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *TakeCapturePacket) SetID(id int64) {
-	d.ID = id
+func (packet *TakeCapturePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *TakeCapturePacket) GetSend() bool {
-	return d.Send
+func (packet *TakeCapturePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *TakeCapturePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *TakeCapturePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type TakeCapturePacket struct {

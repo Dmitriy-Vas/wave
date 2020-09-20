@@ -7,23 +7,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *GetStatsPacket) GetID() int64 {
-	return d.ID
+func (packet *GetStatsPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *GetStatsPacket) SetID(id int64) {
-	d.ID = id
+func (packet *GetStatsPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *GetStatsPacket) GetSend() bool {
-	return d.Send
+func (packet *GetStatsPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *GetStatsPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *GetStatsPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type GetStatsPacket struct {

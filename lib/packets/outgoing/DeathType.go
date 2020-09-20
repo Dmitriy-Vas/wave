@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *DeathTypePacket) GetID() int64 {
-	return d.ID
+func (packet *DeathTypePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *DeathTypePacket) SetID(id int64) {
-	d.ID = id
+func (packet *DeathTypePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *DeathTypePacket) GetSend() bool {
-	return d.Send
+func (packet *DeathTypePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *DeathTypePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *DeathTypePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type DeathTypePacket struct {

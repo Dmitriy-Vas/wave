@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *GetPingPacket) GetID() int64 {
-	return d.ID
+func (packet *GetPingPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *GetPingPacket) SetID(id int64) {
-	d.ID = id
+func (packet *GetPingPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *GetPingPacket) GetSend() bool {
-	return d.Send
+func (packet *GetPingPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *GetPingPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *GetPingPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type GetPingPacket struct {
 	Send bool
 }
 
-func (packet *GetPingPacket) Read(b buffer.PacketBuffer) {
+func (packet *GetPingPacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *GetPingPacket) Write(b buffer.PacketBuffer) {
+func (packet *GetPingPacket) Write(_ buffer.PacketBuffer) {
 }

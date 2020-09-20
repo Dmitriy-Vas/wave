@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ModifierPacket) GetID() int64 {
-	return d.ID
+func (packet *ModifierPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ModifierPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ModifierPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ModifierPacket) GetSend() bool {
-	return d.Send
+func (packet *ModifierPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ModifierPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ModifierPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ModifierPacket struct {

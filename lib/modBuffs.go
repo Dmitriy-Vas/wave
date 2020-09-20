@@ -2,6 +2,7 @@ package lib
 
 type BuffTypeEnum uint
 
+//noinspection ALL
 const (
 	HealHP BuffTypeEnum = iota + 1
 	HealMP

@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SellItemPacket) GetID() int64 {
-	return d.ID
+func (packet *SellItemPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SellItemPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SellItemPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SellItemPacket) GetSend() bool {
-	return d.Send
+func (packet *SellItemPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SellItemPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SellItemPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SellItemPacket struct {

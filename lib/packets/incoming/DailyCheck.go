@@ -7,23 +7,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *DailyCheckPacket) GetID() int64 {
-	return d.ID
+func (packet *DailyCheckPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *DailyCheckPacket) SetID(id int64) {
-	d.ID = id
+func (packet *DailyCheckPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *DailyCheckPacket) GetSend() bool {
-	return d.Send
+func (packet *DailyCheckPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *DailyCheckPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *DailyCheckPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type DailyCheckPacket struct {

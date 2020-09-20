@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *PlayerMasterPacket) GetID() int64 {
-	return d.ID
+func (packet *PlayerMasterPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *PlayerMasterPacket) SetID(id int64) {
-	d.ID = id
+func (packet *PlayerMasterPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *PlayerMasterPacket) GetSend() bool {
-	return d.Send
+func (packet *PlayerMasterPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *PlayerMasterPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *PlayerMasterPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type PlayerMasterPacket struct {
@@ -34,7 +34,7 @@ type PlayerMasterPacket struct {
 func (packet *PlayerMasterPacket) Read(b buffer.PacketBuffer) {
 	packet.Item = b.ReadInt(b.Bytes(), b.Index())
 	packet.Master = make([]int32, 25)
-	for i, _ := range packet.Master {
+	for i := range packet.Master {
 		packet.Master[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 }

@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ForgeActionPacket) GetID() int64 {
-	return d.ID
+func (packet *ForgeActionPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ForgeActionPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ForgeActionPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ForgeActionPacket) GetSend() bool {
-	return d.Send
+func (packet *ForgeActionPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ForgeActionPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ForgeActionPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ForgeActionPacket struct {

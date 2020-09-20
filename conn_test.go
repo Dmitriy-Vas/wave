@@ -66,7 +66,7 @@ func TestConn_Close(t *testing.T) {
 			Done:      d,
 		}
 		servConn.Close()
-		conn.Close(fmt.Errorf("Hello World"))
+		conn.Close(fmt.Errorf("%s", "Hello World"))
 	}(done)
 
 	clientConn, err := connectTo(":9123")

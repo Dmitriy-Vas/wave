@@ -11,7 +11,7 @@ func PlayerInvData(b buffer.PacketBuffer, slot int) {
 	Global.PlayerInventory[slot].Slot = b.ReadByte(b.Bytes(), b.Index())
 	if GetItemInt(Global.PlayerInventory[slot].Num, ItemEnhancement) > 0 {
 		Global.PlayerInventory[slot].Stat = make([]byte, 5)
-		for i, _ := range Global.PlayerInventory[slot].Stat {
+		for i := range Global.PlayerInventory[slot].Stat {
 			Global.PlayerInventory[slot].Stat[i] = b.ReadByte(b.Bytes(), b.Index())
 		}
 	}
@@ -40,7 +40,7 @@ func ReadPlayerBankData(b buffer.PacketBuffer) InvItemRec {
 		Stat:  make([]byte, 6),
 	}
 	if true { //modTypes.Item[ptr.Num].Int[13] > 0; TODO
-		for i, _ := range item.Stat {
+		for i := range item.Stat {
 			item.Stat[i] = b.ReadByte(b.Bytes(), b.Index())
 		}
 	}
@@ -64,7 +64,7 @@ func ReadCashShopData(b buffer.PacketBuffer) CashShopRec {
 		Icon: b.ReadInt(b.Bytes(), b.Index()),
 	}
 	item.Slot = make([]TradeCashItemRec, b.ReadInt(b.Bytes(), b.Index()))
-	for i, _ := range item.Slot {
+	for i := range item.Slot {
 		item.Slot[i].Item = b.ReadInt(b.Bytes(), b.Index())
 		item.Slot[i].Value = b.ReadLong(b.Bytes(), b.Index())
 		item.Slot[i].Price = b.ReadLong(b.Bytes(), b.Index())
@@ -150,15 +150,15 @@ func ReadItemData(b buffer.PacketBuffer) ItemRec {
 		Element:       make([]int32, 4),  // TODO int to const
 		ElementChance: make([]int32, 4),  // TODO int to const
 	}
-	for i, _ := range item.AddStat {
+	for i := range item.AddStat {
 		item.AddStat[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 	item.Animation = b.ReadLong(b.Bytes(), b.Index())
 	item.BindType = b.ReadByte(b.Bytes(), b.Index())
-	for i, _ := range item.VitalMode {
+	for i := range item.VitalMode {
 		item.VitalMode[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range item.ClassReq {
+	for i := range item.ClassReq {
 		item.ClassReq[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
 	item.Data1 = b.ReadInt(b.Bytes(), b.Index())
@@ -173,7 +173,7 @@ func ReadItemData(b buffer.PacketBuffer) ItemRec {
 	item.Price = b.ReadLong(b.Bytes(), b.Index())
 	item.Rarity = b.ReadByte(b.Bytes(), b.Index())
 	item.Speed = b.ReadLong(b.Bytes(), b.Index())
-	for i, _ := range item.StatReq {
+	for i := range item.StatReq {
 		item.StatReq[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 	item.Type = b.ReadByte(b.Bytes(), b.Index())
@@ -192,13 +192,13 @@ func ReadItemData(b buffer.PacketBuffer) ItemRec {
 	item.BigPic = b.ReadInt(b.Bytes(), b.Index())
 	item.comboSlot = b.ReadLong(b.Bytes(), b.Index())
 	item.Recipe = b.ReadInt(b.Bytes(), b.Index())
-	for i, _ := range item.Int {
+	for i := range item.Int {
 		item.Int[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range item.Bool {
+	for i := range item.Bool {
 		item.Bool[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
-	for i, _ := range item.Element {
+	for i := range item.Element {
 		item.Element[i] = b.ReadInt(b.Bytes(), b.Index())
 		item.ElementChance[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
@@ -211,7 +211,7 @@ func ReadRandomItemData(b buffer.PacketBuffer) RandomItemRec {
 		Name: b.ReadString(b.Bytes(), b.Index(), 0),
 		Item: make([]RandomItemListRec, 11), // TODO int to const
 	}
-	for i, _ := range randomItem.Item {
+	for i := range randomItem.Item {
 		randomItem.Item[i].Num = b.ReadInt(b.Bytes(), b.Index())
 		randomItem.Item[i].Value = b.ReadInt(b.Bytes(), b.Index())
 		randomItem.Item[i].Luck = b.ReadByte(b.Bytes(), b.Index())
@@ -239,11 +239,11 @@ func ReadPuzzleData(b buffer.PacketBuffer) PuzzleRec {
 	}
 	if puzzle.Size.X > 0 && puzzle.Size.Y > 0 {
 		puzzle.Cube = make([][]PuzzleCubeRec, puzzle.Size.X)
-		for i, _ := range puzzle.Cube {
+		for i := range puzzle.Cube {
 			puzzle.Cube[i] = make([]PuzzleCubeRec, puzzle.Size.Y)
 		}
-		for x, _ := range puzzle.Cube {
-			for y, _ := range puzzle.Cube[x] {
+		for x := range puzzle.Cube {
+			for y := range puzzle.Cube[x] {
 				puzzle.Cube[x][y] = PuzzleCubeRec{
 					Image:  b.ReadInt(b.Bytes(), b.Index()),
 					Move:   b.ReadBool(b.Bytes(), b.Index()),
@@ -267,22 +267,22 @@ func ReadAnimationData(b buffer.PacketBuffer) AnimationRec {
 		XOffset:   make([]int64, 2), // TODO int to const
 		YOffset:   make([]int64, 2), // TODO int to const
 	}
-	for i, _ := range animation.Frames {
+	for i := range animation.Frames {
 		animation.Frames[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range animation.LoopCount {
+	for i := range animation.LoopCount {
 		animation.LoopCount[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range animation.LoopTime {
+	for i := range animation.LoopTime {
 		animation.LoopTime[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range animation.Sprite {
+	for i := range animation.Sprite {
 		animation.Sprite[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range animation.XOffset {
+	for i := range animation.XOffset {
 		animation.XOffset[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range animation.YOffset {
+	for i := range animation.YOffset {
 		animation.YOffset[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
 	animation.Sound = b.ReadString(b.Bytes(), b.Index(), 0)
@@ -304,7 +304,7 @@ func ReadNpcData(b buffer.PacketBuffer) NpcRec {
 		Vec:           make([]objects.Vector2, 1), // TODO int to const
 		QuestList:     make([]int32, 6),           // TODO int to const
 	}
-	for i, _ := range npc.DropChance {
+	for i := range npc.DropChance {
 		npc.DropChance[i] = b.ReadInt(b.Bytes(), b.Index())
 		npc.DropItem[i] = b.ReadInt(b.Bytes(), b.Index())
 		npc.DropItemValue[i] = b.ReadInt(b.Bytes(), b.Index())
@@ -317,30 +317,30 @@ func ReadNpcData(b buffer.PacketBuffer) NpcRec {
 	npc.Light = b.ReadInt(b.Bytes(), b.Index())
 	npc.CardDrop = b.ReadInt(b.Bytes(), b.Index())
 	npc.CardNum = b.ReadInt(b.Bytes(), b.Index())
-	for i, _ := range npc.Spell {
+	for i := range npc.Spell {
 		npc.Spell[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range npc.Element {
+	for i := range npc.Element {
 		npc.Element[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range npc.Bool {
+	for i := range npc.Bool {
 		npc.Bool[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
-	for i, _ := range npc.Int {
+	for i := range npc.Int {
 		npc.Int[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range npc.Vec {
+	for i := range npc.Vec {
 		npc.Vec[i] = objects.Vector2{
 			X: b.ReadInt(b.Bytes(), b.Index()),
 			Y: b.ReadInt(b.Bytes(), b.Index()),
 		}
 	}
-	for i, _ := range npc.QuestList {
+	for i := range npc.QuestList {
 		npc.QuestList[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 	if npc.Bool[9] {
 		npc.ScriptList = make([]NpcScriptListRec, 6) // TODO int to const
-		for i, _ := range npc.ScriptList {
+		for i := range npc.ScriptList {
 			npc.ScriptList[i].Num = b.ReadInt(b.Bytes(), b.Index())
 			npc.ScriptList[i].Interval = b.ReadInt(b.Bytes(), b.Index())
 			npc.ScriptList[i].Variable = b.ReadString(b.Bytes(), b.Index(), 0)
@@ -363,7 +363,7 @@ func ReadShopData(b buffer.PacketBuffer) ShopRec {
 		Pic:       b.ReadInt(b.Bytes(), b.Index()),
 		TradeItem: make([]TradeItemRec, 37), // TODO int to const
 	}
-	for i, _ := range shop.TradeItem {
+	for i := range shop.TradeItem {
 		shop.TradeItem[i].CostItem = b.ReadInt(b.Bytes(), b.Index())
 		shop.TradeItem[i].CostValue = b.ReadLong(b.Bytes(), b.Index())
 		shop.TradeItem[i].Item = b.ReadInt(b.Bytes(), b.Index())
@@ -413,10 +413,10 @@ func ReadSpellData(b buffer.PacketBuffer) SpellRec {
 		Int:          make([]int32, 14), // TODO int to const
 		Bool:         make([]bool, 3),   // TODO int to const
 	}
-	for i, _ := range spell.Int {
+	for i := range spell.Int {
 		spell.Int[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range spell.Bool {
+	for i := range spell.Bool {
 		spell.Bool[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
 	return spell
@@ -435,13 +435,13 @@ func ReadResourceData(b buffer.PacketBuffer) ResourceRec {
 		ItemLuck:       make([]int32, 11), // TODO int to const
 		Int:            make([]int32, 3),  // TODO int to const
 	}
-	for i, _ := range resource.ItemReward {
+	for i := range resource.ItemReward {
 		resource.ItemReward[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range resource.ItemVal {
+	for i := range resource.ItemVal {
 		resource.ItemVal[i] = b.ReadLong(b.Bytes(), b.Index())
 	}
-	for i, _ := range resource.ItemLuck {
+	for i := range resource.ItemLuck {
 		resource.ItemLuck[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 	resource.ResourceImage = b.ReadInt(b.Bytes(), b.Index())
@@ -451,7 +451,7 @@ func ReadResourceData(b buffer.PacketBuffer) ResourceRec {
 	resource.Walkthrough = b.ReadBool(b.Bytes(), b.Index())
 	resource.NormalAnim = b.ReadBool(b.Bytes(), b.Index())
 	resource.NormalRandom = b.ReadBool(b.Bytes(), b.Index())
-	for i, _ := range resource.Int {
+	for i := range resource.Int {
 		resource.Int[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 	return resource
@@ -463,10 +463,10 @@ func ReadMoralData(b buffer.PacketBuffer) MoralRec {
 		Int:  make([]int32, 2),
 		Bool: make([]bool, 23),
 	}
-	for i, _ := range moral.Bool {
+	for i := range moral.Bool {
 		moral.Bool[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
-	for i, _ := range moral.Int {
+	for i := range moral.Int {
 		moral.Int[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
 	return moral
@@ -495,7 +495,7 @@ func ReadCraftData(b buffer.PacketBuffer) CraftingRec {
 		ItemReq: make([]int32, 3), // TODO int to const
 		ItemVal: make([]int32, 3), // TODO int to const
 	}
-	for i, _ := range craft.ItemReq {
+	for i := range craft.ItemReq {
 		craft.ItemReq[i] = b.ReadInt(b.Bytes(), b.Index())
 		craft.ItemVal[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
@@ -519,7 +519,7 @@ func ReadQuestData(b buffer.PacketBuffer) QuestRec {
 		Story:         make([]string, 2),              // TODO int to const
 		Bool:          make([]bool, 1),                // TODO int to const
 	}
-	for i, _ := range quest.Item {
+	for i := range quest.Item {
 		quest.Item[i].Item = b.ReadInt(b.Bytes(), b.Index())
 		quest.Item[i].Value = b.ReadLong(b.Bytes(), b.Index())
 		quest.Item[i].Task = b.ReadInt(b.Bytes(), b.Index())
@@ -529,10 +529,10 @@ func ReadQuestData(b buffer.PacketBuffer) QuestRec {
 	quest.RequiredLevel = b.ReadInt(b.Bytes(), b.Index())
 	quest.RequiredQuest = b.ReadInt(b.Bytes(), b.Index())
 	quest.RequiredCompleteQuest = b.ReadBool(b.Bytes(), b.Index())
-	for i, _ := range quest.RequiredClass {
+	for i := range quest.RequiredClass {
 		quest.RequiredClass[i] = b.ReadInt(b.Bytes(), b.Index())
 	}
-	for i, _ := range quest.Task {
+	for i := range quest.Task {
 		task := TaskRec{
 			Amount:      b.ReadLong(b.Bytes(), b.Index()),
 			Item:        b.ReadInt(b.Bytes(), b.Index()),
@@ -552,7 +552,7 @@ func ReadQuestData(b buffer.PacketBuffer) QuestRec {
 			Sprite:      make([]int32, 2),  // TODO int to const
 			Int:         make([]int32, 3),  // TODO int to const
 		}
-		for x, _ := range task.SpellReward {
+		for x := range task.SpellReward {
 			task.SpellReward[x] = b.ReadInt(b.Bytes(), b.Index())
 		}
 		task.SpellUse = b.ReadInt(b.Bytes(), b.Index())
@@ -567,22 +567,22 @@ func ReadQuestData(b buffer.PacketBuffer) QuestRec {
 		}
 		task.AutoComplete = b.ReadBool(b.Bytes(), b.Index())
 		task.ElementReward = b.ReadInt(b.Bytes(), b.Index())
-		for x, _ := range task.StartQuote {
+		for x := range task.StartQuote {
 			task.StartQuote[x] = b.ReadString(b.Bytes(), b.Index(), 0)
 			task.EndQuote[x] = b.ReadString(b.Bytes(), b.Index(), 0)
 			task.Sprite[x] = b.ReadInt(b.Bytes(), b.Index())
 		}
-		for x, _ := range task.Int {
+		for x := range task.Int {
 			task.Int[x] = b.ReadInt(b.Bytes(), b.Index())
 		}
 		quest.Task[i] = task
 	}
-	for i, _ := range quest.Story {
+	for i := range quest.Story {
 		quest.Story[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 	}
 	quest.Promotion = b.ReadByte(b.Bytes(), b.Index())
 	quest.QuestAtEnd = b.ReadInt(b.Bytes(), b.Index())
-	for i, _ := range quest.Bool {
+	for i := range quest.Bool {
 		quest.Bool[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
 	return quest
@@ -612,7 +612,7 @@ func ReadConditionData(b buffer.PacketBuffer) ConditionRec {
 		Bool:     make([]bool, 1), // TODO int to const
 	}
 	condition.Line = make([]ActionRec, condition.MaxLines)
-	for i, _ := range condition.Line {
+	for i := range condition.Line {
 		action := ActionRec{
 			Void:       b.ReadByte(b.Bytes(), b.Index()),
 			NextLine:   b.ReadInt(b.Bytes(), b.Index()),
@@ -627,7 +627,7 @@ func ReadConditionData(b buffer.PacketBuffer) ConditionRec {
 			VarType:    make([]byte, 5),   // TODO int to const
 			Var:        make([]string, 5), // TODO int to const
 		}
-		for x, _ := range action.VarType {
+		for x := range action.VarType {
 			action.VarType[x] = b.ReadByte(b.Bytes(), b.Index())
 			if Type := action.VarType[x]; Type > 0 && Type-1 <= 4 {
 				action.Var[x] = b.ReadString(b.Bytes(), b.Index(), 0)
@@ -638,7 +638,7 @@ func ReadConditionData(b buffer.PacketBuffer) ConditionRec {
 	condition.MeetReq = b.ReadString(b.Bytes(), b.Index(), 0)
 	condition.Faceset = b.ReadInt(b.Bytes(), b.Index())
 	condition.Switch = b.ReadInt(b.Bytes(), b.Index())
-	for i, _ := range condition.Bool {
+	for i := range condition.Bool {
 		condition.Bool[i] = b.ReadBool(b.Bytes(), b.Index())
 	}
 	return condition
@@ -648,7 +648,7 @@ func ReadEmoticonData(b buffer.PacketBuffer) EmoticonRec {
 	emoticon := EmoticonRec{
 		Name: make([]string, 3), // TODO int to const
 	}
-	for i, _ := range emoticon.Name {
+	for i := range emoticon.Name {
 		emoticon.Name[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 	}
 	emoticon.Command = b.ReadString(b.Bytes(), b.Index(), 0)
@@ -660,15 +660,15 @@ func ReadEmoticonData(b buffer.PacketBuffer) EmoticonRec {
 
 func ReadProfessionData(b buffer.PacketBuffer) []ProfessionRec {
 	professions := make([]ProfessionRec, 4) // TODO int to const
-	for i, _ := range professions {
+	for i := range professions {
 		profession := ProfessionRec{
 			Icon:    b.ReadInt(b.Bytes(), b.Index()),
 			Upgrade: make([]ProfessionUpgradeRec, 10), // TODO int to const
 		}
-		for x, _ := range profession.Upgrade {
+		for x := range profession.Upgrade {
 			profession.Upgrade[x].Name = make([]string, 3)
 			profession.Upgrade[x].Desc = make([]string, 3)
-			for f, _ := range profession.Upgrade[x].Name {
+			for f := range profession.Upgrade[x].Name {
 				profession.Upgrade[x].Name[f] = b.ReadString(b.Bytes(), b.Index(), 0)
 				profession.Upgrade[x].Desc[f] = b.ReadString(b.Bytes(), b.Index(), 0)
 				profession.Upgrade[x].MaxLevel = b.ReadByte(b.Bytes(), b.Index())
@@ -694,7 +694,7 @@ func ReadNewspaperData(b buffer.PacketBuffer) NewspaperRec {
 	news.ServerDay = b.ReadByte(b.Bytes(), b.Index())
 	news.ServerMonth = b.ReadByte(b.Bytes(), b.Index())
 	news.PollName = b.ReadString(b.Bytes(), b.Index(), 0)
-	for i, _ := range news.Poll {
+	for i := range news.Poll {
 		news.Poll[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 	}
 	return news

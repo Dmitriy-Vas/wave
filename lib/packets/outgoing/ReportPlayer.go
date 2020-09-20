@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ReportPlayerPacket) GetID() int64 {
-	return d.ID
+func (packet *ReportPlayerPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ReportPlayerPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ReportPlayerPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ReportPlayerPacket) GetSend() bool {
-	return d.Send
+func (packet *ReportPlayerPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ReportPlayerPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ReportPlayerPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ReportPlayerPacket struct {

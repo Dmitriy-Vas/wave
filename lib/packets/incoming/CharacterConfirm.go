@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *CharacterConfirmPacket) GetID() int64 {
-	return d.ID
+func (packet *CharacterConfirmPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *CharacterConfirmPacket) SetID(id int64) {
-	d.ID = id
+func (packet *CharacterConfirmPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *CharacterConfirmPacket) GetSend() bool {
-	return d.Send
+func (packet *CharacterConfirmPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *CharacterConfirmPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *CharacterConfirmPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type CharacterConfirmPacket struct {
 	Send bool
 }
 
-func (packet *CharacterConfirmPacket) Read(b buffer.PacketBuffer) {
+func (packet *CharacterConfirmPacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *CharacterConfirmPacket) Write(b buffer.PacketBuffer) {
+func (packet *CharacterConfirmPacket) Write(_ buffer.PacketBuffer) {
 }

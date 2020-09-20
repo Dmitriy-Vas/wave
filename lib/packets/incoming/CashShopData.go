@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *CashShopDataPacket) GetID() int64 {
-	return d.ID
+func (packet *CashShopDataPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *CashShopDataPacket) SetID(id int64) {
-	d.ID = id
+func (packet *CashShopDataPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *CashShopDataPacket) GetSend() bool {
-	return d.Send
+func (packet *CashShopDataPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *CashShopDataPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *CashShopDataPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type CashShopDataPacket struct {

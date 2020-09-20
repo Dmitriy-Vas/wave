@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *PlayerConnectedPacket) GetID() int64 {
-	return d.ID
+func (packet *PlayerConnectedPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *PlayerConnectedPacket) SetID(id int64) {
-	d.ID = id
+func (packet *PlayerConnectedPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *PlayerConnectedPacket) GetSend() bool {
-	return d.Send
+func (packet *PlayerConnectedPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *PlayerConnectedPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *PlayerConnectedPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type PlayerConnectedPacket struct {
@@ -37,7 +37,7 @@ func (packet *PlayerConnectedPacket) Read(b buffer.PacketBuffer) {
 	packet.SeveralMessages = b.ReadBool(b.Bytes(), b.Index())
 	if packet.SeveralMessages {
 		packet.Messages = make([]string, packet.Amount)
-		for i, _ := range packet.Messages {
+		for i := range packet.Messages {
 			packet.Messages[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 		}
 	}

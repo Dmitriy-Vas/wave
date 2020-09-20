@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ReceiveBubblePacket) GetID() int64 {
-	return d.ID
+func (packet *ReceiveBubblePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ReceiveBubblePacket) SetID(id int64) {
-	d.ID = id
+func (packet *ReceiveBubblePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ReceiveBubblePacket) GetSend() bool {
-	return d.Send
+func (packet *ReceiveBubblePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ReceiveBubblePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ReceiveBubblePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ReceiveBubblePacket struct {

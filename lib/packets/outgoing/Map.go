@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *MapPacket) GetID() int64 {
-	return d.ID
+func (packet *MapPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *MapPacket) SetID(id int64) {
-	d.ID = id
+func (packet *MapPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *MapPacket) GetSend() bool {
-	return d.Send
+func (packet *MapPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *MapPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *MapPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type MapPacket struct {
@@ -77,7 +77,7 @@ type MapPacket struct {
 	Variable47 []byte
 }
 
-func (packet *MapPacket) Read(b buffer.PacketBuffer) {
+func (packet *MapPacket) Read(_ buffer.PacketBuffer) {
 	// packet.Variable1 = b.ReadInt(b.Bytes(), b.Index())
 	// packet.Variable2 = b.ReadString(b.Bytes(), b.Index(), 0)
 	// packet.Variable3 = b.ReadString(b.Bytes(), b.Index(), 0)

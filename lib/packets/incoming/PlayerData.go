@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *PlayerDataPacket) GetID() int64 {
-	return d.ID
+func (packet *PlayerDataPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *PlayerDataPacket) SetID(id int64) {
-	d.ID = id
+func (packet *PlayerDataPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *PlayerDataPacket) GetSend() bool {
-	return d.Send
+func (packet *PlayerDataPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *PlayerDataPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *PlayerDataPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type PlayerDataPacket struct {
@@ -29,10 +29,10 @@ type PlayerDataPacket struct {
 	Send bool
 }
 
-func (packet *PlayerDataPacket) Read(b buffer.PacketBuffer) {
+func (packet *PlayerDataPacket) Read(_ buffer.PacketBuffer) {
 
 }
 
-func (packet *PlayerDataPacket) Write(b buffer.PacketBuffer) {
+func (packet *PlayerDataPacket) Write(_ buffer.PacketBuffer) {
 
 }

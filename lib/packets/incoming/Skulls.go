@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SkullsPacket) GetID() int64 {
-	return d.ID
+func (packet *SkullsPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SkullsPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SkullsPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SkullsPacket) GetSend() bool {
-	return d.Send
+func (packet *SkullsPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SkullsPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SkullsPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SkullsPacket struct {

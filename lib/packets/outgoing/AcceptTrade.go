@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *AcceptTradePacket) GetID() int64 {
-	return d.ID
+func (packet *AcceptTradePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *AcceptTradePacket) SetID(id int64) {
-	d.ID = id
+func (packet *AcceptTradePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *AcceptTradePacket) GetSend() bool {
-	return d.Send
+func (packet *AcceptTradePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *AcceptTradePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *AcceptTradePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type AcceptTradePacket struct {
 	Send bool
 }
 
-func (packet *AcceptTradePacket) Read(b buffer.PacketBuffer) {
+func (packet *AcceptTradePacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *AcceptTradePacket) Write(b buffer.PacketBuffer) {
+func (packet *AcceptTradePacket) Write(_ buffer.PacketBuffer) {
 }

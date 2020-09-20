@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *PlayerInvUpdatePacket) GetID() int64 {
-	return d.ID
+func (packet *PlayerInvUpdatePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *PlayerInvUpdatePacket) SetID(id int64) {
-	d.ID = id
+func (packet *PlayerInvUpdatePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *PlayerInvUpdatePacket) GetSend() bool {
-	return d.Send
+func (packet *PlayerInvUpdatePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *PlayerInvUpdatePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *PlayerInvUpdatePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type PlayerInvUpdatePacket struct {
@@ -42,7 +42,7 @@ func (packet *PlayerInvUpdatePacket) Read(b buffer.PacketBuffer) {
 	}
 	if lib.GetItemInt(packet.Item.Num, lib.ItemEnhancement) > 0 {
 		packet.Item.Stat = make([]byte, 6) // TODO int to const
-		for i, _ := range packet.Item.Stat {
+		for i := range packet.Item.Stat {
 			packet.Item.Stat[i] = b.ReadByte(b.Bytes(), b.Index())
 		}
 	}

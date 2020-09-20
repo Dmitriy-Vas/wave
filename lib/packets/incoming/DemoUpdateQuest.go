@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *DemoUpdateQuestPacket) GetID() int64 {
-	return d.ID
+func (packet *DemoUpdateQuestPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *DemoUpdateQuestPacket) SetID(id int64) {
-	d.ID = id
+func (packet *DemoUpdateQuestPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *DemoUpdateQuestPacket) GetSend() bool {
-	return d.Send
+func (packet *DemoUpdateQuestPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *DemoUpdateQuestPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *DemoUpdateQuestPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type DemoUpdateQuestPacket struct {

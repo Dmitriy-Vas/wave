@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ClosePacket) GetID() int64 {
-	return d.ID
+func (packet *ClosePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ClosePacket) SetID(id int64) {
-	d.ID = id
+func (packet *ClosePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ClosePacket) GetSend() bool {
-	return d.Send
+func (packet *ClosePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ClosePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ClosePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ClosePacket struct {

@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *BankPacket) GetID() int64 {
-	return d.ID
+func (packet *BankPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *BankPacket) SetID(id int64) {
-	d.ID = id
+func (packet *BankPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *BankPacket) GetSend() bool {
-	return d.Send
+func (packet *BankPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *BankPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *BankPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type BankPacket struct {
@@ -40,7 +40,7 @@ func (packet *BankPacket) Read(b buffer.PacketBuffer) {
 	if packet.Slot != 0 {
 		packet.Items[0] = lib.ReadPlayerBankData(b)
 	} else {
-		for i, _ := range packet.Items {
+		for i := range packet.Items {
 			packet.Items[i] = lib.ReadPlayerBankData(b)
 		}
 	}

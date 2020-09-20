@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *UpdateConditionPacket) GetID() int64 {
-	return d.ID
+func (packet *UpdateConditionPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *UpdateConditionPacket) SetID(id int64) {
-	d.ID = id
+func (packet *UpdateConditionPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *UpdateConditionPacket) GetSend() bool {
-	return d.Send
+func (packet *UpdateConditionPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *UpdateConditionPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *UpdateConditionPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type UpdateConditionPacket struct {

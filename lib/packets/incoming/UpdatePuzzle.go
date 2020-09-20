@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *UpdatePuzzlePacket) GetID() int64 {
-	return d.ID
+func (packet *UpdatePuzzlePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *UpdatePuzzlePacket) SetID(id int64) {
-	d.ID = id
+func (packet *UpdatePuzzlePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *UpdatePuzzlePacket) GetSend() bool {
-	return d.Send
+func (packet *UpdatePuzzlePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *UpdatePuzzlePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *UpdatePuzzlePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type UpdatePuzzlePacket struct {

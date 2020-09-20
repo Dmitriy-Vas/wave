@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ChoicePacket) GetID() int64 {
-	return d.ID
+func (packet *ChoicePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ChoicePacket) SetID(id int64) {
-	d.ID = id
+func (packet *ChoicePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ChoicePacket) GetSend() bool {
-	return d.Send
+func (packet *ChoicePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ChoicePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ChoicePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ChoicePacket struct {
@@ -44,7 +44,7 @@ func (packet *ChoicePacket) Read(b buffer.PacketBuffer) {
 			Code:          b.ReadBool(b.Bytes(), b.Index()),
 		}
 		packet.Choice.ChoiceArray = make([]string, packet.Choice.Max)
-		for i, _ := range packet.Choice.ChoiceArray {
+		for i := range packet.Choice.ChoiceArray {
 			packet.Choice.ChoiceArray[i] = b.ReadString(b.Bytes(), b.Index(), 0)
 		}
 	} else {

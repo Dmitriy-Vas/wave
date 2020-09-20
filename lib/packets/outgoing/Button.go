@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ButtonPacket) GetID() int64 {
-	return d.ID
+func (packet *ButtonPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ButtonPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ButtonPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ButtonPacket) GetSend() bool {
-	return d.Send
+func (packet *ButtonPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ButtonPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ButtonPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ButtonPacket struct {

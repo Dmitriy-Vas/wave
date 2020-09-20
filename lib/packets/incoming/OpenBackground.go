@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *OpenBackgroundPacket) GetID() int64 {
-	return d.ID
+func (packet *OpenBackgroundPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *OpenBackgroundPacket) SetID(id int64) {
-	d.ID = id
+func (packet *OpenBackgroundPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *OpenBackgroundPacket) GetSend() bool {
-	return d.Send
+func (packet *OpenBackgroundPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *OpenBackgroundPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *OpenBackgroundPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type OpenBackgroundPacket struct {

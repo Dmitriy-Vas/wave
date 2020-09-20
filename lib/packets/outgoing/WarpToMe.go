@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *WarpToMePacket) GetID() int64 {
-	return d.ID
+func (packet *WarpToMePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *WarpToMePacket) SetID(id int64) {
-	d.ID = id
+func (packet *WarpToMePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *WarpToMePacket) GetSend() bool {
-	return d.Send
+func (packet *WarpToMePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *WarpToMePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *WarpToMePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type WarpToMePacket struct {

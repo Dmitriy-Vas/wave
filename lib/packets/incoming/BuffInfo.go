@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *BuffInfoPacket) GetID() int64 {
-	return d.ID
+func (packet *BuffInfoPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *BuffInfoPacket) SetID(id int64) {
-	d.ID = id
+func (packet *BuffInfoPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *BuffInfoPacket) GetSend() bool {
-	return d.Send
+func (packet *BuffInfoPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *BuffInfoPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *BuffInfoPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type BuffInfoPacket struct {

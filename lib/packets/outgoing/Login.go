@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *LoginPacket) GetID() int64 {
-	return d.ID
+func (packet *LoginPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *LoginPacket) SetID(id int64) {
-	d.ID = id
+func (packet *LoginPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *LoginPacket) GetSend() bool {
-	return d.Send
+func (packet *LoginPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *LoginPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *LoginPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type LoginPacket struct {
@@ -39,26 +39,26 @@ type LoginPacket struct {
 	ClientRegion string
 }
 
-func (l *LoginPacket) Read(b buffer.PacketBuffer) {
-	l.Language = b.ReadByte(b.Bytes(), b.Index())
-	l.ProductVersion = b.ReadString(b.Bytes(), b.Index(), 0)
-	l.GameVersion = b.ReadInt(b.Bytes(), b.Index())
-	l.Variable0 = b.ReadByte(b.Bytes(), b.Index())
-	l.Name = b.ReadString(b.Bytes(), b.Index(), 0)
-	l.Password = b.ReadString(b.Bytes(), b.Index(), 0)
-	l.IsDiscord = b.ReadBool(b.Bytes(), b.Index())
-	l.IsSteam = b.ReadBool(b.Bytes(), b.Index())
-	l.ClientRegion = b.ReadString(b.Bytes(), b.Index(), 0)
+func (packet *LoginPacket) Read(b buffer.PacketBuffer) {
+	packet.Language = b.ReadByte(b.Bytes(), b.Index())
+	packet.ProductVersion = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.GameVersion = b.ReadInt(b.Bytes(), b.Index())
+	packet.Variable0 = b.ReadByte(b.Bytes(), b.Index())
+	packet.Name = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.Password = b.ReadString(b.Bytes(), b.Index(), 0)
+	packet.IsDiscord = b.ReadBool(b.Bytes(), b.Index())
+	packet.IsSteam = b.ReadBool(b.Bytes(), b.Index())
+	packet.ClientRegion = b.ReadString(b.Bytes(), b.Index(), 0)
 }
 
-func (l *LoginPacket) Write(b buffer.PacketBuffer) {
-	b.WriteByte(b.Bytes(), l.Language, b.Index())
-	b.WriteString(b.Bytes(), l.ProductVersion, b.Index())
-	b.WriteInt(b.Bytes(), l.GameVersion, b.Index())
-	b.WriteByte(b.Bytes(), l.Variable0, b.Index())
-	b.WriteString(b.Bytes(), l.Name, b.Index())
-	b.WriteString(b.Bytes(), l.Password, b.Index())
-	b.WriteBool(b.Bytes(), l.IsDiscord, b.Index())
-	b.WriteBool(b.Bytes(), l.IsSteam, b.Index())
-	b.WriteString(b.Bytes(), l.ClientRegion, b.Index())
+func (packet *LoginPacket) Write(b buffer.PacketBuffer) {
+	b.WriteByte(b.Bytes(), packet.Language, b.Index())
+	b.WriteString(b.Bytes(), packet.ProductVersion, b.Index())
+	b.WriteInt(b.Bytes(), packet.GameVersion, b.Index())
+	b.WriteByte(b.Bytes(), packet.Variable0, b.Index())
+	b.WriteString(b.Bytes(), packet.Name, b.Index())
+	b.WriteString(b.Bytes(), packet.Password, b.Index())
+	b.WriteBool(b.Bytes(), packet.IsDiscord, b.Index())
+	b.WriteBool(b.Bytes(), packet.IsSteam, b.Index())
+	b.WriteString(b.Bytes(), packet.ClientRegion, b.Index())
 }

@@ -22,6 +22,8 @@ const (
 	ACHIEVEMENT_AW_FIRSTMOUNT        = "AW_FIRSTMOUNT"
 	ACHIEVEMENT_AW_KILL_LUCAS        = "AW_KILL_LUCAS"
 )
+
+//noinspection ALL
 const (
 	ACHIEVEMENT_STAT_MONSTERCOUNT = "stat_monstercount"
 	ACHIEVEMENT_STAT_GUMBYCOUNT   = "stat_gumbycount"
@@ -30,6 +32,8 @@ const (
 	ACHIEVEMENT_STAT_LEVELCOUNT   = "stat_levelcount"
 	ACHIEVEMENT_STAT_QUESTCOUNT   = "stat_questcount"
 )
+
+//noinspection ALL
 const (
 	CashShopTop     int  = 106
 	CashShopLeft    int  = 34
@@ -37,6 +41,8 @@ const (
 	CashShopOffsetX byte = 196
 	CashShopColumns byte = 2
 )
+
+//noinspection ALL
 const (
 	InvTop     byte = 39
 	InvLeft    byte = 13
@@ -44,6 +50,8 @@ const (
 	InvOffsetX byte = 4
 	InvColumns byte = 7
 )
+
+//noinspection ALL
 const (
 	SpellTop     byte = 40
 	SpellLeft    byte = 39
@@ -51,6 +59,8 @@ const (
 	SpellOffsetX byte = 4
 	SpellColumns byte = 6
 )
+
+//noinspection ALL
 const (
 	EqTop     int64 = 95
 	EqLeft    int64 = 122
@@ -58,12 +68,16 @@ const (
 	EqOffsetY int64 = 4
 	EqColumns byte  = 4
 )
+
+//noinspection ALL
 const (
 	BIND_TYPE_NONE   byte = 0
 	BIND_TYPE_PICKUP byte = 1
 	BIND_TYPE_EQUIP  byte = 2
 	BIND_TYPE_INV    byte = 3
 )
+
+//noinspection ALL
 const (
 	TILE_TYPE_WALKABLE    byte = 0
 	TILE_TYPE_BLOCKED     byte = 1
@@ -89,11 +103,15 @@ const (
 	TILE_TYPE_OX          byte = 21
 	TILE_TYPE_PVPFREE     byte = 22
 )
+
+//noinspection ALL
 const (
 	TOPO_TYPE_DRILL byte = 1
 	TOPO_TYPE_WATER byte = 2
 	TOPO_TYPE_COLOR byte = 3
 )
+
+//noinspection ALL
 const (
 	ITEM_TYPE_NONE        byte = 0
 	ITEM_TYPE_WEAPON      byte = 1
@@ -131,17 +149,23 @@ const (
 	ITEM_TYPE_GIFTBOX     byte = 33
 	ITEM_TYPE_COUNT       byte = 34
 )
+
+//noinspection ALL
 const (
 	DIR_UP    byte = 0
 	DIR_DOWN  byte = 1
 	DIR_LEFT  byte = 2
 	DIR_RIGHT byte = 3
 )
+
+//noinspection ALL
 const (
 	PLAYER_NORMAL byte = 0
 	PLAYER_MOD    byte = 1
 	PLAYER_ADMIN  byte = 4
 )
+
+//noinspection ALL
 const (
 	NPC_BEHAVIOUR_ATTACKONSIGHT      byte = 0
 	NPC_BEHAVIOUR_ATTACKWHENATTACKED byte = 1
@@ -152,11 +176,15 @@ const (
 	NPC_BEHAVIOUR_SCRIPT             byte = 6
 	NPC_BEHAVIOUR_INSECT             byte = 7
 )
+
+//noinspection ALL
 const (
 	HANDLE_MOUSE_DOWN       byte = 1
 	HANDLE_MOUSE_UP         byte = 2
 	HANDLE_MOUSE_DOBLECLICK byte = 3
 )
+
+//noinspection ALL
 const (
 	VOID_CONDITION byte = 1
 	VOID_FUNCTION  byte = 2
@@ -166,6 +194,8 @@ const (
 	VOID_TAG       byte = 6
 	VOID_PUZZLE    byte = 7
 )
+
+//noinspection ALL
 const (
 	EDITOR_ITEM         byte = 1
 	EDITOR_NPC          byte = 2
@@ -204,11 +234,15 @@ const (
 	EDITOR_EMOTICONS    byte = 35
 	EDITOR_OXQUESTION   byte = 36
 )
+
+//noinspection ALL
 const (
 	ACTIONMSG_STATIC int64 = 0
 	ACTIONMSG_SCROLL int64 = 1
 	ACTIONMSG_SCREEN int64 = 2
 )
+
+//noinspection ALL
 const (
 	DIALOGUE_TYPE_NONE   byte = 0
 	DIALOGUE_TYPE_TRADE  byte = 1
@@ -216,6 +250,8 @@ const (
 	DIALOGUE_TYPE_PARTY  byte = 3
 	DIALOGUE_TYPE_BUDDY  byte = 4
 )
+
+//noinspection ALL
 const (
 	ColorWhite       int64 = 1
 	ColorBlack       int64 = 2
@@ -238,11 +274,15 @@ const (
 	ColorAtenuar     int64 = 19
 	ColorCalmBrown2  int64 = 20
 )
+
+//noinspection ALL
 const (
 	ATTACK_DAMAGE int64 = 1
 	ATTACK_RANGE  int64 = 2
 	ATTACK_DOBLE  int64 = 3
 )
+
+//noinspection ALL
 const (
 	MaxPlayerArrow  byte = 3
 	MaxPlayerBuffs  byte = 10
@@ -252,6 +292,8 @@ const (
 	MaxPlayerRank   byte = 10
 	MaxPlayerSolar  byte = 2
 )
+
+//noinspection ALL
 const (
 	MAX_ANIMATIONS         int     = 255
 	MAX_ARROWS             byte    = 2
@@ -308,6 +350,8 @@ const (
 	MAX_TRADES             byte    = 36
 	MAX_WALK_SPEED         float64 = 3.2
 )
+
+//noinspection ALL
 const (
 	MaxAwards          int  = 200
 	MaxAwardsLevel     byte = 30
@@ -328,6 +372,8 @@ const (
 	MaxWalkSpeed       byte = 125
 	MaxWorld           byte = 30
 )
+
+//noinspection ALL
 const (
 	FishRodFrame           byte    = 13
 	HOTBAR_TYPE_ITEM       byte    = 1

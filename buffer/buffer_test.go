@@ -15,9 +15,9 @@ func newTestBuffer() *DefaultBuffer {
 	return &DefaultBuffer{
 		PacketReader: testReader,
 		PacketWriter: testWriter,
-		max_len:      255,
+		maxLen:       255,
 		len:          255,
-		init_len:     8,
+		initLen:      8,
 		buf:          make([]byte, 255),
 	}
 }
@@ -128,7 +128,7 @@ func TestDefaultWriter_WriteBytes(t *testing.T) {
 
 func TestDefaultWriter_WriteDouble(t *testing.T) {
 	buffer := newTestBuffer()
-	value1 := float64(3.141)
+	value1 := 3.141
 	buffer.WriteDouble(buffer.buf, value1, buffer.index)
 	result1 := math.Float64frombits(binary.LittleEndian.Uint64(buffer.buf[:8]))
 	assert.Exactly(t, value1, result1)
@@ -237,21 +237,21 @@ func TestDefaultBuffer_Len(t *testing.T) {
 func TestDefaultBuffer_Reset(t *testing.T) {
 	buffer := newTestBuffer()
 	buffer.Reset()
-	assert.EqualValues(t, buffer.init_len, buffer.Len())
+	assert.EqualValues(t, buffer.initLen, buffer.Len())
 	assert.EqualValues(t, 0, buffer.Index())
 }
 
 func TestDefaultBuffer_SetInitLength(t *testing.T) {
 	buffer := newTestBuffer()
 	buffer.SetInitLength(100)
-	assert.EqualValues(t, 100, buffer.init_len)
+	assert.EqualValues(t, 100, buffer.initLen)
 }
 
 func TestDefaultBuffer_SetMaxLength(t *testing.T) {
 	buffer := newTestBuffer()
 	buffer.SetMaxLength(150)
 	assert.Len(t, buffer.Bytes(), 150)
-	assert.EqualValues(t, buffer.max_len, 150)
+	assert.EqualValues(t, buffer.maxLen, 150)
 }
 
 func TestDefaultBuffer_SetReader(t *testing.T) {

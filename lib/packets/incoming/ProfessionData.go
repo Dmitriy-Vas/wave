@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ProfessionDataPacket) GetID() int64 {
-	return d.ID
+func (packet *ProfessionDataPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ProfessionDataPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ProfessionDataPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ProfessionDataPacket) GetSend() bool {
-	return d.Send
+func (packet *ProfessionDataPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ProfessionDataPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ProfessionDataPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ProfessionDataPacket struct {
@@ -29,10 +29,10 @@ type ProfessionDataPacket struct {
 	Send bool
 }
 
-func (packet *ProfessionDataPacket) Read(b buffer.PacketBuffer) {
+func (packet *ProfessionDataPacket) Read(_ buffer.PacketBuffer) {
 	// TODO profession data
 }
 
-func (packet *ProfessionDataPacket) Write(b buffer.PacketBuffer) {
+func (packet *ProfessionDataPacket) Write(_ buffer.PacketBuffer) {
 	// TODO profession data
 }

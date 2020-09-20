@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ComboPacket) GetID() int64 {
-	return d.ID
+func (packet *ComboPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ComboPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ComboPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ComboPacket) GetSend() bool {
-	return d.Send
+func (packet *ComboPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ComboPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ComboPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ComboPacket struct {
@@ -36,11 +36,11 @@ type ComboPacket struct {
 func (packet *ComboPacket) Read(b buffer.PacketBuffer) {
 	packet.ComboCount = b.ReadInt(b.Bytes(), b.Index())
 	packet.PlayerCombo = make([]lib.PlayerComboRec, 18) // TODO int to const
-	for i, _ := range packet.PlayerCombo {
+	for i := range packet.PlayerCombo {
 		packet.PlayerCombo[i].Num = b.ReadInt(b.Bytes(), b.Index())
 	}
 	packet.ComboCache = make([]lib.ComboCacheDataRec, 3) // TODO int to const
-	for i, _ := range packet.ComboCache {
+	for i := range packet.ComboCache {
 		packet.ComboCache[i].Num = b.ReadInt(b.Bytes(), b.Index())
 	}
 }

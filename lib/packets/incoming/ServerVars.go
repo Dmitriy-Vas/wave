@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ServerVarsPacket) GetID() int64 {
-	return d.ID
+func (packet *ServerVarsPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ServerVarsPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ServerVarsPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ServerVarsPacket) GetSend() bool {
-	return d.Send
+func (packet *ServerVarsPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ServerVarsPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ServerVarsPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ServerVarsPacket struct {

@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *NpcAttackPacket) GetID() int64 {
-	return d.ID
+func (packet *NpcAttackPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *NpcAttackPacket) SetID(id int64) {
-	d.ID = id
+func (packet *NpcAttackPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *NpcAttackPacket) GetSend() bool {
-	return d.Send
+func (packet *NpcAttackPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *NpcAttackPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *NpcAttackPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type NpcAttackPacket struct {
@@ -35,24 +35,24 @@ type NpcAttackPacket struct {
 	HP        int64
 }
 
-func (n *NpcAttackPacket) Read(b buffer.PacketBuffer) {
-	n.NpcNum = b.ReadInt(b.Bytes(), b.Index())
-	n.AttackNum = b.ReadByte(b.Bytes(), b.Index())
-	n.PlaySound = b.ReadBool(b.Bytes(), b.Index())
-	if n.NpcNum > 0 {
-		n.Num = b.ReadInt(b.Bytes(), b.Index())
-		n.Vital = b.ReadLong(b.Bytes(), b.Index())
-		n.HP = b.ReadLong(b.Bytes(), b.Index())
+func (packet *NpcAttackPacket) Read(b buffer.PacketBuffer) {
+	packet.NpcNum = b.ReadInt(b.Bytes(), b.Index())
+	packet.AttackNum = b.ReadByte(b.Bytes(), b.Index())
+	packet.PlaySound = b.ReadBool(b.Bytes(), b.Index())
+	if packet.NpcNum > 0 {
+		packet.Num = b.ReadInt(b.Bytes(), b.Index())
+		packet.Vital = b.ReadLong(b.Bytes(), b.Index())
+		packet.HP = b.ReadLong(b.Bytes(), b.Index())
 	}
 }
 
-func (n *NpcAttackPacket) Write(b buffer.PacketBuffer) {
-	b.WriteInt(b.Bytes(), n.NpcNum, b.Index())
-	b.WriteByte(b.Bytes(), n.AttackNum, b.Index())
-	b.WriteBool(b.Bytes(), n.PlaySound, b.Index())
-	if n.NpcNum > 0 {
-		b.WriteInt(b.Bytes(), n.Num, b.Index())
-		b.WriteLong(b.Bytes(), n.Vital, b.Index())
-		b.WriteLong(b.Bytes(), n.HP, b.Index())
+func (packet *NpcAttackPacket) Write(b buffer.PacketBuffer) {
+	b.WriteInt(b.Bytes(), packet.NpcNum, b.Index())
+	b.WriteByte(b.Bytes(), packet.AttackNum, b.Index())
+	b.WriteBool(b.Bytes(), packet.PlaySound, b.Index())
+	if packet.NpcNum > 0 {
+		b.WriteInt(b.Bytes(), packet.Num, b.Index())
+		b.WriteLong(b.Bytes(), packet.Vital, b.Index())
+		b.WriteLong(b.Bytes(), packet.HP, b.Index())
 	}
 }

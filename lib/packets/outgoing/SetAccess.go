@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SetAccessPacket) GetID() int64 {
-	return d.ID
+func (packet *SetAccessPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SetAccessPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SetAccessPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SetAccessPacket) GetSend() bool {
-	return d.Send
+func (packet *SetAccessPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SetAccessPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SetAccessPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SetAccessPacket struct {

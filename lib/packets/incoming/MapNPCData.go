@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *MapNPCDataPacket) GetID() int64 {
-	return d.ID
+func (packet *MapNPCDataPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *MapNPCDataPacket) SetID(id int64) {
-	d.ID = id
+func (packet *MapNPCDataPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *MapNPCDataPacket) GetSend() bool {
-	return d.Send
+func (packet *MapNPCDataPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *MapNPCDataPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *MapNPCDataPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type MapNPCDataPacket struct {

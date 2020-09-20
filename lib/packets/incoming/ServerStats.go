@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ServerStatsPacket) GetID() int64 {
-	return d.ID
+func (packet *ServerStatsPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ServerStatsPacket) SetID(id int64) {
-	d.ID = id
+func (packet *ServerStatsPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ServerStatsPacket) GetSend() bool {
-	return d.Send
+func (packet *ServerStatsPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ServerStatsPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ServerStatsPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type ServerStatsPacket struct {
@@ -35,7 +35,7 @@ type ServerStatsPacket struct {
 func (packet *ServerStatsPacket) Read(b buffer.PacketBuffer) {
 	packet.CardNum = b.ReadByte(b.Bytes(), b.Index())
 	packet.Cards = make([]lib.PromotionGameCardRec, packet.CardNum)
-	for i, _ := range packet.Cards {
+	for i := range packet.Cards {
 		packet.Cards[i].Name = b.ReadString(b.Bytes(), b.Index(), 0)
 		packet.Cards[i].Price = b.ReadString(b.Bytes(), b.Index(), 0)
 		packet.Cards[i].Bonus = b.ReadInt(b.Bytes(), b.Index())

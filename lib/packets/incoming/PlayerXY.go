@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *PlayerXYPacket) GetID() int64 {
-	return d.ID
+func (packet *PlayerXYPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *PlayerXYPacket) SetID(id int64) {
-	d.ID = id
+func (packet *PlayerXYPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *PlayerXYPacket) GetSend() bool {
-	return d.Send
+func (packet *PlayerXYPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *PlayerXYPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *PlayerXYPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type PlayerXYPacket struct {
@@ -32,14 +32,14 @@ type PlayerXYPacket struct {
 	Dir  byte
 }
 
-func (p *PlayerXYPacket) Read(b buffer.PacketBuffer) {
-	p.X = b.ReadInt(b.Bytes(), b.Index())
-	p.Y = b.ReadInt(b.Bytes(), b.Index())
-	p.Dir = b.ReadByte(b.Bytes(), b.Index())
+func (packet *PlayerXYPacket) Read(b buffer.PacketBuffer) {
+	packet.X = b.ReadInt(b.Bytes(), b.Index())
+	packet.Y = b.ReadInt(b.Bytes(), b.Index())
+	packet.Dir = b.ReadByte(b.Bytes(), b.Index())
 }
 
-func (p *PlayerXYPacket) Write(b buffer.PacketBuffer) {
-	b.WriteInt(b.Bytes(), p.X, b.Index())
-	b.WriteInt(b.Bytes(), p.Y, b.Index())
-	b.WriteByte(b.Bytes(), p.Dir, b.Index())
+func (packet *PlayerXYPacket) Write(b buffer.PacketBuffer) {
+	b.WriteInt(b.Bytes(), packet.X, b.Index())
+	b.WriteInt(b.Bytes(), packet.Y, b.Index())
+	b.WriteByte(b.Bytes(), packet.Dir, b.Index())
 }

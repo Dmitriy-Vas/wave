@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *TopoDrillPacket) GetID() int64 {
-	return d.ID
+func (packet *TopoDrillPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *TopoDrillPacket) SetID(id int64) {
-	d.ID = id
+func (packet *TopoDrillPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *TopoDrillPacket) GetSend() bool {
-	return d.Send
+func (packet *TopoDrillPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *TopoDrillPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *TopoDrillPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type TopoDrillPacket struct {

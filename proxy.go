@@ -28,13 +28,13 @@ func (p *Proxy) Start() (err error) {
 	}
 
 	for {
-		local_conn, err := p.listener.Accept()
+		localConn, err := p.listener.Accept()
 		if err != nil {
 			return err
 		}
 		id := atomic.AddUint32(p.index, 1)
 
-		conn := p.NewConn(id, local_conn)
+		conn := p.NewConn(id, localConn)
 		// Store connection inside map
 		p.Connections.Store(id, conn)
 

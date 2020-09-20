@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *ClearChoicePacket) GetID() int64 {
-	return d.ID
+func (packet *ClearChoicePacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *ClearChoicePacket) SetID(id int64) {
-	d.ID = id
+func (packet *ClearChoicePacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *ClearChoicePacket) GetSend() bool {
-	return d.Send
+func (packet *ClearChoicePacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *ClearChoicePacket) SetSend(value bool) {
-	d.Send = value
+func (packet *ClearChoicePacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 // Empty packet
@@ -30,8 +30,8 @@ type ClearChoicePacket struct {
 	Send bool
 }
 
-func (packet *ClearChoicePacket) Read(b buffer.PacketBuffer) {
+func (packet *ClearChoicePacket) Read(_ buffer.PacketBuffer) {
 }
 
-func (packet *ClearChoicePacket) Write(b buffer.PacketBuffer) {
+func (packet *ClearChoicePacket) Write(_ buffer.PacketBuffer) {
 }

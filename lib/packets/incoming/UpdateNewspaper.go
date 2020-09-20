@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *UpdateNewspaperPacket) GetID() int64 {
-	return d.ID
+func (packet *UpdateNewspaperPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *UpdateNewspaperPacket) SetID(id int64) {
-	d.ID = id
+func (packet *UpdateNewspaperPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *UpdateNewspaperPacket) GetSend() bool {
-	return d.Send
+func (packet *UpdateNewspaperPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *UpdateNewspaperPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *UpdateNewspaperPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type UpdateNewspaperPacket struct {
@@ -29,10 +29,10 @@ type UpdateNewspaperPacket struct {
 	Send bool
 }
 
-func (packet *UpdateNewspaperPacket) Read(b buffer.PacketBuffer) {
+func (packet *UpdateNewspaperPacket) Read(_ buffer.PacketBuffer) {
 	// TODO Newspaper data
 }
 
-func (packet *UpdateNewspaperPacket) Write(b buffer.PacketBuffer) {
+func (packet *UpdateNewspaperPacket) Write(_ buffer.PacketBuffer) {
 	// TODO Newspaper data
 }

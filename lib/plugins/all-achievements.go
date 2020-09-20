@@ -13,7 +13,7 @@ import (
 // AllAchievements claims all steam achievements after receiving ClientRevisionPacket
 func AllAchievements(proxy *wave.Proxy) {
 	var once = sync.Once{}
-	var buffer buffer.PacketBuffer = nil
+	var buf buffer.PacketBuffer = nil
 	proxy.HookPacket(int64(lib.OutClientRevision), true, func(conn *wave.Conn, packet wave.Packet) {
 		if p := packet.(*outgoing.ClientRevisionPacket); !p.IsSteam {
 			log.Printf("Please run game from the Steam to claim achievements")
@@ -21,7 +21,7 @@ func AllAchievements(proxy *wave.Proxy) {
 		}
 
 		once.Do(func() {
-			buffer = conn.Buffer().Clone()
+			buf = conn.Buffer().Clone()
 		})
 
 		done := make(chan error)
@@ -48,65 +48,65 @@ func AllAchievements(proxy *wave.Proxy) {
 			AchievementStat: lib.ACHIEVEMENT_STAT_QUESTCOUNT,
 		}
 		for i := 0; i <= 100; i++ {
-			done <- conn.SendPacket(buffer, p, false)
+			done <- conn.SendPacket(buf, p, false)
 		}
 
 		p.Achievement = lib.ACHIEVEMENT_AW_GUMBYKILL100K
 		p.AchievementStat = lib.ACHIEVEMENT_STAT_GUMBYCOUNT
 		for i := 0; i <= 100000; i++ {
-			done <- conn.SendPacket(buffer, p, false)
+			done <- conn.SendPacket(buf, p, false)
 		}
 
 		p.Achievement = lib.ACHIEVEMENT_AW_MONSTERKILL
 		p.AchievementStat = lib.ACHIEVEMENT_STAT_KILLCOUNT
 		for i := 0; i <= 100000; i++ {
-			done <- conn.SendPacket(buffer, p, false)
+			done <- conn.SendPacket(buf, p, false)
 		}
 
 		p.Achievement = lib.ACHIEVEMENT_AW_PLAYERKILLER
 		p.AchievementStat = ""
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_LICHCAPE
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_HALLOWEENTOWER
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_DEATH
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_KILL_LUCAS
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_ANNIVERSARY
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_CREATECHAR
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_BUYPREMIUMITEM
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_ENHANCEITEM
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_FIRSTMOUNT
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_REACHESIA
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_REACHGOLDUM
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_REACHTERION
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_REACHROKKUNTAVERN
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 
 		p.Achievement = lib.ACHIEVEMENT_AW_REACHCEMETERY
-		done <- conn.SendPacket(buffer, p, false)
+		done <- conn.SendPacket(buf, p, false)
 	})
 }

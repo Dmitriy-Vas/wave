@@ -5,23 +5,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *SelectMinigamesPacket) GetID() int64 {
-	return d.ID
+func (packet *SelectMinigamesPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *SelectMinigamesPacket) SetID(id int64) {
-	d.ID = id
+func (packet *SelectMinigamesPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *SelectMinigamesPacket) GetSend() bool {
-	return d.Send
+func (packet *SelectMinigamesPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *SelectMinigamesPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *SelectMinigamesPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type SelectMinigamesPacket struct {

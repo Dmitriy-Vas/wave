@@ -6,23 +6,23 @@ import (
 )
 
 // GetID returns packet ID.
-func (d *CharDataPacket) GetID() int64 {
-	return d.ID
+func (packet *CharDataPacket) GetID() int64 {
+	return packet.ID
 }
 
 // SetID sets ID to the packet.
-func (d *CharDataPacket) SetID(id int64) {
-	d.ID = id
+func (packet *CharDataPacket) SetID(id int64) {
+	packet.ID = id
 }
 
 // GetSend returns whether to send this packet.
-func (d *CharDataPacket) GetSend() bool {
-	return d.Send
+func (packet *CharDataPacket) GetSend() bool {
+	return packet.Send
 }
 
 // SetSend sets whether to send this packet.
-func (d *CharDataPacket) SetSend(value bool) {
-	d.Send = value
+func (packet *CharDataPacket) SetSend(value bool) {
+	packet.Send = value
 }
 
 type CharDataPacket struct {
