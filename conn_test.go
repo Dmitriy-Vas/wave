@@ -228,10 +228,10 @@ func TestConn_SendPacket(t *testing.T) {
 		DataLength: int32(len("Hello World")),
 		Data:       []byte("Hello World"),
 	}
-	err = connection.SendPacket(testPacket, false)
+	err = connection.SendPacket(connection.buffer, testPacket, false)
 	assert.NoError(t, err)
 
-	err = connection.SendPacket(testPacket, true)
+	err = connection.SendPacket(connection.buffer, testPacket, true)
 	<-connection.Done
 }
 
@@ -274,12 +274,10 @@ func TestConn_readAndWritePacket(t *testing.T) {
 	buf.SetInitLength(8)
 	buf.SetMaxLength(256)
 	buf.Reset()
-	conn := &Conn{
-		ID:    0,
-		proxy: proxy,
-	}
-	conn.proxy.AddPacket(1, true, new(TestPacket))
-	conn.proxy.AddPacket(2, false, new(TestPacket))
+
+	proxy.AddPacket(1, true, new(TestPacket))
+	proxy.AddPacket(2, false, new(TestPacket))
+	conn := proxy.NewConn(0, nil)
 
 	testPacket := &TestPacket{
 		ID:         1,

@@ -240,6 +240,22 @@ const (
 	RarityDojo
 )
 
+type ServerMod uint
+
+const (
+	ServerModExperience ServerMod = iota
+	ServerModDrop
+	ServerModDig
+	ServerModDamage
+	ServerModHeal
+	ServerModJunk
+	ServerModLostExp
+	ServerModParty
+	ServerModProfession
+	ServerModCardDrop
+	ServerModQuestExp
+)
+
 type Lang int32
 
 const (

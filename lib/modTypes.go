@@ -8,7 +8,7 @@ import (
 type EmoticonRec struct {
 	Name      []string
 	Command   string
-	Image     int
+	Image     int32
 	IsDefault bool
 	Animated  bool
 	Unlocked  bool
@@ -72,7 +72,7 @@ type ServerOptionRec struct {
 
 type PromotionRec struct {
 	Type     byte
-	Item     int
+	Item     int32
 	GameCard []PromotionGameCardRec
 }
 
@@ -130,7 +130,7 @@ type PlayerProfessionRec struct {
 }
 
 type ProfessionRec struct {
-	Icon    int
+	Icon    int32
 	Upgrade []ProfessionUpgradeRec
 }
 
@@ -138,7 +138,7 @@ type ProfessionUpgradeRec struct {
 	Name     []string
 	Desc     []string
 	MaxLevel byte
-	Icon     int
+	Icon     int32
 }
 
 type PlayerAwardsRec struct {
@@ -242,21 +242,21 @@ type PlayPuzzleRec struct {
 
 type PuzzleRec struct {
 	Name        string
-	Map         int
+	Map         int32
 	Point       objects.Vector2
 	Size        objects.Vector2
-	SwitchImage int
+	SwitchImage int32
 	SwitchPos   objects.Vector2
-	Cube        []PuzzleCubeRec
+	Cube        [][]PuzzleCubeRec
 }
 
 type PuzzleCubeRec struct {
-	Image        int
+	Image        int32
 	Block        bool
 	Move         bool
 	Key          bool
-	Switch       int
-	isPlayerMove int
+	Switch       int32
+	isPlayerMove int32
 }
 
 type AdminInfoRec struct {
@@ -611,44 +611,44 @@ type ClassSpriteRec struct {
 type ItemRec struct {
 	Name          string
 	ESName        string
-	Pic           int
-	Revision      int
+	Pic           int32
+	Revision      int32
 	Type          byte
-	Data1         int
-	Data2         int
-	Tool          int
+	Data1         int32
+	Data2         int32
+	Tool          int32
 	ClassReq      []int64
 	AccessReq     int64
 	LevelReq      int64
 	Mastery       byte
 	Price         int64
-	AddStat       []int
+	AddStat       []int32
 	Rarity        byte
 	Speed         int64
 	Handed        int64
 	BindType      byte
-	StatReq       []int
+	StatReq       []int32
 	Animation     int64
 	Paperdoll     int64
 	Desc          string
 	Stackable     bool
-	Overol        int
-	paperWidth    int
-	ProjecTil     int
-	MType         int
-	HPBonus       int
-	MPBonus       int
-	WarpMap       int
-	WarpX         int
-	WarpY         int
-	isHair        int
-	Element       []int
-	ElementChance []int
-	BigPic        int
-	VitalMode     []int
+	Overol        int32
+	paperWidth    int32
+	ProjecTil     int32
+	MType         int32
+	HPBonus       int32
+	MPBonus       int32
+	WarpMap       int32
+	WarpX         int32
+	WarpY         int32
+	isHair        int32
+	Element       []int32
+	ElementChance []int32
+	BigPic        int32
+	VitalMode     []int32
 	comboSlot     int64
-	Recipe        int
-	Int           []int
+	Recipe        int32
+	Int           []int32
 	Bool          []bool
 }
 type QuestRec struct {
@@ -659,53 +659,53 @@ type QuestRec struct {
 	Status                bool
 	QuestLog              string
 	Story                 []string
-	RequiredLevel         int
-	RequiredQuest         int
-	RequiredClass         []int
+	RequiredLevel         int32
+	RequiredQuest         int32
+	RequiredClass         []int32
 	Item                  []QuestRewardItemRec
 	Task                  []TaskRec
-	QuestHelp             int
-	Owner                 int
-	Type                  int
+	QuestHelp             int32
+	Owner                 int32
+	Type                  int32
 	Promotion             byte
-	QuestAtEnd            int
+	QuestAtEnd            int32
 	Bool                  []bool
 }
 type QuestRewardItemRec struct {
-	Item    int
-	Task    int
-	Type    int
-	Classes int
+	Item    int32
+	Task    int32
+	Type    int32
+	Classes int32
 	Value   int64
 }
 
 type TaskRec struct {
-	Order          int
-	NPC            int
-	PartyQuest     int
-	Item           int
-	Map            int
-	Resource       int
-	Recipe         int
-	SpellUse       int
-	Tutorial       int
+	Order          int32
+	NPC            int32
+	PartyQuest     int32
+	Item           int32
+	Map            int32
+	Resource       int32
+	Recipe         int32
+	SpellUse       int32
+	Tutorial       int32
 	Amount         int64
 	Speech         string
 	TaskLog        string
 	QuestEnd       bool
 	RewardEXP      int64
-	SpellReward    []int
-	ElementReward  int
-	RewardRecipe   int
-	RewardVariable int
+	SpellReward    []int32
+	ElementReward  int32
+	RewardRecipe   int32
+	RewardVariable int32
 	RewardCalavera int64
-	Image          int
+	Image          int32
 	ImageVec       objects.Vector2
 	AutoComplete   bool
 	StartQuote     []string
 	EndQuote       []string
-	Sprite         []int
-	Int            []int
+	Sprite         []int32
+	Int            []int32
 }
 
 type MapItemRec struct {
@@ -731,28 +731,28 @@ type NpcRec struct {
 	AttackSay     string
 	Behaviour     byte
 	Range         byte
-	DropChance    []int
-	DropItem      []int
-	DropItemValue []int
-	Int           []int
+	DropChance    []int32
+	DropItem      []int32
+	DropItemValue []int32
+	Int           []int32
 	Vec           []objects.Vector2
 	Faction       byte
-	CardDrop      int
-	CardNum       int
-	Spell         []int
+	CardDrop      int32
+	CardNum       int32
+	Spell         []int32
 	Element       []int64
 	Bool          []bool
-	RequireVar    int
+	RequireVar    int32
 	AttackSound   string
-	Light         int
-	QuestList     []int
+	Light         int32
+	QuestList     []int32
 	ScriptList    []NpcScriptListRec
 	Offset        objects.Vector2
 }
 
 type NpcScriptListRec struct {
-	Num      int
-	Interval int
+	Num      int32
+	Interval int32
 	Variable string
 }
 
@@ -811,25 +811,25 @@ type NpcTileRec struct {
 }
 
 type TradeItemRec struct {
-	Item        int
-	CostItem    int
-	RequiredVar int
+	Item        int32
+	CostItem    int32
+	RequiredVar int32
 	ItemValue   int64
 	CostValue   int64
 	Haircut     TradeItemHaircutRec
 }
 
 type TradeItemHaircutRec struct {
-	Sprite int
+	Sprite int32
 	Color  objects.Color
 }
 
 type ShopRec struct {
 	Name      string
-	BuyRate   int
+	BuyRate   int32
 	TradeItem []TradeItemRec
-	Pic       int
-	priceItem int
+	Pic       int32
+	priceItem int32
 	Order     byte
 	Type      byte
 }
@@ -841,15 +841,15 @@ type SpellRec struct {
 	Dir          byte
 	Type         byte
 	AccessReq    byte
-	MPCost       int
-	LevelReq     int
-	ClassReq     int
+	MPCost       int32
+	LevelReq     int32
+	ClassReq     int32
 	CastTime     int64
 	CDTime       int64
-	Icon         int
-	Map          int
-	X            int
-	Y            int
+	Icon         int32
+	Map          int32
+	X            int32
+	Y            int32
 	Vital        int64
 	Duration     int64
 	Interval     int64
@@ -869,8 +869,8 @@ type SpellRec struct {
 	ElementBased bool
 	ClassBasic   bool
 	CastWalking  bool
-	HPCost       int
-	Int          []int
+	HPCost       int32
+	Int          []int32
 	Bool         []bool
 }
 
@@ -890,19 +890,19 @@ type ResourceRec struct {
 	ESName         string
 	SuccessMessage string
 	ResourceType   byte
-	ResourceImage  int
-	ExhaustedImage int
+	ResourceImage  int32
+	ExhaustedImage int32
 	ToolRequired   byte
 	Health         int64
-	RespawnTime    int
+	RespawnTime    int32
 	Walkthrough    bool
-	Animation      int
-	ItemReward     []int
+	Animation      int32
+	ItemReward     []int32
 	ItemVal        []int64
-	ItemLuck       []int
+	ItemLuck       []int32
 	NormalAnim     bool
 	NormalRandom   bool
-	Int            []int
+	Int            []int32
 }
 
 type ActionMsgRec struct {
@@ -932,7 +932,7 @@ type AnimationRec struct {
 	XOffset    []int64
 	YOffset    []int64
 	Sound      string
-	SoundValue int
+	SoundValue int32
 }
 
 type AnimInstanceRec struct {
@@ -1082,7 +1082,7 @@ type ProjectilRec struct {
 
 type MoralRec struct {
 	Name string
-	Int  []int
+	Int  []int32
 	Bool []bool
 }
 
@@ -1120,10 +1120,10 @@ type FramesRec struct {
 type CardsRec struct {
 	Name   string
 	Desc   string
-	Num    int
-	Card   int
-	Sprite int
-	Icon   int
+	Num    int32
+	Card   int32
+	Sprite int32
+	Icon   int32
 	Offset objects.Vector2
 }
 
@@ -1285,29 +1285,29 @@ type LightRec struct {
 type ConditionRec struct {
 	Name     string
 	Line     []ActionRec
-	MaxLines int
+	MaxLines int32
 	Sprite   ConditionSpriteRec
 	ShowName bool
 	OnJoin   bool
 	MeetReq  string
-	Faceset  int
-	Switch   int
+	Faceset  int32
+	Switch   int32
 	Bool     []bool
 }
 
 type ConditionSpriteRec struct {
-	pic     int
-	Type    int
+	pic     int32
+	Type    int32
 	myFrame objects.Vector2
-	Mask    int
-	Width   int
-	Height  int
+	Mask    int32
+	Width   int32
+	Height  int32
 	Offset  objects.Vector2
 }
 
 type ActionRec struct {
 	Void       byte
-	NextLine   int
+	NextLine   int32
 	ActionType byte
 	EndCode    bool
 	OrCode     bool
@@ -1351,4 +1351,64 @@ type TradeCashItemRec struct {
 	Value int64
 	Price int64
 	Hot   bool
+}
+
+type RandomItemRec struct {
+	Name string
+	Item []RandomItemListRec
+}
+
+type RandomItemListRec struct {
+	Num   int32
+	Value int32
+	Luck  byte
+}
+
+type HotItemRec struct {
+	Category    int32
+	SubCategory int32
+}
+
+type PinsRec struct {
+	Item int32
+	Desc string
+}
+
+type NewspaperRec struct {
+	Title         string
+	Url           string
+	EventUrl      string
+	playersOnline int32
+	Message       string
+	WorldBoss     []time.Time
+	Cover         NewspaperCoverRec
+	ServerDay     byte
+	ServerMonth   byte
+	selRank       byte
+	selPlayer     byte
+	selPoll       byte
+	PollName      string
+	Poll          []string
+}
+
+type NewspaperCoverRec struct {
+	Url     string
+	Texture []byte
+}
+
+type WorldBlessRec struct {
+	Active    bool
+	Owner     string
+	Paperdoll string
+	Time      int32
+	Sprite    int32
+	Hair      int32
+	HairTint  string
+	Value     float64
+}
+
+type SpeedFormulaRec struct {
+	Normal float64
+	Buff   float64
+	Mount  float64
 }

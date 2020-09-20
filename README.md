@@ -85,8 +85,8 @@ Check [lib/packets](https://github.com/Dmitriy-Vas/wave/tree/master/lib/packets)
 ```go
 // 1 is packet ID
 // true means this packet is outgoing (from client to server)
-// last parameter is a pointer to the packet, must implement wave.Packet interface
-proxy.AddPacket(1, true, new(outgoing.NewAccountPacket))
+// last parameter is a pointer to the empty packet, must implement wave.Packet interface
+proxy.AddPacket(1, true, (*outgoing.NewAccountPacket)(nil))
 ```
 
 To actually edit packet, register your hook and do magic

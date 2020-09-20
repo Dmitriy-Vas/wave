@@ -4,7 +4,6 @@ import (
 	. "github.com/Dmitriy-Vas/wave/buffer"
 	"log"
 	"net"
-	"reflect"
 	"sync"
 )
 
@@ -14,8 +13,11 @@ type Conn struct {
 	LocalConn, RemoteConn net.Conn // Bidirectional streams (client <-> proxy <-> server)
 	Done                  chan error
 
-	proxy  *Proxy
-	buffer PacketBuffer
+	// Fills on initialization, contains available packets
+	incomingPackets map[int64]Packet
+	outgoingPackets map[int64]Packet
+	proxy           *Proxy
+	buffer          PacketBuffer
 }
 
 // Start starts serving local connection.
@@ -58,7 +60,7 @@ func (c *Conn) Close(err error) {
 	c.Done <- err
 }
 
-// Writes buffer data to the stream.
+// Writes buffer data to the stream until buffer.Len.
 // Executes specified Process on buffer bytes.
 // Outgoing=true, if you want to write to the server.
 // Outgoing=false, if you want to write to the client.
@@ -79,15 +81,27 @@ func (c *Conn) writeData(buffer PacketBuffer, outgoing bool) error {
 	return err
 }
 
+// Buffer returns connection's PacketBuffer.
+// Do not use this buffer in multiple goroutines, otherwise you will get data race.
+// If you want to pass PacketBuffer to goroutine, use Clone on buffer and use replica only.
+//
+// example:
+// buffer := conn.Buffer()
+//	go func(buffer PacketBuffer) {
+//		Do something with replica here
+//	}(buffer.Clone())
+func (c *Conn) Buffer() PacketBuffer {
+	return c.buffer
+}
+
 // Writes packet data to the buffer and sends to the destination.
 // Useful for manually sending packets.
 // Outgoing=true, if you want to write to the server.
 // Outgoing=false, if you want to write to the client.
-// Concurrency UNSAFE. TODO implement concurrency safe sending packet
-func (c *Conn) SendPacket(packet Packet, outgoing bool) error {
-	c.buffer.Reset()
-	c.writePacket(c.buffer, packet)
-	return c.writeData(c.buffer, outgoing)
+func (c *Conn) SendPacket(buffer PacketBuffer, packet Packet, outgoing bool) error {
+	buffer.Reset()
+	c.writePacket(buffer, packet)
+	return c.writeData(buffer, outgoing)
 }
 
 // Outgoing=true, if you want to read from client
@@ -166,26 +180,21 @@ func (c *Conn) pipe(outgoing bool) {
 
 func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
 	ID := ReadNumber(buffer, c.proxy.Config.PacketTypeSize)
-	var packetType reflect.Type = nil
 	var process Process = nil
+	var packet Packet = nil
 	if outgoing {
-		if p, ok := c.proxy.OutgoingPacketMap.Load(ID); ok {
-			packetType = p.(reflect.Type)
-		}
 		process = c.proxy.Config.OutgoingProcess
+		packet = c.outgoingPackets[ID]
 	} else {
-		if p, ok := c.proxy.IncomingPacketMap.Load(ID); ok {
-			packetType = p.(reflect.Type)
-		}
 		process = c.proxy.Config.IncomingProcess
+		packet = c.incomingPackets[ID]
 	}
-	if packetType == nil {
+	if packet == nil {
 		return nil
 	}
 	if process != nil {
 		process(buffer, true)
 	}
-	packet := InitializeStruct(packetType).(Packet)
 	packet.SetID(ID)
 	packet.SetSend(true)
 	packet.Read(buffer)

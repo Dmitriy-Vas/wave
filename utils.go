@@ -49,7 +49,6 @@ func WriteNumber(buffer buffer.PacketBuffer, size uint64, value int64) {
 
 // InitializeStruct Creates new instance from type.
 func InitializeStruct(t reflect.Type) interface{} {
-	// TODO still can't exclude reflect from all aspects, need to find better way to work with packets
 	switch t.Kind() {
 	case reflect.Ptr:
 		return reflect.New(t.Elem()).Interface()

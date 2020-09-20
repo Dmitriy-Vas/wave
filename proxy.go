@@ -12,7 +12,7 @@ type Proxy struct {
 	index                                    *uint32      // Amount of served local connections
 	Connections                              *sync.Map    // map[uint32]*Conn. Concurrency safe. Map with all current connections
 	OutgoingPacketHooks, IncomingPacketHooks *sync.Map    // map[id][]PacketHook Concurrency safe. Map with all registered packet hooks
-	OutgoingPacketMap, IncomingPacketMap     *sync.Map    // map[id]Packet. Concurrency safe. Map with all available packets
+	OutgoingPacketMap, IncomingPacketMap     *sync.Map    // map[id]reflect.Type. Concurrency safe.
 	Config                                   Config       // Proxy configuration
 }
 
@@ -34,17 +34,36 @@ func (p *Proxy) Start() (err error) {
 		}
 		id := atomic.AddUint32(p.index, 1)
 
-		conn := &Conn{
-			ID:        id,
-			LocalConn: local_conn,
-			Done:      make(chan error),
-			proxy:     p,
-		}
+		conn := p.NewConn(id, local_conn)
 		// Store connection inside map
 		p.Connections.Store(id, conn)
 
 		go conn.start()
 	}
+}
+
+func (p *Proxy) NewConn(id uint32, conn net.Conn) *Conn {
+	c := &Conn{
+		ID:              id,
+		LocalConn:       conn,
+		Done:            make(chan error),
+		incomingPackets: make(map[int64]Packet),
+		outgoingPackets: make(map[int64]Packet),
+		proxy:           p,
+	}
+	p.IncomingPacketMap.Range(func(key, value interface{}) bool {
+		if packet, ok := InitializeStruct(value.(reflect.Type)).(Packet); ok {
+			c.incomingPackets[key.(int64)] = packet
+		}
+		return true
+	})
+	p.OutgoingPacketMap.Range(func(key, value interface{}) bool {
+		if packet, ok := InitializeStruct(value.(reflect.Type)).(Packet); ok {
+			c.outgoingPackets[key.(int64)] = packet
+		}
+		return true
+	})
+	return c
 }
 
 // Index returns current amount of served connections.
@@ -83,6 +102,7 @@ func (p *Proxy) HookPacket(ID int64, outgoing bool, hook PacketHook) {
 }
 
 // AddPacket adds Packet to the list of available to hook packets.
+// Pass empty Packet, example: (*SomePacket)(nil).
 // Outgoing=true, if your packet is going from client to server.
 // Outgoing=false, if your packet is going from server to client.
 func (p *Proxy) AddPacket(ID int64, outgoing bool, packet Packet) {
