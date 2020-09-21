@@ -1,7 +1,7 @@
 package wave
 
 import (
-	. "github.com/Dmitriy-Vas/wave/buffer"
+	buffer "github.com/Dmitriy-Vas/wave_buffer"
 	"log"
 	"net"
 	"sync"
@@ -17,7 +17,7 @@ type Conn struct {
 	incomingPackets map[int64]Packet
 	outgoingPackets map[int64]Packet
 	proxy           *Proxy
-	buffer          PacketBuffer
+	buffer          buffer.PacketBuffer
 }
 
 // Start starts serving local connection.

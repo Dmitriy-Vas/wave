@@ -1,3 +1,5 @@
+github.com/Dmitriy-Vas/wave v0.0.0-20200920112433-f70e46107bc3 h1:EX36RlHGUL2WpWgnjoctwKuE+tEUljqXSKN4dQ/AtJg=
+github.com/Dmitriy-Vas/wave v0.0.0-20200920112433-f70e46107bc3/go.mod h1:CZbiBmK+aMMHpfRxg7LlxrLTrFTpmLFoKDEDkWFwmys=
 github.com/Dmitriy-Vas/wave_buffer v0.0.0-20200921093813-f80801b9ae27 h1:gWedqMs1nSvneTArDxhJKJ46113/J+T9xvAVguSoDl4=
 github.com/Dmitriy-Vas/wave_buffer v0.0.0-20200921093813-f80801b9ae27/go.mod h1:hS3SKsJfde9rMEu1fuM0pjXVoBSjt/vnQNHLmUosbz4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=

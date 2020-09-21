@@ -1,9 +1,5 @@
 package wave
 
-import (
-	. "github.com/Dmitriy-Vas/wave/buffer"
-)
-
 type Packet interface {
 	GetID() int64
 	SetID(id int64)
