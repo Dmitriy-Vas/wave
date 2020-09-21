@@ -3,7 +3,7 @@ package wave
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/Dmitriy-Vas/wave/buffer"
+	"github.com/Dmitriy-Vas/wave_buffer"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net"

@@ -1,7 +1,7 @@
 package wave
 
 import (
-	"github.com/Dmitriy-Vas/wave/buffer"
+	"github.com/Dmitriy-Vas/wave_buffer"
 	"reflect"
 )
 

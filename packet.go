@@ -1,14 +1,12 @@
 package wave
 
-import (
-	. "github.com/Dmitriy-Vas/wave/buffer"
-)
+import buffer "github.com/Dmitriy-Vas/wave_buffer"
 
 type Packet interface {
 	GetID() int64
 	SetID(id int64)
 	SetSend(value bool)
 	GetSend() bool
-	Read(b PacketBuffer)
-	Write(b PacketBuffer)
+	Read(b buffer.PacketBuffer)
+	Write(b buffer.PacketBuffer)
 }

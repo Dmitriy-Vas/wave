@@ -1,7 +1,7 @@
 package wave
 
 import (
-	. "github.com/Dmitriy-Vas/wave/buffer"
+	buffer "github.com/Dmitriy-Vas/wave_buffer"
 	"log"
 	"net"
 	"sync"
@@ -17,7 +17,7 @@ type Conn struct {
 	incomingPackets map[int64]Packet
 	outgoingPackets map[int64]Packet
 	proxy           *Proxy
-	buffer          PacketBuffer
+	buffer          buffer.PacketBuffer
 }
 
 // Start starts serving local connection.
@@ -64,7 +64,7 @@ func (c *Conn) Close(err error) {
 // Executes specified Process on buffer bytes.
 // Outgoing=true, if you want to write to the server.
 // Outgoing=false, if you want to write to the client.
-func (c *Conn) writeData(buffer PacketBuffer, outgoing bool) error {
+func (c *Conn) writeData(buffer buffer.PacketBuffer, outgoing bool) error {
 	var conn net.Conn
 	var process Process
 	if outgoing {
@@ -90,7 +90,7 @@ func (c *Conn) writeData(buffer PacketBuffer, outgoing bool) error {
 //	go func(buffer PacketBuffer) {
 //		Do something with replica here
 //	}(buffer.Clone())
-func (c *Conn) Buffer() PacketBuffer {
+func (c *Conn) Buffer() buffer.PacketBuffer {
 	return c.buffer
 }
 
@@ -98,7 +98,7 @@ func (c *Conn) Buffer() PacketBuffer {
 // Useful for manually sending packets.
 // Outgoing=true, if you want to write to the server.
 // Outgoing=false, if you want to write to the client.
-func (c *Conn) SendPacket(buffer PacketBuffer, packet Packet, outgoing bool) error {
+func (c *Conn) SendPacket(buffer buffer.PacketBuffer, packet Packet, outgoing bool) error {
 	buffer.Reset()
 	c.writePacket(buffer, packet)
 	return c.writeData(buffer, outgoing)
@@ -178,7 +178,7 @@ func (c *Conn) pipe(outgoing bool) {
 	}
 }
 
-func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
+func (c *Conn) readPacket(buffer buffer.PacketBuffer, outgoing bool) Packet {
 	ID := ReadNumber(buffer, c.proxy.Config.PacketTypeSize)
 	var process Process = nil
 	var packet Packet = nil
@@ -201,7 +201,7 @@ func (c *Conn) readPacket(buffer PacketBuffer, outgoing bool) Packet {
 	return packet
 }
 
-func (c *Conn) writePacket(buffer PacketBuffer, packet Packet) {
+func (c *Conn) writePacket(buffer buffer.PacketBuffer, packet Packet) {
 	// Reserve space for packet length
 	WriteNumber(buffer, c.proxy.Config.PacketLengthSize, 0)
 	// Write packet ID
