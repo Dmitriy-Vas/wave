@@ -7,7 +7,7 @@ import (
 	lib "github.com/Dmitriy-Vas/dso_lib"
 	"github.com/Dmitriy-Vas/dso_lib/packets/incoming"
 	"github.com/Dmitriy-Vas/dso_lib/packets/outgoing"
-	wrapper "github.com/Dmitriy-Vas/dso_lib/wrapper"
+	"github.com/Dmitriy-Vas/dso_lib/wrapper"
 	"github.com/Dmitriy-Vas/wave"
 	buffer "github.com/Dmitriy-Vas/wave_buffer"
 	"log"
