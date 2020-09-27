@@ -1,11 +1,15 @@
 github.com/Dmitriy-Vas/dso_lib v0.0.0-20200921094708-ea3dd7d91a69 h1:eT41lz1BCy3ppll83OHIbr4iw1SfPQNi4oFxhnO5wYU=
 github.com/Dmitriy-Vas/dso_lib v0.0.0-20200921094708-ea3dd7d91a69/go.mod h1:OzmmiAAuLu3HugI/d8MPhtdCpuyYwtuIB6aM3Uevwj0=
+github.com/Dmitriy-Vas/dso_lib v0.0.0-20200927110957-96031198e6e2 h1:1wTD6DO3lMw9oBcmT0Fq4Japrc8ryT8Y6iIVkFh667g=
+github.com/Dmitriy-Vas/dso_lib v0.0.0-20200927110957-96031198e6e2/go.mod h1:kQ6UsfGE6qWHrLCzPgK5Pp8I+bSIWKGKLumy/TltbvE=
+github.com/Dmitriy-Vas/dso_lib v0.0.0-20200927113859-55c5fad3f854 h1:K39E/sVNWlet+AGTZEXDTqRY+hGXbcDgf/BRrbk+n6U=
+github.com/Dmitriy-Vas/dso_lib v0.0.0-20200927113859-55c5fad3f854/go.mod h1:kQ6UsfGE6qWHrLCzPgK5Pp8I+bSIWKGKLumy/TltbvE=
 github.com/Dmitriy-Vas/wave v0.0.0-20200920112433-f70e46107bc3 h1:EX36RlHGUL2WpWgnjoctwKuE+tEUljqXSKN4dQ/AtJg=
 github.com/Dmitriy-Vas/wave v0.0.0-20200920112433-f70e46107bc3/go.mod h1:CZbiBmK+aMMHpfRxg7LlxrLTrFTpmLFoKDEDkWFwmys=
-github.com/Dmitriy-Vas/wave v0.0.0-20200921095519-6d305e6cd0d3 h1:CH1c4eK7POxi6cBZSfu5lzGol6/qQB7FUwXlnuCXY6Y=
-github.com/Dmitriy-Vas/wave v0.0.0-20200921095519-6d305e6cd0d3/go.mod h1:X6QiCfPcsRHfy5ogxMaFn0kPRJRERzvcT7suqqdxItE=
 github.com/Dmitriy-Vas/wave v0.0.0-20200921100745-3c06aed29dc5 h1:biLTJDyOiEhAtEdm04TIptNvMHJDmPv6gMwOb6dXho4=
 github.com/Dmitriy-Vas/wave v0.0.0-20200921100745-3c06aed29dc5/go.mod h1:XpM2q+eL+eW+Z5Zv74RZNZDjCfj9ilTw4zwWIxytNrg=
+github.com/Dmitriy-Vas/wave v0.0.0-20200921101605-c89b72c25edf h1:2+IPViqzBoKdWMGAGDWK8GKGR6faRYSUsOAxRpgv3XA=
+github.com/Dmitriy-Vas/wave v0.0.0-20200921101605-c89b72c25edf/go.mod h1:XpM2q+eL+eW+Z5Zv74RZNZDjCfj9ilTw4zwWIxytNrg=
 github.com/Dmitriy-Vas/wave_buffer v0.0.0-20200921093813-f80801b9ae27 h1:gWedqMs1nSvneTArDxhJKJ46113/J+T9xvAVguSoDl4=
 github.com/Dmitriy-Vas/wave_buffer v0.0.0-20200921093813-f80801b9ae27/go.mod h1:hS3SKsJfde9rMEu1fuM0pjXVoBSjt/vnQNHLmUosbz4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=

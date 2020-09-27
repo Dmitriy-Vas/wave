@@ -101,7 +101,7 @@ proxy.HookPacket(int64(lib.IncReceiveHour), false, func(conn *wave.Conn, packet 
 ### Game list
 + [DarkStory Online](https://github.com/Dmitriy-Vas/wave/tree/master/lib)
     + Traffic is not encrypted.
-    + Boolean takes 3 extra bytes (4 in total) and uses int32.
+    + Boolean takes 1 extra bytes (2 in total) and uses int16.
     + Byte takes 1 extra byte (2 in total) and uses int16.
     + Length goes in first 8 bytes and uses int64.
     + After length goes packet ID and uses int64.
